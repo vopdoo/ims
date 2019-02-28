@@ -2,13 +2,13 @@
     <Card dis-hover :bordered="false" title="节点管理">
         <Button slot="extra" type="success" @click="addTopMenu">增加顶级节点</Button>
         <Tree :data="nodes" :render="renderContent"></Tree>
-
         <Modal
                 v-model="is_add_menuing"
                 title="增加节点"
                 :loading="loading"
-                :mask-closable="false"
                 class-name="add-edit-modal"
+                :mask-closable="false"
+                :scrollable="true"
                 @on-ok="saveMenu"
                 @on-cancel="cancelAddMenu"
         >
@@ -28,14 +28,12 @@
                 </FormItem>
                 <div v-if="menuFm.type == 1">
                     <FormItem label="路由名称">
-                        <Input v-model="menuFm.others.name" placeholder="路由名称"/>
+                        <Input v-model="menuFm.options.name" placeholder="路由名称"/>
                     </FormItem>
-
                     <FormItem label="路由路径">
-                        <Input v-model="menuFm.others.path" placeholder="路由路径"/>
+                        <Input v-model="menuFm.options.path" placeholder="路由路径"/>
                     </FormItem>
                 </div>
-
 
                 <FormItem label="图标">
                     <Input v-model="menuFm.icon" placeholder="图标"/>
@@ -85,9 +83,7 @@
                         callback();
                     }
                 });
-
             };
-
             return {
                 typeList: [
                     {
@@ -107,7 +103,7 @@
                     name: '',
                     code: '',
                     type: 1,
-                    others: {},
+                    options: {},
                     icon: 'md-apps',
                     sort: 0,
                     pid: 0
@@ -129,8 +125,6 @@
                     sort: [
                         {required: false, type: 'integer', message: '排序只能是数字', trigger: 'blur'}
                     ]
-
-
                 },
                 is_add_menuing: false,
                 buttonProps: {
@@ -142,12 +136,23 @@
             typeChange(option) {
                 console.info(option);
             },
-
+            editNode(data) {
+                this.menuFm = {
+                    name: data.name,
+                    code: data.code,
+                    type: data.type,
+                    options: data.options,
+                    icon: data.icon,
+                    sort: 0,
+                    pid: data.pid,
+                    id: data.id
+                };
+                this.is_add_menuing = true;
+            },
             renderContent(h, {root, node, data}) {
                 // console.info(data);
                 data.expand = true;
                 // console.info(data.children);
-
                 return h('span', {
                     class: {
                         'menus-span': true,
@@ -199,16 +204,7 @@
                             },
                             on: {
                                 click: () => {
-                                    this.menuFm = {
-                                        name: data.name,
-                                        code: data.code,
-                                        type: data.type,
-                                        others: {},
-                                        icon: data.icon,
-                                        sort: 0,
-                                        pid: data.pid
-                                    };
-                                    this.is_add_menuing = true;
+                                    this.editNode(data);
                                 }
                             }
                         }),
@@ -218,7 +214,6 @@
                             props: {
                                 confirm: true,
                                 title: '确认要删除',
-
                                 // transfer:true,
                             },
                             on: {

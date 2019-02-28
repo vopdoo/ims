@@ -2,7 +2,6 @@
     <div id="ims-login-container">
 
         <div id="login-fm">
-
             <div class="header">
                 <h1>IMS</h1>
                 <p>一切从登录开始</p>
