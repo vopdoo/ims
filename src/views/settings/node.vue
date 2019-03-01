@@ -163,6 +163,7 @@
                     }
                 }, [
                     h('span', [
+
                         h('Icon', {
                             props: {
                                 type: data.icon
