@@ -107,7 +107,7 @@ const mutations = {
             }
         ];
         data.forEach((item, index) => {
-            if (item.options.path && item.options.name) {
+            if (item.type == 1 && item.options.path && item.options.name) {
                 willAddedRoutes[0].children.push({
                     path: item.options.path,
                     name: item.options.name,
@@ -118,7 +118,6 @@ const mutations = {
                 });
             }
         });
-        console.info('vv', willAddedRoutes);
         state.routers = willAddedRoutes;
     },
 

@@ -1,10 +1,10 @@
 <template>
     <Card dis-hover :bordered="false" title="节点管理">
-        <Button slot="extra" type="success" @click="addTopMenu">增加顶级节点</Button>
+        <Button slot="extra" type="success" @click="createNode(0,0)">增加顶级节点</Button>
         <Tree :data="nodes" :render="renderContent"></Tree>
         <Modal
                 v-model="is_add_menuing"
-                title="增加节点"
+                :title="title"
                 :loading="loading"
                 class-name="add-edit-modal"
                 :mask-closable="false"
@@ -13,6 +13,11 @@
                 @on-cancel="cancelAddMenu"
         >
             <Form :model="menuFm" :label-width="80" ref="menuFm" :rules="menuFmRules">
+                <FormItem label="类型" prop="type">
+                    <Select v-model="menuFm.type" placeholder="类型" @on-change="typeChange">
+                        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                </FormItem>
                 <FormItem label="名称">
                     <!--prop="name"-->
                     <Input v-model="menuFm.name" placeholder="名称"/>
@@ -21,11 +26,7 @@
                     <!--prop="code"-->
                     <Input v-model="menuFm.code" placeholder="标识"/>
                 </FormItem>
-                <FormItem label="类型" prop="type">
-                    <Select v-model="menuFm.type" placeholder="类型" @on-change="typeChange">
-                        <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                    </Select>
-                </FormItem>
+
                 <div v-if="menuFm.type == 1">
                     <FormItem label="路由名称">
                         <Input v-model="menuFm.options.name" placeholder="路由名称"/>
@@ -63,9 +64,6 @@
                 nodes: 'node/nodes',
             })
         },
-        mounted() {
-            console.info('mounted');
-        },
         data() {
             const validateCode = (rule, value, callback) => {
                 if (!value) {
@@ -85,6 +83,7 @@
                 });
             };
             return {
+                title: '增加节点',
                 typeList: [
                     {
                         value: 1,
@@ -133,10 +132,36 @@
             }
         },
         methods: {
+            getNodeTag(type) {
+                if (type == 1) {
+                    return '#2d8cf0';
+                } else if (type == 2) {
+                    return '#19be6b';
+                } else {
+                    return '#f90';
+                }
+            },
             typeChange(option) {
                 console.info(option);
             },
+            createNode(pid, type) {
+                this.menuFm.pid = pid;
+                if (pid > 0) {
+                    // 子节点
+                    if (type == 1) {
+                        this.menuFm.type = 3;
+                    } else if (type == 2) {
+                        this.menuFm.type = 1;
+                    }
+                } else {
+                    // 根节点
+                    this.menuFm.type = 2;
+                }
+                this.title = '增加节点';
+                this.is_add_menuing = true;
+            },
             editNode(data) {
+                this.title = '编辑节点';
                 this.menuFm = {
                     name: data.name,
                     code: data.code,
@@ -166,13 +191,16 @@
 
                         h('Icon', {
                             props: {
-                                type: data.icon
+                                type: data.icon,
+                                color:this.getNodeTag(data.type)
                             },
                             style: {
                                 marginRight: '8px'
                             }
                         }),
-                        h('span', data.name)
+                        h('span', data.name),
+
+
                     ]),
                     h('span', {
                         style: {
@@ -181,17 +209,27 @@
                             marginRight: '32px'
                         }
                     }, [
+
+                        // h('Badge', {
+                        //     props: {
+                        //         color: 'default',
+                        //         status: this.getNodeTag(data.type),
+                        //     },
+                        // }),
+
                         h('Button', {
                             props: Object.assign({}, this.buttonProps, {
-                                icon: 'ios-add'
+                                icon: 'ios-add',
+                                disabled: data.type == 3
                             }),
                             style: {
                                 marginRight: '8px'
                             },
                             on: {
                                 click: () => {
-                                    this.menuFm.pid = data.id;
-                                    this.is_add_menuing = true;
+                                    // this.menuFm.pid = data.id;
+                                    // this.menuFm.type = 2;
+                                    this.createNode(data.id, data.type);
                                 }
                             }
                         }),
@@ -231,19 +269,30 @@
 
                             })
                         ]),
-
-
+                        // h('Badge', {
+                        //     props: {
+                        //         color: 'default',
+                        //         status: this.getNodeTag(data.type),
+                        //     },
+                        // }),
                     ])
                 ]);
             },
             addTopMenu() {
-                this.menuFm.pid = 0;
-                this.is_add_menuing = true;
+                this.createNode(0, 0);
             },
             cancelAddMenu() {
-                this.$refs['menuFm'].resetFields();
-
-                this.menuFm['id'] && delete this.menuFm['id'];
+                this.menuFm = {
+                    name: '',
+                    code: '',
+                    type: 1,
+                    options: {},
+                    icon: 'md-apps',
+                    sort: 0,
+                    pid: 0
+                };
+                // this.$refs['menuFm'].resetFields();
+                // this.menuFm['id'] && delete this.menuFm['id'];
             },
             saveMenu() {
                 this.$refs['menuFm'].validate((valid) => {

@@ -162,7 +162,7 @@
                 ];
             },
             children() {
-                return this.data[this.childrenKey];
+                return  this.data[this.childrenKey];
             }
         },
         methods: {
@@ -196,13 +196,13 @@
             },
             handleSelect() {
                 console.info(this.data);
+                // this.data.type == 2 &&
                 if(this.data[this.childrenKey]) {
                     if (this.trigger !== 'click') {
                         return false;
                     }
                     this.visible = !this.visible;
                 } else {
-                    console.info('最后一级跳转路由或者做一些其他事情....');
                     this.dispatch('SiderMenu', 'on-selected', this.data.nodeKey);
                 }
             },
