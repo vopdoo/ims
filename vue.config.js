@@ -1,7 +1,7 @@
 module.exports = {
     lintOnSave: false,
-    outputDir: '../../ims.vopdoo.com/public/demo',
-    publicPath: '/demo/',
+    outputDir: '../../ims.vopdoo.com/public',
+    publicPath: '/',
 
     // baseURL:'/prototypes/',
     assetsDir: 'assets',
