@@ -5,9 +5,20 @@
 import {axios} from '../plugins/axios';
 
 export default {
+    index: (payload) => {
+
+        return axios.get('admins', {
+            params: payload
+        });
+    },
     store: (payload) => {
         return axios.post('admins', payload);
     },
+
+    update: (payload) => {
+        return axios.put('admins/' + payload.id, payload);
+    },
+
 
     login: (payload) => {
         console.info('api => admin.js');

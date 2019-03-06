@@ -1,18 +1,35 @@
 <template>
-    <Card dis-hover :bordered="false" title="节点管理">
-        <Button slot="extra" type="success" @click="createNode(0,0)">增加顶级节点</Button>
+    <div>
+        <Row :gutter="32">
+            <Col span="20">
+                &nbsp;
+            </Col>
+            <Col span="4" class="list-tlbr">
+                <Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>
+            </Col>
+        </Row>
+        <!--<Row type="flex" justify="space-between" align="top">-->
+            <!--<Col span="20">-->
+                <!--&nbsp;-->
+            <!--</Col>-->
+            <!--<Col span="4" class="list-tlbr">-->
+                <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
+            <!--</Col>-->
+        <!--</Row>-->
+
+
         <Tree :data="nodes" :render="renderContent"></Tree>
         <Modal
                 v-model="is_add_menuing"
                 :title="title"
                 :loading="loading"
-                class-name="add-edit-modal"
+                class-name="ce-modal"
                 :mask-closable="false"
                 :scrollable="true"
                 @on-ok="saveMenu"
                 @on-cancel="cancelAddMenu"
         >
-            <Form :model="menuFm" :label-width="80" ref="menuFm" :rules="menuFmRules">
+            <Form :model="menuFm"  label-position="top" ref="menuFm" :rules="menuFmRules">
                 <FormItem label="类型" prop="type">
                     <Select v-model="menuFm.type" placeholder="类型" @on-change="typeChange">
                         <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -45,7 +62,7 @@
                 <Alert closable>{{ menuFm }}</Alert>
             </Form>
         </Modal>
-    </Card>
+    </div>
 
 
 </template>
@@ -206,17 +223,9 @@
                         style: {
                             display: 'inline-block',
                             float: 'right',
-                            marginRight: '32px'
+                            marginRight: '16px'
                         }
                     }, [
-
-                        // h('Badge', {
-                        //     props: {
-                        //         color: 'default',
-                        //         status: this.getNodeTag(data.type),
-                        //     },
-                        // }),
-
                         h('Button', {
                             props: Object.assign({}, this.buttonProps, {
                                 icon: 'ios-add',
@@ -269,12 +278,6 @@
 
                             })
                         ]),
-                        // h('Badge', {
-                        //     props: {
-                        //         color: 'default',
-                        //         status: this.getNodeTag(data.type),
-                        //     },
-                        // }),
                     ])
                 ]);
             },

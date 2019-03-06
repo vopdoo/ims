@@ -17,7 +17,7 @@ export default {
         });
     },
     update(payload) {
-        return axios.put('nodes/' + payload.id, {data: payload});
+        return axios.put('nodes/' + payload.id, payload);
     },
     delete(payload) {
         return axios.delete('nodes/' + payload.id);

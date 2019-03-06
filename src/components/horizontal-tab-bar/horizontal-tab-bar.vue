@@ -31,6 +31,12 @@
 
                     <Dropdown placement="bottom">
                         <Icon type="ios-arrow-down"/>
+                        <!--<ButtonGroup vertical slot="list" class="oths-dropdown-tools">-->
+                        <!--<Button icon="logo-facebook"></Button>-->
+                        <!--<Button icon="logo-twitter"></Button>-->
+                        <!--<Button icon="logo-googleplus"></Button>-->
+                        <!--<Button icon="logo-tumblr"></Button>-->
+                        <!--</ButtonGroup>-->
                         <div slot="list" class="oths-dropdown-tools">
                             <div class="dropdown-tool-item">
                                 <Icon type="md-expand"/>

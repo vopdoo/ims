@@ -1,14 +1,32 @@
 module.exports = {
     lintOnSave: false,
-    outputDir:'../../weapp.scmhmt.dev/public/prototype',
-    publicPath:'/prototype/',
+    outputDir: '../../ims.vopdoo.com/public/demo',
+    publicPath: '/demo/',
+
     // baseURL:'/prototypes/',
-    assetsDir:'assets',
+    assetsDir: 'assets',
+
     css: {
         loaderOptions: {
             less: {
                 javascriptEnabled: true
             }
-        }
-    }
+        },
+        sourceMap: true
+    },
+    chainWebpack: config => {
+        config.module
+            .rule('vue')
+            .test(/\.vue$/)
+            .use('iview-loader')
+            .loader('iview-loader')
+            .options({
+                prefix: true
+            })
+    },
+
+    baseUrl: undefined,
+    runtimeCompiler: undefined,
+    productionSourceMap: undefined,
+    parallel: undefined
 }

@@ -1,7 +1,9 @@
 <template>
     <div class="ims-layouts">
         <div class="left" :style="layoutCommonStyles">
-            <div class="logo">Vopdoo</div>
+            <div class="logo">
+                <span class="title">Vopdoo</span>
+            </div>
             <div class="navigation" ref="navigationWrapper">
                 <SiderMenu class="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/>
             </div>
@@ -34,6 +36,12 @@
                                 <li class="last">
                                     <Dropdown placement="bottom">
                                         <Avatar icon="ios-person" size="small"/>
+                                        <!--<ButtonGroup vertical slot="list">-->
+                                            <!--<Button icon="logo-facebook"></Button>-->
+                                            <!--<Button icon="logo-twitter"></Button>-->
+                                            <!--<Button icon="logo-googleplus"></Button>-->
+                                            <!--<Button icon="logo-tumblr"></Button>-->
+                                        <!--</ButtonGroup>-->
                                         <div class="login-user-dropdown-list" slot="list">
                                             <div class="item">设置</div>
                                             <div class="item divided">锁屏</div>
@@ -47,6 +55,12 @@
                 </div>
                 <!-- hor-tab-bar -->
                 <HorizontalTabBar :data="navTabs" @on-close-all="closeAll"/>
+                <div  class="breadcrumb-wrapper">
+                    <Breadcrumb>
+                        <BreadcrumbItem to="/">系统</BreadcrumbItem>
+                        <BreadcrumbItem>用户管理</BreadcrumbItem>
+                    </Breadcrumb>
+                </div>
             </div>
             <div class="middle " ref="wrapper">
                 <router-view class="contents"></router-view>
@@ -259,6 +273,18 @@
                 background: #07213E;
                 color: #fff;
                 cursor: pointer;
+                .title {
+                    display: inline-block;
+                    width: 100%;
+                    height: 20px;
+                    line-height: 20px;
+                    font-size: 14px;
+                    color: #fff;
+                    font-weight: bold;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
 
             .navigation {
@@ -295,12 +321,16 @@
             flex-direction: column;
 
             .header {
-                height: 90px;
+                height: 128px;
                 background: #fff;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
                 display: flex;
                 flex-direction: column;
                 z-index: 1;
+                .breadcrumb-wrapper {
+                    padding: 8px 16px 8px 16px;
+                    box-shadow: 0 -1px 0 0 #e8eaec;
+                }
                 .horizontal-nav {
                     height: 50px;
                     line-height: 50px;
@@ -554,7 +584,7 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 .contents {
-                    padding: 10px;
+                    padding: 8px 16px 8px 16px;
                 }
             }
             .footer {

@@ -68,3 +68,5 @@ export const DIFF_ROUTES = 'DIFF_ROUTES';
 export const GET_ROUTES = 'GET_ROUTES';
 export const GET_NAV_MENUS = 'GET_NAV_MENUS';
 
+export const GET_ADMINS = 'GET_ADMINS';
+

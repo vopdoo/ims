@@ -13,7 +13,10 @@ import categories from './modules/categories'
 import configIntegral from './modules/configs.integral'
 import post from './modules/post'
 import banner from './modules/banner'
+
+
 import node from './modules/node'
+import admin from './modules/admin'
 // import createPersistedState from "vuex-persistedstate";
 import Vuex from "vuex";
 const debug = false;
@@ -32,6 +35,7 @@ const StoreConstructorOptions = {
         configIntegral,
         banner,
         node,
+        admin,
         order
     },
     strict: debug,

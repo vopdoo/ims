@@ -19,7 +19,8 @@
                                :type="passwordInputType"
                                prefix="ios-unlock"
                                :icon="passwordInputSuffixIcon"
-                               placeholder="密码"/>
+                               placeholder="密码"
+                        />
                     </FormItem>
                     <FormItem>
                         <Tooltip content="请勿在公共场所使用" placement="right">

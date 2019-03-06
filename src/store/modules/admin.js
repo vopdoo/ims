@@ -1,27 +1,68 @@
-import node from '../../api/node'
+import node from '../../api/admin'
 import * as types from '../mutation-types'
 
 const state = {
-    nodes: [],
+    admins: [],
+    columns: [
+        {
+            title: '姓名',
+            slot: 'name',
+            fixed: 'left'
+        },
+        {
+            title: '昵称',
+            slot: 'nick_name'
+        },
+        {
+            title: '邮箱',
+            slot: 'email'
+        },
+        {
+            title: '状态',
+            slot: 'status'
+        },
+        {
+            title: '操作',
+            slot: 'action',
+            fixed: 'right'
+        }
+    ],
+    statusList: [
+        // {
+        //     value: '',
+        //     label: '全部'
+        // },
+        {
+            value: 1,
+            label: '启用'
+        },
+        {
+            value: 0,
+            label: '禁用'
+        },
+    ],
 }
 // getters
 const getters = {
-    nodes: state => state.nodes,
+    admins: state => state.admins,
+    statusList: state => state.statusList,
+    columns: state => state.columns,
 }
 // actions
 const actions = {
     lists({commit, state}, request) {
         return node.index(request).then(rsp => {
-            commit(types.GET_NODES, rsp.data);
+            commit(types.GET_ADMINS, rsp.data);
             return rsp.data.data;
         });
     },
     create({dispatch}, request) {
         return node.store(request).then(rsp => {
-            dispatch('lists', {is_show_tree: 1});
+            console.info(rsp);
+            dispatch('lists');
         });
     },
-    edit({commit, state,dispatch}, request) {
+    edit({commit, state, dispatch}, request) {
         return node.update(request).then(rsp => {
             dispatch('lists', {is_show_tree: 1});
             // commit(types.ADD_MENUS, rsp.data);
@@ -43,8 +84,12 @@ const actions = {
 // mutations
 const mutations = {
 
-    [types.GET_NODES](state, data) {
-        state.nodes = data.data;
+    [types.GET_ADMINS](state, data) {
+        // state.admins = data.data;
+        state.admins = {
+            data: data.data,
+            meta: data.meta,
+        };
     },
 
     // [types.DIFF_ROUTES](state, data) {

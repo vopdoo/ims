@@ -45,14 +45,14 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 
     .add-edit-modal {
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .ivu-modal{
+        .ivu-modal {
             top: 0;
             .ivu-modal-body {
                 height: 550px;
@@ -60,8 +60,31 @@
             }
         }
     }
+
+    .ce-modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ivu-modal {
+            top: 0;
+            .ivu-modal-body {
+                height: 520px;
+                overflow-y: auto;
+            }
+        }
+    }
+
     .list-tb-right {
         text-align: right;
     }
 
+    .list-tlbr {
+        float: right;
+        text-align: right;
+    }
+
+    .filter-kws {
+        width: 300px !important;
+    }
 </style>

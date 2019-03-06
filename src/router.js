@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
 
+import iView from 'iview'
+
 
 Vue.use(Router)
 
@@ -29,12 +31,14 @@ export function resetRouter() {
 }
 
 router.beforeEach((to, from, next) => {
+    iView.LoadingBar.start();
     console.info('router.beforeEach');
     next();
 });
 
 router.afterEach(route => {
-    // console.info(route);
+    iView.LoadingBar.finish();
+    console.info('router.afterEach',route);
 });
 
 export default router;
