@@ -67,6 +67,8 @@
             <template slot-scope="{ row, index }" slot="action">
                 <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
             </template>
+            <TableDatetime  slot-scope="{ row, index }" :datetime="row.created_at" slot="created_at" style="width: 500px;" />
+            <TableDatetime  slot-scope="{ row, index }" :datetime="row.updated_at" slot="updated_at" />
         </Table>
 
         <Row type="flex" style="margin-top: 10px;">
@@ -147,10 +149,14 @@
     import {mapGetters} from 'vuex'
     import store from '../../store/index';
 
+    import TableDatetime from '@/components/table-datetime/index';
+
     export default {
         name: 'Admin',
+        components: {
+            TableDatetime,
+        },
         async beforeRouteEnter(to, from, next) {
-            console.info('current beforeRouteEnter .......');
             await store.dispatch('admin/lists', {is_show_tree: 1});
             next();
         },

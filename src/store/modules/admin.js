@@ -22,6 +22,14 @@ const state = {
             slot: 'status'
         },
         {
+            title: '创建时间',
+            slot: 'created_at'
+        },
+        {
+            title: '更新时间',
+            slot: 'updated_at'
+        },
+        {
             title: '操作',
             slot: 'action',
             fixed: 'right'
