@@ -5,7 +5,8 @@
             <Split v-model="split1">
                 <div slot="left" class="demo-split-pane">
                     <!--:render="renderContent"-->
-                    <Tree :data="departments"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
+                    <Tree :data="departments" :render="renderContent" @on-toggle-expand="handleToggleExpand"
+                          show-checkbox></Tree>
                 </div>
                 <div slot="right" class="demo-split-pane">
                     <Row type="flex" justify="space-between" align="top">
@@ -125,12 +126,20 @@
 
                     <Col span="12">
                         <FormItem label="部门">
-                            <!--icon="md-checkbox-outline"-->
-                            <Input v-model="fmData.department_ids"  clearable placeholder="请选择部门"  >
-                            <Poptip    :transfer="true" slot="suffix" title="选择部门" @on-popper-hide="handleDepartmentChange">
-                                <Icon type="md-checkbox-outline" />
-                                <div  slot="content" style="padding-bottom: 16px; width:200px;height: 300px;overflow-y: auto;" >
-                                    <Tree :data="depts"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
+                            <Input v-model="fmData.department_names"  placeholder="请选择部门">
+                            <Poptip :transfer="true" slot="suffix" title="选择部门 (可多选)"
+                                    @on-popper-hide="handleDepartmentChange">
+                                <Icon type="md-checkbox-outline"/>
+                                <div slot="content"
+                                     style="padding-bottom: 16px; width:200px;height: 260px;overflow-y: auto;">
+                                    <Tree :data="depts" :check-strictly="true"
+                                          @on-check-change="handleDepartmentTreeChange"
+                                          :render="renderContent"
+                                          @on-toggle-expand="handleToggleExpand"
+                                          show-checkbox
+                                    >
+
+                                    </Tree>
                                 </div>
                             </Poptip>
                             </Input>
@@ -174,19 +183,6 @@
                 </FormItem>
                 <Alert closable>{{fmData}}</Alert>
             </Form>
-        </Modal>
-
-        <Modal
-                v-model="has_dept_selecting"
-                title="选择部门"
-                class-name="ce-modal"
-                width="600"
-                :mask-closable="false"
-                :scrollable="true"
-                @on-ok="handleCeOk"
-                @on-cancel="handleCeCancel"
-        >
-            <Tree :data="depts"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
         </Modal>
     </div>
 
@@ -243,8 +239,9 @@
                     name: '',
                     nick_name: '',
                     department_ids: '',
+                    department_names: '',
                     email: '',
-                    sort:0,
+                    sort: 0,
                     status: true,
                 },
                 hasceing: false,
@@ -266,9 +263,30 @@
             }
         },
         methods: {
+            handleDepartmentTreeChange(nodes) {
+                if(nodes.length) {
+                    let dept_names = '';
+                    let dept_ids = '';
+                    nodes.forEach((item, index) => {
+                        dept_names += item.name + ',';
+                        dept_ids += item.id + ',';
+                    });
+                    dept_ids =  dept_ids.substring(0,dept_ids.length -1);
+                    dept_names =  dept_names.substring(0,dept_names.length -1);
+                    this.fmData.department_ids = dept_ids;
+                    this.fmData.department_names = dept_names;
+                    // console.info(dept_names,dept_ids);
+                    // console.info(this.fmData.department_names);
+                } else {
+                    this.fmData.department_ids = '';
+                    this.fmData.department_names = '';
+                }
+
+
+            },
             handleDepartmentChange() {
-              console.info('handleDepartmentChange Hide');
-              // this.has_dept_selecting = !this.has_dept_selecting;
+                console.info('handleDepartmentChange Hide');
+                // this.has_dept_selecting = !this.has_dept_selecting;
             },
             handleToggleExpand(node) {
                 // console.info(node,node.expand);
@@ -285,7 +303,7 @@
                         width: '100%',
                     }
                 }, [
-                    h('span',{
+                    h('span', {
                         style: {
                             cursor: 'pointer',
                         }
@@ -317,7 +335,7 @@
                         width: '100%',
                     }
                 }, [
-                    h('span',{
+                    h('span', {
                         style: {
                             cursor: 'pointer',
                         }
@@ -353,8 +371,9 @@
                     name: '',
                     nick_name: '',
                     department_ids: '',
+                    department_names: '',
                     email: '',
-                    sort:0,
+                    sort: 0,
                     status: true,
                 };
             },
@@ -413,12 +432,10 @@
             handleEdit(row, index) {
                 console.info('handleEdit', row, index);
                 this.fmData = row;
+                // this.fmData.department_names = '';
+                // this.fmData.department_ids = '';
                 this.hasceing = true;
-                // this.editName = row.name;
-                // this.editAge = row.age;
-                // this.editAddress = row.address;
-                // this.editBirthday = row.birthday;
-                // this.editIndex = index;
+
             },
             handleSave(index) {
                 this.data[index].name = this.editName;
@@ -445,11 +462,12 @@
         text-align: right;
     }
 
-    .demo-split{
+    .demo-split {
         height: 100vh;
         /*border: 1px solid #dcdee2;*/
     }
-    .demo-split-pane{
+
+    .demo-split-pane {
         padding: 16px;
     }
 

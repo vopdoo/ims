@@ -28,8 +28,8 @@
                     <Icon type="md-refresh"/>
                 </div>
                 <div class="tab-control oths">
-
-                    <Dropdown placement="bottom">
+                    <!--:transfer="true"-->
+                    <Dropdown placement="bottom" >
                         <Icon type="ios-arrow-down"/>
                         <!--<ButtonGroup vertical slot="list" class="oths-dropdown-tools">-->
                         <!--<Button icon="logo-facebook"></Button>-->
