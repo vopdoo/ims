@@ -69,4 +69,5 @@ export const GET_ROUTES = 'GET_ROUTES';
 export const GET_NAV_MENUS = 'GET_NAV_MENUS';
 
 export const GET_ADMINS = 'GET_ADMINS';
+export const GET_DEPTS = 'GET_DEPTS';
 

@@ -5,16 +5,16 @@
                 &nbsp;
             </Col>
             <Col span="4" class="list-tlbr">
-                <Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>
+                <Button  type="success" @click="createNode(0,0)">增加顶级部门</Button>
             </Col>
         </Row>
         <!--<Row type="flex" justify="space-between" align="top">-->
-            <!--<Col span="20">-->
-                <!--&nbsp;-->
-            <!--</Col>-->
-            <!--<Col span="4" class="list-tlbr">-->
-                <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
-            <!--</Col>-->
+        <!--<Col span="20">-->
+        <!--&nbsp;-->
+        <!--</Col>-->
+        <!--<Col span="4" class="list-tlbr">-->
+        <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
+        <!--</Col>-->
         <!--</Row>-->
 
 
@@ -70,15 +70,16 @@
     import {mapGetters} from 'vuex'
     import store from '@/store/index';
 
+
     export default {
-        name: 'Node',
+        name: 'Departments',
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('node/lists', {is_show_tree: 1});
+            await store.dispatch('department/lists', {is_show_tree: 1});
             next();
         },
         computed: {
             ...mapGetters({
-                nodes: 'node/nodes',
+                nodes: 'department/nodes',
             })
         },
         data() {
@@ -193,7 +194,7 @@
             },
             renderContent(h, {root, node, data}) {
                 // console.info(data);
-                // data.expand = true;
+                data.expand = true;
                 // console.info(data.children);
                 return h('span', {
                     class: {
@@ -302,8 +303,8 @@
                     if (valid) {
                         // this.$Message.success('Success!');
                         this.loading = !this.loading;
-                        let action = 'node/create';
-                        if (this.menuFm.id && this.menuFm.id > 0) action = 'node/edit';
+                        let action = 'department/create';
+                        if (this.menuFm.id && this.menuFm.id > 0) action = 'department/edit';
                         this.$store.dispatch(action, this.menuFm).then(rsp => {
                             this.loading = !this.loading;
                             this.cancelAddMenu();
@@ -328,7 +329,7 @@
                 this.$set(data, 'children', children);
             },
             remove(root, node, data) {
-                this.$store.dispatch('node/delete', {id: data.id}).then(rsp => {
+                this.$store.dispatch('department/delete', {id: data.id}).then(rsp => {
                     // this.$store.dispatch('getMenus');
                     // const parentKey = root.find(el => el === node).parent;
                     // const parent = root.find(el => el.nodeKey === parentKey).node;
@@ -341,7 +342,7 @@
 </script>
 
 
-<style lang="less" >
+<style lang="less">
     .menus-span {
         &:hover {
             color: #2d8cf0;

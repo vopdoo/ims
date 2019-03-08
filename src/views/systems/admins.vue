@@ -1,90 +1,102 @@
 <template>
     <div>
-        <Row type="flex" justify="space-between" align="top">
-            <Col span="20">
-                <Form :model="searchForm" class="search-form" inline>
-                    <FormItem>
-                        <Select v-model="searchForm.status" clearable placeholder="状态" style="width:100px">
-                            <Option v-for="item in statusList"
-                                    :value="item.value"
-                                    :key="item.value">
-                                {{ item.label }}
-                            </Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem>
-                        <Input v-model="searchForm.keywords"
-                               class="filter-kws"
-                               search
-                               @on-search="handleSearch"
-                               placeholder="姓名/昵称/姓名/邮箱"
-                        />
-                    </FormItem>
-                </Form>
-            </Col>
-            <Col span="4" class="list-tlbr">
-                <Button @click="handleCreate">添加</Button>
-            </Col>
-        </Row>
 
-        <Table :columns="columns"
-               :data="admins.data"
-               border
-               :loading="tblLoading"
-        >
-            <template slot-scope="{ row, index }" slot="name">
-                <Input type="text" v-model="editName" v-if="editIndex === index"/>
-                <span v-else>{{ row.name }}</span>
-            </template>
+        <div class="demo-split">
+            <Split v-model="split1">
+                <div slot="left" class="demo-split-pane">
+                    <!--:render="renderContent"-->
+                    <Tree :data="departments"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
+                </div>
+                <div slot="right" class="demo-split-pane">
+                    <Row type="flex" justify="space-between" align="top">
+                        <Col span="20">
+                            <Form :model="searchForm" class="search-form" inline>
+                                <FormItem>
+                                    <Select v-model="searchForm.status" clearable placeholder="状态" style="width:100px">
+                                        <Option v-for="item in statusList"
+                                                :value="item.value"
+                                                :key="item.value">
+                                            {{ item.label }}
+                                        </Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem>
+                                    <Input v-model="searchForm.keywords"
+                                           class="filter-kws"
+                                           search
+                                           @on-search="handleSearch"
+                                           placeholder="姓名/昵称/姓名/邮箱"
+                                    />
+                                </FormItem>
+                            </Form>
+                        </Col>
+                        <Col span="4" class="list-tlbr">
+                            <Button @click="handleCreate">添加</Button>
+                        </Col>
+                    </Row>
 
-            <template slot-scope="{ row, index }" slot="nick_name">
-                <Input type="text" v-model="editAge" v-if="editIndex === index"/>
-                <span v-else>{{ row.nick_name }}</span>
-            </template>
+                    <Table :columns="columns"
+                           :data="admins.data"
+                           border
+                           :loading="tblLoading"
+                    >
+                        <template slot-scope="{ row, index }" slot="name">
+                            <Input type="text" v-model="editName" v-if="editIndex === index"/>
+                            <span v-else>{{ row.name }}</span>
+                        </template>
 
-            <template slot-scope="{ row, index }" slot="email">
-                <Input type="text" v-model="editBirthday" v-if="editIndex === index"/>
-                <span v-else>{{row.email }}</span>
-            </template>
+                        <template slot-scope="{ row, index }" slot="nick_name">
+                            <Input type="text" v-model="editAge" v-if="editIndex === index"/>
+                            <span v-else>{{ row.nick_name }}</span>
+                        </template>
 
-            <template slot-scope="{ row, index }" slot="status">
-                <!--<Poptip-->
-                <!--confirm-->
-                <!--:transfer="true"-->
-                <!--title="确认要禁用此用户？"-->
-                <!--@on-ok="handleSwitchStatusOk(row)"-->
-                <!--@on-cancel="handleSwitchStatusCancel">-->
+                        <template slot-scope="{ row, index }" slot="email">
+                            <Input type="text" v-model="editBirthday" v-if="editIndex === index"/>
+                            <span v-else>{{row.email }}</span>
+                        </template>
 
-                <!--</Poptip>-->
+                        <template slot-scope="{ row, index }" slot="status">
+                            <!--<Poptip-->
+                            <!--confirm-->
+                            <!--:transfer="true"-->
+                            <!--title="确认要禁用此用户？"-->
+                            <!--@on-ok="handleSwitchStatusOk(row)"-->
+                            <!--@on-cancel="handleSwitchStatusCancel">-->
 
-                <Switch size="large" v-model="row.status">
-                    <span slot="open">启用</span>
-                    <span slot="close">禁用</span>
-                </Switch>
+                            <!--</Poptip>-->
 
-            </template>
+                            <Switch size="large" v-model="row.status">
+                                <span slot="open">启用</span>
+                                <span slot="close">禁用</span>
+                            </Switch>
 
-            <template slot-scope="{ row, index }" slot="action">
-                <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
-            </template>
-            <TableDatetime  slot-scope="{ row, index }" :datetime="row.created_at" slot="created_at" style="width: 500px;" />
-            <TableDatetime  slot-scope="{ row, index }" :datetime="row.updated_at" slot="updated_at" />
-        </Table>
+                        </template>
 
-        <Row type="flex" style="margin-top: 10px;">
-            <Col span="8">
+                        <template slot-scope="{ row, index }" slot="action">
+                            <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
+                        </template>
+                        <TableDatetime slot-scope="{ row, index }" :datetime="row.created_at" slot="created_at"
+                                       style="width: 500px;"/>
+                        <TableDatetime slot-scope="{ row, index }" :datetime="row.updated_at" slot="updated_at"/>
+                    </Table>
 
-            </Col>
-            <Col span="16" class="list-tb-right">
-                <Page :total="admins.meta.total"
-                      show-elevator
-                      show-sizer
-                      show-total
-                      @on-change="handlePageChange"
-                      @on-page-size-change="handlePageSizeChange"
-                />
-            </Col>
-        </Row>
+                    <Row type="flex" style="margin-top: 10px;">
+                        <Col span="8">
+
+                        </Col>
+                        <Col span="16" class="list-tb-right">
+                            <Page :total="admins.meta.total"
+                                  show-elevator
+                                  show-sizer
+                                  show-total
+                                  @on-change="handlePageChange"
+                                  @on-page-size-change="handlePageSizeChange"
+                            />
+                        </Col>
+                    </Row>
+                </div>
+            </Split>
+        </div>
         <Modal
                 v-model="hasceing"
                 :title="cetitle"
@@ -110,9 +122,31 @@
                     </Col>
                 </Row>
                 <Row :gutter="32">
+
+                    <Col span="12">
+                        <FormItem label="部门">
+                            <!--icon="md-checkbox-outline"-->
+                            <Input v-model="fmData.department_ids"  clearable placeholder="请选择部门"  >
+                            <Poptip    :transfer="true" slot="suffix" title="选择部门" @on-popper-hide="handleDepartmentChange">
+                                <Icon type="md-checkbox-outline" />
+                                <div  slot="content" style="padding-bottom: 16px; width:200px;height: 300px;overflow-y: auto;" >
+                                    <Tree :data="depts"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
+                                </div>
+                            </Poptip>
+                            </Input>
+                        </FormItem>
+                    </Col>
                     <Col span="12">
                         <FormItem label="邮箱">
                             <Input v-model="fmData.email" placeholder="邮箱"/>
+                        </FormItem>
+                    </Col>
+                </Row>
+
+                <Row :gutter="32">
+                    <Col span="12">
+                        <FormItem label="排序">
+                            <InputNumber :max="9999" :min="0" placeholder="排序值 越小越靠前" v-model="fmData.sort"/>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -141,13 +175,25 @@
                 <Alert closable>{{fmData}}</Alert>
             </Form>
         </Modal>
-    </div>
 
+        <Modal
+                v-model="has_dept_selecting"
+                title="选择部门"
+                class-name="ce-modal"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleCeOk"
+                @on-cancel="handleCeCancel"
+        >
+            <Tree :data="depts"  :render="renderContent" @on-toggle-expand="handleToggleExpand" show-checkbox></Tree>
+        </Modal>
+    </div>
 
 </template>
 <script>
     import {mapGetters} from 'vuex'
-    import store from '../../store/index';
+    import store from '@/store/index';
 
     import TableDatetime from '@/components/table-datetime/index';
 
@@ -157,7 +203,9 @@
             TableDatetime,
         },
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('admin/lists', {is_show_tree: 1});
+            await store.dispatch('department/lists', {is_show_tree: 1});
+            await store.dispatch('department/listss', {is_show_tree: 1});
+            await store.dispatch('admin/lists');
             next();
         },
         computed: {
@@ -165,6 +213,8 @@
                 admins: 'admin/admins',
                 statusList: 'admin/statusList',
                 columns: 'admin/columns',
+                departments: 'department/nodes',
+                depts: 'department/depts',
             })
         },
         data() {
@@ -186,15 +236,19 @@
                 });
             };
             return {
+                split1: '200px',
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
                 fmData: {
                     name: '',
                     nick_name: '',
+                    department_ids: '',
                     email: '',
+                    sort:0,
                     status: true,
                 },
                 hasceing: false,
+                has_dept_selecting: false,
                 cetitle: '增加用户',
                 celoading: false,
                 tblLoading: false,
@@ -212,11 +266,95 @@
             }
         },
         methods: {
+            handleDepartmentChange() {
+              console.info('handleDepartmentChange Hide');
+              // this.has_dept_selecting = !this.has_dept_selecting;
+            },
+            handleToggleExpand(node) {
+                // console.info(node,node.expand);
+                // node.expand = node.expand;
+                // console.info(node.expand);
+            },
+            renderContents(h, {root, node, data}) {
+                return h('span', {
+                    class: {
+                        'dept-span': true,
+                    },
+                    style: {
+                        display: 'inline-block',
+                        width: '100%',
+                    }
+                }, [
+                    h('span',{
+                        style: {
+                            cursor: 'pointer',
+                        }
+                    }, [
+
+                        h('Icon', {
+                            props: {
+                                type: data.icon,
+                                color: this.getNodeTag(data.type)
+                            },
+                            style: {
+                                marginRight: '8px'
+                            }
+                        }),
+                        h('span', data.name),
+
+
+                    ])
+
+                ]);
+            },
+            renderContent(h, {root, node, data}) {
+                return h('span', {
+                    class: {
+                        'dept-span': true,
+                    },
+                    style: {
+                        display: 'inline-block',
+                        width: '100%',
+                    }
+                }, [
+                    h('span',{
+                        style: {
+                            cursor: 'pointer',
+                        }
+                    }, [
+
+                        h('Icon', {
+                            props: {
+                                type: data.icon,
+                                color: this.getNodeTag(data.type)
+                            },
+                            style: {
+                                marginRight: '8px'
+                            }
+                        }),
+                        h('span', data.name),
+
+
+                    ])
+
+                ]);
+            },
+            getNodeTag(type) {
+                if (type == 1) {
+                    return '#2d8cf0';
+                } else if (type == 2) {
+                    return '#19be6b';
+                } else {
+                    return '#f90';
+                }
+            },
             initFmData() {
                 this.fmData = {
                     name: '',
                     nick_name: '',
+                    department_ids: '',
                     email: '',
+                    sort:0,
                     status: true,
                 };
             },
@@ -305,6 +443,14 @@
     .list-tlbr {
         float: right;
         text-align: right;
+    }
+
+    .demo-split{
+        height: 100vh;
+        /*border: 1px solid #dcdee2;*/
+    }
+    .demo-split-pane{
+        padding: 16px;
     }
 
 </style>

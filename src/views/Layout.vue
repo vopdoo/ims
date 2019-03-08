@@ -583,6 +583,7 @@
                 flex: 1;
                 overflow-y: auto;
                 overflow-x: hidden;
+                background-color: #fff;
                 .contents {
                     padding: 8px 16px 8px 16px;
                 }

@@ -1,6 +1,5 @@
 <template>
-    <Card dis-hover :bordered="false" title="渠道管理">
-
+    <div>
         <Row type="flex" justify="space-between" align="top">
             <Col span="20">
                 <Form :model="searchForm" class="search-form" inline>
@@ -64,7 +63,7 @@
         </Modal>
 
 
-    </Card>
+    </div>
 </template>
 
 <script>
