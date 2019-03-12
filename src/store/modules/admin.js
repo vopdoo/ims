@@ -9,25 +9,37 @@ const state = {
             slot: 'name',
             fixed: 'left'
         },
+
         {
             title: '昵称',
             slot: 'nick_name'
         },
         {
+            title: '部门',
+            key: 'department_names',
+            // width:150,
+            tooltip:true
+        },
+        {
             title: '邮箱',
-            slot: 'email'
+            key:'email',
+            tooltip:true,
+            // slot: 'email'
         },
         {
             title: '状态',
-            slot: 'status'
+            slot: 'status',
+            width: 100
         },
         {
             title: '创建时间',
-            slot: 'created_at'
+            slot: 'created_at',
+            width: 150
         },
         {
             title: '更新时间',
-            slot: 'updated_at'
+            slot: 'updated_at',
+            width: 150
         },
         {
             title: '操作',
@@ -71,10 +83,10 @@ const actions = {
         });
     },
     edit({commit, state, dispatch}, request) {
+        let filter = request.filter;
+        delete request.filter;
         return node.update(request).then(rsp => {
-            dispatch('lists', {is_show_tree: 1});
-            // commit(types.ADD_MENUS, rsp.data);
-            // this.getMenus({commit, state},{});
+            dispatch('lists', filter);
         });
     },
     delete({dispatch}, request) {

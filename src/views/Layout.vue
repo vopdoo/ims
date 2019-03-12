@@ -55,19 +55,19 @@
                 </div>
                 <!-- hor-tab-bar -->
                 <HorizontalTabBar :data="navTabs" @on-close-all="closeAll"/>
-                <div  class="breadcrumb-wrapper">
-                    <Breadcrumb>
-                        <BreadcrumbItem to="/">系统</BreadcrumbItem>
-                        <BreadcrumbItem>用户管理</BreadcrumbItem>
-                    </Breadcrumb>
-                </div>
+                <!--<div  class="breadcrumb-wrapper">-->
+                    <!--<Breadcrumb>-->
+                        <!--<BreadcrumbItem to="/">系统</BreadcrumbItem>-->
+                        <!--<BreadcrumbItem>用户管理</BreadcrumbItem>-->
+                    <!--</Breadcrumb>-->
+                <!--</div>-->
             </div>
             <div class="middle " ref="wrapper">
                 <router-view class="contents"></router-view>
             </div>
-            <div class="footer">
-                footer
-            </div>
+            <!--<div class="footer">-->
+                <!--footer-->
+            <!--</div>-->
             <Drawer title="消息通知" :closable="true" v-model="is_show_notifications_drawer">
                 <p>消息通知</p>
                 <p>Some contents...</p>
@@ -321,14 +321,17 @@
             flex-direction: column;
 
             .header {
-                height: 128px;
+                /*height: 118px;*/
                 background: #fff;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
                 display: flex;
                 flex-direction: column;
                 z-index: 1;
                 .breadcrumb-wrapper {
-                    padding: 8px 16px 8px 16px;
+                    height: 28px;
+                    line-height: 28px;
+                    padding: 0 16px 0 16px;
+                    /*padding: 8px 16px 8px 16px;*/
                     box-shadow: 0 -1px 0 0 #e8eaec;
                 }
                 .horizontal-nav {
@@ -589,13 +592,13 @@
                 }
             }
             .footer {
-                height: 40px;
-                line-height: 40px;
+                height: 30px;
+                line-height: 30px;
                 text-align: center;
                 background: #fff;
                 color: #808695;
                 box-shadow: 0 -1px 0 0 #e8eaec;
-                /*border-top: 1px solid #07213E;*/
+                border-top: 1px solid #07213E;
                 /*<!--box-shadow: 0 -1px 0 #07213E;-->*/
 
             }

@@ -13,7 +13,6 @@
                     <!--<Option value="">全部</Option>-->
                     <!--</Select>-->
                     <!--</FormItem>-->
-
                     <FormItem>
                         <Input v-model="searchForm.keywords"
                                class="filter-input"
@@ -22,14 +21,47 @@
                         />
                     </FormItem>
                     <FormItem>
+                        <Input v-model="searchForm.keywords"
+                               class="filter-input"
+                               @on-search="search()"
+                               placeholder="关键词"
+                        />
+                    </FormItem>
+                    <FormItem>
+                        <Input v-model="searchForm.keywords"
+                               class="filter-input"
+                               @on-search="search()"
+                               placeholder="关键词"
+                        />
+                    </FormItem>
+                    <FormItem>
+                        <Input v-model="searchForm.keywords"
+                               class="filter-input"
+                               @on-search="search()"
+                               placeholder="关键词"
+                        />
+                    </FormItem>
+                    <FormItem>
+                        <Input v-model="searchForm.keywords"
+                               class="filter-input"
+                               @on-search="search()"
+                               placeholder="关键词"
+                        />
+                    </FormItem>
+
+                    <FormItem>
                         <Button icon="ios-search" type="primary" @click="search()">搜索</Button>
                     </FormItem>
                 </Form>
+
+
             </Col>
             <Col span="4" class="list-tb-right">
                 <Button @click="showAddModal()">添加</Button>
             </Col>
         </Row>
+
+
 
 
         <Table border :columns="columns" :data="tdata"></Table>
@@ -111,6 +143,62 @@
                         created_at: '2019-09-24 23:33:33',
                         updated_at: '2019-09-24 23:33:33'
                     },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },{
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+                    {
+                        name: '渠道一',
+                        remark: '渠道一备注',
+                        sort: 20,
+                        created_at: '2019-09-24 23:33:33',
+                        updated_at: '2019-09-24 23:33:33'
+                    },
+
                     {
                         name: '渠道二',
                         remark: '渠道二备注渠道二备注渠道二备注渠道二备注',

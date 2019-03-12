@@ -18,7 +18,7 @@ const actions = {
             return rsp.data.data;
         });
     },
-    listss({commit, state}, request) {
+    withCheckedDepartmentlists({commit, state}, request) {
         return node.index(request).then(rsp => {
             commit(types.GET_DEPTS, rsp.data);
             return rsp.data.data;

@@ -1,14 +1,22 @@
 <template>
-    <div>
+    <div style="height: 100%;">
+
 
         <div class="demo-split">
             <Split v-model="split1">
-                <div slot="left" class="demo-split-pane">
+                <div slot="left" class="demo-split-left-pane">
                     <!--:render="renderContent"-->
-                    <Tree :data="departments" :render="renderContent" @on-toggle-expand="handleToggleExpand"
-                          show-checkbox></Tree>
+                    <Tree :data="departments"
+                          ref="leftDeptTree"
+                          :render="renderContent"
+                          @on-toggle-expand="handleToggleExpand"
+                          @on-select-change="handleDepartmentSelectChange"
+                          show-checkbox
+                          multiple
+                    >
+                    </Tree>
                 </div>
-                <div slot="right" class="demo-split-pane">
+                <div slot="right" class="demo-split-right-pane">
                     <Row type="flex" justify="space-between" align="top">
                         <Col span="20">
                             <Form :model="searchForm" class="search-form" inline>
@@ -45,6 +53,15 @@
                             <Input type="text" v-model="editName" v-if="editIndex === index"/>
                             <span v-else>{{ row.name }}</span>
                         </template>
+
+                        <template slot-scope="{ row, index }" slot="departments">
+                            <span v-if="row.departments.length">
+                                <span v-for="(item,index) in row.departments" :key="index">{{item.name}},</span>
+                            </span>
+                            <span v-else>-</span>
+                        </template>
+
+
 
                         <template slot-scope="{ row, index }" slot="nick_name">
                             <Input type="text" v-model="editAge" v-if="editIndex === index"/>
@@ -126,12 +143,12 @@
 
                     <Col span="12">
                         <FormItem label="部门">
-                            <Input v-model="fmData.department_names"  placeholder="请选择部门">
+                            <Input v-model="fmData.department_names" placeholder="请选择部门">
                             <Poptip :transfer="true" slot="suffix" title="选择部门 (可多选)"
                                     @on-popper-hide="handleDepartmentChange">
                                 <Icon type="md-checkbox-outline"/>
                                 <div slot="content"
-                                     style="padding-bottom: 16px; width:200px;height: 260px;overflow-y: auto;">
+                                     style="padding-bottom: 16px; width:200px;height: 300px;overflow-y: auto;">
                                     <Tree :data="depts" :check-strictly="true"
                                           @on-check-change="handleDepartmentTreeChange"
                                           :render="renderContent"
@@ -181,9 +198,9 @@
                     <Input type="textarea" v-model="fmData.remark" :rows="4"
                            placeholder="备注"/>
                 </FormItem>
-                <Alert closable>{{fmData}}</Alert>
             </Form>
         </Modal>
+
     </div>
 
 </template>
@@ -199,8 +216,8 @@
             TableDatetime,
         },
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('department/lists', {is_show_tree: 1});
-            await store.dispatch('department/listss', {is_show_tree: 1});
+            await store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
+            await store.dispatch('department/listss', {is_show_tree: 1, has_admins: 1});
             await store.dispatch('admin/lists');
             next();
         },
@@ -238,18 +255,18 @@
                 fmData: {
                     name: '',
                     nick_name: '',
-                    department_ids: '',
+                    department_ids: [],
                     department_names: '',
                     email: '',
                     sort: 0,
                     status: true,
                 },
                 hasceing: false,
-                has_dept_selecting: false,
                 cetitle: '增加用户',
                 celoading: false,
                 tblLoading: false,
                 searchForm: {
+                    dept_ids: [],
                     keywords: '',
                     status: '',
                     page: 1,
@@ -263,22 +280,22 @@
             }
         },
         methods: {
+            handleDepartmentSelectChange(nodes) {
+                console.info('handleDepartmentSelectChange');
+                console.info(nodes);
+            },
             handleDepartmentTreeChange(nodes) {
-                if(nodes.length) {
-                    let dept_names = '';
-                    let dept_ids = '';
-                    nodes.forEach((item, index) => {
-                        dept_names += item.name + ',';
-                        dept_ids += item.id + ',';
+                if (nodes.length) {
+                    let dept_names = [];
+                    let dept_ids = [];
+                    nodes.forEach((item) => {
+                        dept_names.push(item.name);
+                        dept_ids.push(item.id);
                     });
-                    dept_ids =  dept_ids.substring(0,dept_ids.length -1);
-                    dept_names =  dept_names.substring(0,dept_names.length -1);
                     this.fmData.department_ids = dept_ids;
-                    this.fmData.department_names = dept_names;
-                    // console.info(dept_names,dept_ids);
-                    // console.info(this.fmData.department_names);
+                    this.fmData.department_names = dept_names.join(',');
                 } else {
-                    this.fmData.department_ids = '';
+                    this.fmData.department_ids = [];
                     this.fmData.department_names = '';
                 }
 
@@ -350,7 +367,33 @@
                                 marginRight: '8px'
                             }
                         }),
-                        h('span', data.name),
+                        h('span', {
+                            style: {
+                                // color: '#000',
+                                backgroundColor: data.selected === true ? '#d5e8fc' : ''
+                            },
+                            on: {
+                                click: () => {
+                                    data.selected = !data.selected;
+                                    let selectedNodes = this.$refs.leftDeptTree.getSelectedNodes();
+                                    let deptIds = [];
+                                    if (selectedNodes.length) {
+                                        selectedNodes.forEach((item, index) => {
+                                            deptIds.push(item.id);
+                                        });
+                                    }
+                                    this.searchForm.dept_ids = deptIds;
+                                    this.$store.dispatch('admin/lists', this.searchForm);
+                                    // console.info(this.searchForm.dept_ids);
+                                }
+                            }
+                        }, data.name),
+                        h('span', {
+                            style: {
+                                color: '#515a6e',
+                                marginLeft: '4px'
+                            }
+                        }, `(${data.admins.length})`),
 
 
                     ])
@@ -370,7 +413,7 @@
                 this.fmData = {
                     name: '',
                     nick_name: '',
-                    department_ids: '',
+                    department_ids: [],
                     department_names: '',
                     email: '',
                     sort: 0,
@@ -388,30 +431,40 @@
             },
             async handleCeOk() {
                 this.celoading = true;
+                this.tblLoading = true;
                 console.info('handleCeOk', this.fmData);
                 let action = this.fmData.id ? 'admin/edit' : 'admin/create';
                 console.info(action);
-                await this.$store.dispatch(action, this.fmData);
+                console.info(this.searchForm);
+                let data = this.fmData;
+                data.filter = this.searchForm;
+                await this.$store.dispatch(action, data);
                 this.celoading = false;
+                this.tblLoading = false;
                 // this.hasceing = true;
             },
             handleCeCancel() {
                 console.info('handleCeCancel');
                 this.initFmData();
             },
-            handleCreate() {
+            async handleCreate() {
+                this.$Loading.start();
                 console.info('handleCreate');
 
+                await store.dispatch('department/listss', {
+                    is_show_tree: 1,
+                    has_admins: 1,
+                });
+                this.$Loading.finish();
                 this.hasceing = !this.hasceing;
             },
             async handlePageChange(page) {
                 this.tblLoading = true;
-                console.info('handlePageChange', page);
-                await this.$store.dispatch('admin/lists', {page: page});
+                this.searchForm.page = page;
+                await this.$store.dispatch('admin/lists', this.searchForm);
                 this.tblLoading = false;
             },
             async handleSearch() {
-                console.info('handleSearch');
                 this.tblLoading = true;
                 await this.$store.dispatch('admin/lists', this.searchForm);
                 this.tblLoading = false;
@@ -429,13 +482,16 @@
             handleStatusChange(status) {
                 console.info('handleStatusChange', status);
             },
-            handleEdit(row, index) {
-                console.info('handleEdit', row, index);
+            async handleEdit(row, index) {
+                this.$Loading.start();
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {
+                    is_show_tree: 1,
+                    has_admins: 1,
+                    checked_department_ids: row.department_ids
+                });
                 this.fmData = row;
-                // this.fmData.department_names = '';
-                // this.fmData.department_ids = '';
+                this.$Loading.finish();
                 this.hasceing = true;
-
             },
             handleSave(index) {
                 this.data[index].name = this.editName;
@@ -463,12 +519,18 @@
     }
 
     .demo-split {
-        height: 100vh;
-        /*border: 1px solid #dcdee2;*/
+        height: 100%;
+
     }
 
-    .demo-split-pane {
-        padding: 16px;
+    .demo-split-left-pane {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .demo-split-right-pane {
+        padding-left: 16px;
     }
 
 </style>

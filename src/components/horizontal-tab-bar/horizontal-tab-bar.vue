@@ -250,12 +250,12 @@
                         transition: all .3s;
                     }
 
-                    &:hover {
-                        background-color: #f6f6f6;
-                        &:after {
-                            width: 100%;
-                        }
-                    }
+                    /*&:hover {*/
+                        /*background-color: #f6f6f6;*/
+                        /*&:after {*/
+                            /*width: 100%;*/
+                        /*}*/
+                    /*}*/
 
                     span {
                         display: inline-block;
