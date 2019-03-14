@@ -5,7 +5,7 @@
                 &nbsp;
             </Col>
             <Col span="4" class="list-tlbr">
-                <Button  type="success" @click="createNode(0,0)">增加顶级部门</Button>
+                <Button type="success" @click="createNode(0,0)">增加顶级部门</Button>
             </Col>
         </Row>
         <!--<Row type="flex" justify="space-between" align="top">-->
@@ -29,7 +29,7 @@
                 @on-ok="saveMenu"
                 @on-cancel="cancelAddMenu"
         >
-            <Form :model="menuFm"  label-position="top" ref="menuFm" :rules="menuFmRules">
+            <Form :model="menuFm" label-position="top" ref="menuFm" :rules="menuFmRules">
                 <FormItem label="类型" prop="type">
                     <Select v-model="menuFm.type" placeholder="类型" @on-change="typeChange">
                         <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -42,6 +42,18 @@
                 <FormItem label="标识">
                     <!--prop="code"-->
                     <Input v-model="menuFm.code" placeholder="标识"/>
+                </FormItem>
+                <FormItem label="角色">
+                    <Select v-model="menuFm.role_ids"
+                            multiple
+                            placeholder="请选择角色"
+                    >
+                        <Option v-for="item in roles.data"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.name }}
+                        </Option>
+                    </Select>
                 </FormItem>
 
                 <div v-if="menuFm.type == 1">
@@ -75,11 +87,13 @@
         name: 'Departments',
         async beforeRouteEnter(to, from, next) {
             await store.dispatch('department/lists', {is_show_tree: 1});
+            await store.dispatch('role/lists', {status: 1, per_page: 1000});
             next();
         },
         computed: {
             ...mapGetters({
                 nodes: 'department/nodes',
+                roles: 'role/lists',
             })
         },
         data() {
@@ -120,6 +134,7 @@
                     name: '',
                     code: '',
                     type: 1,
+                    role_ids: [],
                     options: {},
                     icon: 'md-apps',
                     sort: 0,
@@ -188,14 +203,16 @@
                     icon: data.icon,
                     sort: 0,
                     pid: data.pid,
+                    role_ids: data.role_ids,
                     id: data.id
                 };
                 this.is_add_menuing = true;
             },
             renderContent(h, {root, node, data}) {
-                // console.info(data);
-                data.expand = true;
-                // console.info(data.children);
+                let roleTags = [];
+                data.roles.forEach((item) => {
+                    roleTags.push(h('Tag', item.name));
+                });
                 return h('span', {
                     class: {
                         'menus-span': true,
@@ -210,13 +227,19 @@
                         h('Icon', {
                             props: {
                                 type: data.icon,
-                                color:this.getNodeTag(data.type)
+                                color: this.getNodeTag(data.type)
                             },
                             style: {
                                 marginRight: '8px'
                             }
                         }),
                         h('span', data.name),
+
+                        h('span', {
+                            style: {
+                                marginLeft: '6px'
+                            }
+                        }, roleTags),
 
 
                     ]),
@@ -263,7 +286,7 @@
                             props: {
                                 confirm: true,
                                 title: '确认要删除',
-                                // transfer:true,
+                                transfer: true,
                             },
                             on: {
                                 'on-ok': () => {

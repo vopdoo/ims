@@ -4,42 +4,47 @@
 
 import {axios} from '../plugins/axios';
 
+let resource = 'admins';
+
 export default {
     index: (payload) => {
 
-        return axios.get('admins', {
+        return axios.get(resource, {
             params: payload
         });
     },
     store: (payload) => {
-        return axios.post('admins', payload);
+        return axios.post(resource, payload);
     },
 
     update: (payload) => {
-        return axios.put('admins/' + payload.id, payload);
+
+        return axios.put(`${resource}/${payload.id}`, payload);
+    },
+
+    delete: (payload) => {
+        return axios.delete(`${resource}/${payload.id}`, payload);
     },
 
 
     login: (payload) => {
-        console.info('api => admin.js');
-        console.info('payload =>', payload);
-        console.info('baseURL', axios.defaults.baseURL);
-        return axios.post('admins/login', payload);
+        // console.info('api => admin.js');
+        // console.info('payload =>', payload);
+        // console.info('baseURL', axios.defaults.baseURL);
+        return axios.post(`${resource}/login`, payload);
     },
 
     getRoutes(payload) {
-        console.info('vvv ----');
-        return axios.post('admins/getRoutes', payload);
+        return axios.post(`${resource}/getRoutes`, payload);
     },
     getNavMenus(payload) {
-        return axios.post('admins/getNavMenus', payload);
+        return axios.post(`${resource}/getNavMenus`, payload);
     },
-
     refreshToken(payload) {
-        return axios.post('admins/refresh', payload);
+        return axios.post(`${resource}/refresh`, payload);
     },
     logout(payload) {
-        return axios.post('admins/logout', payload);
+        return axios.post(`${resource}/logout`, payload);
 
     },
 

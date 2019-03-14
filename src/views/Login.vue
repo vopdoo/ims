@@ -51,8 +51,8 @@
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
                 loginForm: {
-                    account: 'grimes.ed@example.com',
-                    password: 'secret',
+                    account: 'cw001@163.com',
+                    password: '123456',
                     rememb: false
                 },
                 ruleValidate: {
@@ -88,8 +88,7 @@
                     if (valid) {
                         this.$store.dispatch('login', this.loginForm).then(() => {
                             if (this.is_logined) {
-                                // console.info('vvvvv,logined');
-                                console.info('logined.......',this.$store.getters.routers);
+                                console.info('logined.......', this.$store.getters.routers);
                                 this.$router.addRoutes(this.$store.getters.routers.concat([{
                                     path: '*',
                                     redirect: '/404'

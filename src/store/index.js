@@ -18,6 +18,8 @@ import banner from './modules/banner'
 import node from './modules/node'
 import department from './modules/department'
 import admin from './modules/admin'
+import role from './modules/role'
+import thunder_project from './modules/thunder_project'
 // import createPersistedState from "vuex-persistedstate";
 import Vuex from "vuex";
 const debug = false;
@@ -38,6 +40,8 @@ const StoreConstructorOptions = {
         node,
         department,
         admin,
+        role,
+        thunder_project,
         order
     },
     strict: debug,

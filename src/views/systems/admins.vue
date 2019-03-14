@@ -1,7 +1,5 @@
 <template>
     <div style="height: 100%;">
-
-
         <div class="demo-split">
             <Split v-model="split1">
                 <div slot="left" class="demo-split-left-pane">
@@ -26,6 +24,18 @@
                                                 :value="item.value"
                                                 :key="item.value">
                                             {{ item.label }}
+                                        </Option>
+                                    </Select>
+                                </FormItem>
+                                <FormItem>
+                                    <Select v-model="searchForm.role_ids"
+                                            multiple
+                                            placeholder="角色"
+                                            style="width:250px">
+                                        <Option v-for="item in roles.data"
+                                                :value="item.id"
+                                                :key="item.id">
+                                            {{ item.name }}
                                         </Option>
                                     </Select>
                                 </FormItem>
@@ -62,7 +72,6 @@
                         </template>
 
 
-
                         <template slot-scope="{ row, index }" slot="nick_name">
                             <Input type="text" v-model="editAge" v-if="editIndex === index"/>
                             <span v-else>{{ row.nick_name }}</span>
@@ -92,6 +101,14 @@
 
                         <template slot-scope="{ row, index }" slot="action">
                             <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
+                            <Poptip
+                                    confirm
+                                    :transfer="true"
+                                    title="确认要删除此用户？"
+                                    @on-ok="handleDeleteUserOk(row)"
+                                    @on-cancel="handleDeleteUserCancel">
+                                <Button size="small" type="text">删除</Button>
+                            </Poptip>
                         </template>
                         <TableDatetime slot-scope="{ row, index }" :datetime="row.created_at" slot="created_at"
                                        style="width: 500px;"/>
@@ -169,6 +186,19 @@
                     </Col>
                 </Row>
 
+                <FormItem label="角色">
+                    <Select v-model="fmData.role_ids"
+                            multiple
+                            placeholder="请选择角色"
+                    >
+                        <Option v-for="item in roles.data"
+                                :value="item.id"
+                                :key="item.id">
+                            {{ item.name }}
+                        </Option>
+                    </Select>
+                </FormItem>
+
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="排序">
@@ -199,6 +229,7 @@
                            placeholder="备注"/>
                 </FormItem>
             </Form>
+            {{fmData}}
         </Modal>
 
     </div>
@@ -217,7 +248,7 @@
         },
         async beforeRouteEnter(to, from, next) {
             await store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
-            await store.dispatch('department/listss', {is_show_tree: 1, has_admins: 1});
+            await store.dispatch('role/lists', {status: 1, per_page: 1000});
             await store.dispatch('admin/lists');
             next();
         },
@@ -228,6 +259,7 @@
                 columns: 'admin/columns',
                 departments: 'department/nodes',
                 depts: 'department/depts',
+                roles: 'role/lists',
             })
         },
         data() {
@@ -256,6 +288,7 @@
                     name: '',
                     nick_name: '',
                     department_ids: [],
+                    role_ids: [],
                     department_names: '',
                     email: '',
                     sort: 0,
@@ -267,6 +300,7 @@
                 tblLoading: false,
                 searchForm: {
                     dept_ids: [],
+                    role_ids: [],
                     keywords: '',
                     status: '',
                     page: 1,
@@ -280,6 +314,13 @@
             }
         },
         methods: {
+            handleDeleteUserOk(data) {
+                console.info('handleDeleteUserOk', data);
+                this.$store.dispatch('admin/delete', data);
+            },
+            handleDeleteUserCancel() {
+                console.info('handleDeleteUserCancel');
+            },
             handleDepartmentSelectChange(nodes) {
                 console.info('handleDepartmentSelectChange');
                 console.info(nodes);
@@ -414,6 +455,7 @@
                     name: '',
                     nick_name: '',
                     department_ids: [],
+                    role_ids: [],
                     department_names: '',
                     email: '',
                     sort: 0,
@@ -432,10 +474,7 @@
             async handleCeOk() {
                 this.celoading = true;
                 this.tblLoading = true;
-                console.info('handleCeOk', this.fmData);
                 let action = this.fmData.id ? 'admin/edit' : 'admin/create';
-                console.info(action);
-                console.info(this.searchForm);
                 let data = this.fmData;
                 data.filter = this.searchForm;
                 await this.$store.dispatch(action, data);
@@ -449,9 +488,7 @@
             },
             async handleCreate() {
                 this.$Loading.start();
-                console.info('handleCreate');
-
-                await store.dispatch('department/listss', {
+                await store.dispatch('department/withCheckedDepartmentlists', {
                     is_show_tree: 1,
                     has_admins: 1,
                 });

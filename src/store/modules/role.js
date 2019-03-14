@@ -1,39 +1,30 @@
-import node from '../../api/admin'
+import node from '../../api/role'
 import * as types from '../mutation-types'
 
 const state = {
-    admins: [],
+    lists: [],
     columns: [
         {
-            title: '姓名',
+            title: '名称',
             slot: 'name',
-            fixed: 'left',
-            width:100
+            fixed: 'left'
         },
 
         {
-            title: '昵称',
-            slot: 'nick_name',
-            width:100
+            title: '标识',
+            slot: 'code'
         },
+
         {
-            title: '部门',
-            key: 'department_names',
-            width:150,
+            title: '关联部门',
+            key: 'department_names', // Authorized
+            // width:150,
             tooltip: true
         },
         {
-            title: '角色',
-            key: 'role_names',
-            width:150,
+            title: '授权节点',
+            key: 'node_names',
             tooltip: true
-        },
-        {
-            title: '邮箱',
-            key: 'email',
-            width:100,
-            tooltip: true,
-            // slot: 'email'
         },
         {
             title: '状态',
@@ -53,15 +44,10 @@ const state = {
         {
             title: '操作',
             slot: 'action',
-            width: 150,
             fixed: 'right'
         }
     ],
     statusList: [
-        // {
-        //     value: '',
-        //     label: '全部'
-        // },
         {
             value: 1,
             label: '启用'
@@ -74,7 +60,7 @@ const state = {
 }
 // getters
 const getters = {
-    admins: state => state.admins,
+    lists: state => state.lists,
     statusList: state => state.statusList,
     columns: state => state.columns,
 }
@@ -82,14 +68,13 @@ const getters = {
 const actions = {
     lists({commit, state}, request) {
         return node.index(request).then(rsp => {
-            commit(types.GET_ADMINS, rsp.data);
+            commit(types.GET_ROLES, rsp.data);
             return rsp.data.data;
         });
     },
     create({dispatch}, request) {
         return node.store(request).then(rsp => {
             dispatch('lists');
-            dispatch('department/lists', {is_show_tree: 1, has_admins: 1}, {root: true});
         });
     },
     edit({commit, state, dispatch}, request) {
@@ -97,13 +82,11 @@ const actions = {
         delete request.filter;
         return node.update(request).then(rsp => {
             dispatch('lists', filter);
-            dispatch('department/lists', {is_show_tree: 1, has_admins: 1}, {root: true});
         });
     },
     delete({dispatch}, request) {
         return node.delete(request).then(rsp => {
             dispatch('lists', {is_show_tree: 1});
-            dispatch('department/lists', {is_show_tree: 1, has_admins: 1}, {root: true});
         });
     },
     validateCode({commit, state}, request) {
@@ -116,23 +99,16 @@ const actions = {
 // mutations
 const mutations = {
 
-    [types.GET_ADMINS](state, data) {
-        // state.admins = data.data;
-        state.admins = {
+    [types.GET_ROLES](state, data) {
+        state.lists = {
             data: data.data,
             meta: data.meta,
         };
     },
 
-    // [types.DIFF_ROUTES](state, data) {
-    //     console.info('DIFF_ROUTES',data);
-    //     // state.menus = data.data;
-    // },
-
-    [types.ADD_NODE](state, data) {
+    [types.ADD_ROLE](state, data) {
         console.info(data);
         // state.menus = data.data;
-
     },
 
 
