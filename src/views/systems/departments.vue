@@ -5,7 +5,7 @@
                 &nbsp;
             </Col>
             <Col span="4" class="list-tlbr">
-                <Button type="success" @click="createNode(0,0)">增加顶级部门</Button>
+                <Button type="success" @click="addTopMenu()">增加顶级部门</Button>
             </Col>
         </Row>
         <!--<Row type="flex" justify="space-between" align="top">-->
@@ -135,7 +135,9 @@
                     code: '',
                     type: 1,
                     role_ids: [],
-                    options: {},
+                    options: {
+                        tree_path: '0'
+                    },
                     icon: 'md-apps',
                     sort: 0,
                     pid: 0
@@ -177,13 +179,13 @@
             typeChange(option) {
                 console.info(option);
             },
-            createNode(pid, type) {
-                this.menuFm.pid = pid;
-                if (pid > 0) {
+            createNode(data) {
+                this.menuFm.pid = data.pid;
+                if (data.pid > 0) {
                     // 子节点
-                    if (type == 1) {
+                    if (data.type == 1) {
                         this.menuFm.type = 3;
-                    } else if (type == 2) {
+                    } else if (data.type == 2) {
                         this.menuFm.type = 1;
                     }
                 } else {
@@ -262,7 +264,8 @@
                                 click: () => {
                                     // this.menuFm.pid = data.id;
                                     // this.menuFm.type = 2;
-                                    this.createNode(data.id, data.type);
+                                    // this.createNode(data.id, data.type);
+                                    this.createNode(data);
                                 }
                             }
                         }),
@@ -306,20 +309,24 @@
                 ]);
             },
             addTopMenu() {
-                this.createNode(0, 0);
+                this.initFmData();
+                this.createNode(this.menuFm);
             },
             cancelAddMenu() {
+                this.initFmData();
+            },
+            initFmData() {
                 this.menuFm = {
                     name: '',
                     code: '',
                     type: 1,
-                    options: {},
+                    options: {
+                        tree_path: '0',
+                    },
                     icon: 'md-apps',
                     sort: 0,
                     pid: 0
                 };
-                // this.$refs['menuFm'].resetFields();
-                // this.menuFm['id'] && delete this.menuFm['id'];
             },
             saveMenu() {
                 this.$refs['menuFm'].validate((valid) => {

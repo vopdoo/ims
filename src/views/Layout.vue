@@ -37,10 +37,10 @@
                                     <Dropdown placement="bottom">
                                         <Avatar icon="ios-person" size="small"/>
                                         <!--<ButtonGroup vertical slot="list">-->
-                                            <!--<Button icon="logo-facebook"></Button>-->
-                                            <!--<Button icon="logo-twitter"></Button>-->
-                                            <!--<Button icon="logo-googleplus"></Button>-->
-                                            <!--<Button icon="logo-tumblr"></Button>-->
+                                        <!--<Button icon="logo-facebook"></Button>-->
+                                        <!--<Button icon="logo-twitter"></Button>-->
+                                        <!--<Button icon="logo-googleplus"></Button>-->
+                                        <!--<Button icon="logo-tumblr"></Button>-->
                                         <!--</ButtonGroup>-->
                                         <div class="login-user-dropdown-list" slot="list">
                                             <div class="item">设置</div>
@@ -56,17 +56,17 @@
                 <!-- hor-tab-bar -->
                 <HorizontalTabBar :data="navTabs" @on-close-all="closeAll"/>
                 <!--<div  class="breadcrumb-wrapper">-->
-                    <!--<Breadcrumb>-->
-                        <!--<BreadcrumbItem to="/">系统</BreadcrumbItem>-->
-                        <!--<BreadcrumbItem>用户管理</BreadcrumbItem>-->
-                    <!--</Breadcrumb>-->
+                <!--<Breadcrumb>-->
+                <!--<BreadcrumbItem to="/">系统</BreadcrumbItem>-->
+                <!--<BreadcrumbItem>用户管理</BreadcrumbItem>-->
+                <!--</Breadcrumb>-->
                 <!--</div>-->
             </div>
             <div class="middle " ref="wrapper">
                 <router-view class="contents"></router-view>
             </div>
             <!--<div class="footer">-->
-                <!--footer-->
+            <!--footer-->
             <!--</div>-->
             <Drawer title="消息通知" :closable="true" v-model="is_show_notifications_drawer">
                 <p>消息通知</p>
@@ -92,28 +92,13 @@
             SiderMenu,
             HorizontalTabBar
         },
-        // async beforeRouteEnter(to, from, next) {
-        //     // 等待模型数据加载完毕,才继续进行vue组件的生命周期
-        //     console.info('beforeRouteEnter');
-        //     // 这个时候 getNodes 是没有的
-        //     // vuex.esm.js?2f62:410 [vuex] unknown action type: getNodes 会有这个错误
-        //     await store.dispatch('abcDe');
-        //     console.info('数据加载之后');
-        //     next();
-        //     // next(vm => {
-        //     //     console.info('next');
-        //     //     vm.$store.dispatch('getNodes', {is_show_tree: 1})
-        //     // });
-        // },
-        created() {
-            console.info('Layout created');
-        },
-        mounted() {
-            this.$store.dispatch('getNavMenus', {}).then(rsp => {
-                console.info('layout rsp:', rsp);
-                console.info('current:', this.$router);
+        async beforeRouteEnter(to, from, next) {
+            await store.dispatch('admin/getNavMenus', {});
+            next(vm => {
+                vm.nick_name = sessionStorage.getItem('nick_name');
             });
-            this.nick_name = sessionStorage.getItem('nick_name');
+        },
+        created() {
         },
 
         beforeDestroy() {
@@ -127,12 +112,12 @@
             layoutRightStyles() {
                 return this.menu_expanded ? {width: 'calc(100% - 200px)'} : {width: 'calc(100% - 60px)'};
             },
-            ...mapGetters([
-                'admin',
-                'is_logined',
-                'menus',
-                'nav_menus'
-            ])
+            ...mapGetters({
+                'admin': 'admin/admin',
+                'is_logined': 'admin/is_logined',
+                'menus': 'admin/menus',
+                'nav_menus': 'admin/nav_menus'
+            })
         },
         data() {
             return {
@@ -164,26 +149,14 @@
                     content: '<p>确定要退出吗？</p>',
                     loading: true,
                     onOk: () => {
-                        this.$store.dispatch('logout', {}).then(rsp => {
+                        this.$store.dispatch('admin/logout', {}).then(rsp => {
                             this.$Modal.remove();
                             this.$router.replace({path: '/login'});
                         }).catch(error => {
-                            // console.info('catch -- error');
-                            // console.info(error);
                         });
 
                     }
                 });
-                // // console.info('logout');
-                // this.$store.dispatch('logout', {}).then(rsp => {
-                //     // console.info(rsp);
-                //     this.$router.replace({name:'login'});
-                //
-                // }).catch(error => {
-                //     // console.info('catch -- error');
-                //     // console.info(error);
-                // });
-                // this.$router.push('login');
             },
             lockScreen() {
                 console.info('lockScreen');
@@ -220,9 +193,8 @@
                 this.navTabs = [data];
             },
             selectMenu(node) {
-                console.info('Layout....');
                 const hasExist = this.navTabs.findIndex(obj => obj.name === node.name);
-                console.info('ss', node);
+                // console.info('ss', node);
                 hasExist < 0 && this.navTabs.push(node);
                 console.info(this.navTabs);
                 this.navTabs[0].selected = false;

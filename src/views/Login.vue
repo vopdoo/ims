@@ -41,7 +41,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         name: "Login",
@@ -67,10 +67,11 @@
         },
 
         computed: {
-            ...mapGetters([
-                'logining',
-                'is_logined'
-            ])
+            ...mapGetters({
+                'logining': 'admin/logining',
+                'is_logined': 'admin/is_logined',
+                'routers': 'admin/routers',
+            })
         },
 
         methods: {
@@ -86,10 +87,11 @@
             login(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$store.dispatch('login', this.loginForm).then(() => {
+                        console.info('logining....');
+                        this.$store.dispatch('admin/login', this.loginForm).then(() => {
                             if (this.is_logined) {
-                                console.info('logined.......', this.$store.getters.routers);
-                                this.$router.addRoutes(this.$store.getters.routers.concat([{
+                                console.info('logined.......', this.routers);
+                                this.$router.addRoutes(this.routers.concat([{
                                     path: '*',
                                     redirect: '/404'
                                 }]));
@@ -101,11 +103,6 @@
                             console.info('catch -- error');
                             console.info(error);
                         });
-                        // setTimeout(()=>{
-                        //     this.$router.push('/');
-                        // },500)
-                        // this.$router.push('/');
-                        //
                     } else {
                         // this.$Message.error('请正确输入账号密码');
                     }

@@ -5,16 +5,16 @@
                 &nbsp;
             </Col>
             <Col span="4" class="list-tlbr">
-                <Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>
+                <Button type="success" @click="addTopMenu">增加顶级节点</Button>
             </Col>
         </Row>
         <!--<Row type="flex" justify="space-between" align="top">-->
-            <!--<Col span="20">-->
-                <!--&nbsp;-->
-            <!--</Col>-->
-            <!--<Col span="4" class="list-tlbr">-->
-                <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
-            <!--</Col>-->
+        <!--<Col span="20">-->
+        <!--&nbsp;-->
+        <!--</Col>-->
+        <!--<Col span="4" class="list-tlbr">-->
+        <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
+        <!--</Col>-->
         <!--</Row>-->
 
 
@@ -29,7 +29,7 @@
                 @on-ok="saveMenu"
                 @on-cancel="cancelAddMenu"
         >
-            <Form :model="menuFm"  label-position="top" ref="menuFm" :rules="menuFmRules">
+            <Form :model="menuFm" label-position="top" ref="menuFm" :rules="menuFmRules">
                 <FormItem label="类型" prop="type">
                     <Select v-model="menuFm.type" placeholder="类型" @on-change="typeChange">
                         <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -119,7 +119,9 @@
                     name: '',
                     code: '',
                     type: 1,
-                    options: {},
+                    options: {
+                        tree_path: '0'
+                    },
                     icon: 'md-apps',
                     sort: 0,
                     pid: 0
@@ -161,19 +163,50 @@
             typeChange(option) {
                 console.info(option);
             },
-            createNode(pid, type) {
-                this.menuFm.pid = pid;
-                if (pid > 0) {
-                    // 子节点
-                    if (type == 1) {
-                        this.menuFm.type = 3;
-                    } else if (type == 2) {
-                        this.menuFm.type = 1;
+            initFmData() {
+                this.menuFm = {
+                    name: '',
+                    code: '',
+                    type: 1,
+                    options: {
+                        tree_path: '0',
+                    },
+                    icon: 'md-apps',
+                    sort: 0,
+                    pid: 0
+                };
+            },
+            createNode(data) {
+                console.info(data.id);
+                if(data.id) {
+                    console.info('zi  node');
+                    this.menuFm.pid = data.id;
+                    if(data.pid === 0) {
+                        // 一级节点
+                        this.menuFm.options.tree_path = `${data.id}`;
+                    } else {
+                        this.menuFm.options.tree_path = `${data.options.tree_path},${data.id}`;
                     }
+
                 } else {
-                    // 根节点
-                    this.menuFm.type = 2;
+                    // add top node
+                    console.info('add Top Node');
+                    this.menuFm.type = 2; // 一般情况为菜单
                 }
+                // this.menuFm.pid = data.id;
+                // if (data.pid > 0) {
+                //     // 子节点
+                //     this.menuFm.options.tree_path = `${data.options.tree_path},${data.id}`;
+                //     if (data.type == 1) {
+                //         this.menuFm.type = 3;
+                //     } else if (data.type == 2) {
+                //         this.menuFm.type = 1;
+                //     }
+                // } else {
+                //     // 根节点
+                //     this.menuFm.options.tree_path = `${data.id}`;
+                //     this.menuFm.type = 2;
+                // }
                 this.title = '增加节点';
                 this.is_add_menuing = true;
             },
@@ -193,7 +226,7 @@
             },
             renderContent(h, {root, node, data}) {
                 // console.info(data);
-                // data.expand = true;
+                data.expand = true;
                 // console.info(data.children);
                 return h('span', {
                     class: {
@@ -209,7 +242,7 @@
                         h('Icon', {
                             props: {
                                 type: data.icon,
-                                color:this.getNodeTag(data.type)
+                                color: this.getNodeTag(data.type)
                             },
                             style: {
                                 marginRight: '8px'
@@ -236,9 +269,7 @@
                             },
                             on: {
                                 click: () => {
-                                    // this.menuFm.pid = data.id;
-                                    // this.menuFm.type = 2;
-                                    this.createNode(data.id, data.type);
+                                    this.createNode(data);
                                 }
                             }
                         }),
@@ -262,7 +293,7 @@
                             props: {
                                 confirm: true,
                                 title: '确认要删除',
-                                // transfer:true,
+                                transfer:true,
                             },
                             on: {
                                 'on-ok': () => {
@@ -282,20 +313,11 @@
                 ]);
             },
             addTopMenu() {
-                this.createNode(0, 0);
+                this.initFmData();
+                this.createNode(this.menuFm);
             },
             cancelAddMenu() {
-                this.menuFm = {
-                    name: '',
-                    code: '',
-                    type: 1,
-                    options: {},
-                    icon: 'md-apps',
-                    sort: 0,
-                    pid: 0
-                };
-                // this.$refs['menuFm'].resetFields();
-                // this.menuFm['id'] && delete this.menuFm['id'];
+                this.initFmData();
             },
             saveMenu() {
                 this.$refs['menuFm'].validate((valid) => {
@@ -341,7 +363,7 @@
 </script>
 
 
-<style lang="less" >
+<style lang="less">
     .menus-span {
         &:hover {
             color: #2d8cf0;

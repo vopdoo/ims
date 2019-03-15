@@ -4,7 +4,6 @@ import * as getters from './getters'
 import Vue from 'vue'
 
 // import user from './modules/user'
-import auth from './modules/auth'
 import menu from './modules/menu'
 import hospital from './modules/hospital'
 import medicalExamination from './modules/medical.examination'
@@ -28,7 +27,6 @@ const StoreConstructorOptions = {
     actions,
     getters,
     modules: {
-        auth,
         // user,
         menu,
         hospital,

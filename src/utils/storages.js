@@ -22,7 +22,7 @@ const isAccessTokenWillOrExpired = function () {
  */
 const checkLogin = function () {
     let currrent_access_token = sessionStorage.getItem('access_token');
-    console.info('currrent_access_token:', currrent_access_token);
+    // console.info('currrent_access_token:', currrent_access_token);
     return currrent_access_token ? true : false;
 
 }

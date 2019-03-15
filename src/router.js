@@ -32,13 +32,13 @@ export function resetRouter() {
 
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
-    console.info('router.beforeEach');
+    // console.info('router.beforeEach');
     next();
 });
 
 router.afterEach(route => {
     iView.LoadingBar.finish();
-    console.info('router.afterEach',route);
+    // console.info('router.afterEach',route);
 });
 
 export default router;
