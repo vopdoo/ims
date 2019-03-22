@@ -22,11 +22,7 @@ export default {
         return axios.delete(`${resource}/${payload.id}`, payload);
     },
     login: (payload) => {
-        return axios.post(`${resource}/login`, payload).then((rsp)=>{
-            axios.defaults.headers.Authorization = `${rsp.data.data.token_type} ${rsp.data.data.access_token}`;
-            return rsp;
-        });
-
+        return axios.post(`${resource}/login`, payload);
     },
     getRoutes(payload) {
         return axios.post(`${resource}/getRoutes`, payload);
@@ -38,10 +34,7 @@ export default {
         return axios.post(`${resource}/refresh`, payload);
     },
     logout(payload) {
-        return axios.post(`${resource}/logout`, payload).then((rsp)=>{
-            axios.defaults.headers.Authorization = ``;
-            return rsp;
-        });
+        return axios.post(`${resource}/logout`, payload);
     },
 
 }
