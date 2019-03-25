@@ -6,11 +6,9 @@ const isAccessTokenWillOrExpired = function () {
     let current_at = moment().unix();
     let time_difference = expired_at - current_at;
     if (time_difference <= 0) {
-        // console.info('已经过期 ');
         return 'expired';
     }
     if (time_difference <= 100 && time_difference > 0) {
-        // console.info('将要过期 ');
         return 'will_expired';
     }
 };
