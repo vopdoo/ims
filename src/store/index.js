@@ -1,4 +1,3 @@
-
 import Vue from 'vue'
 import Vuex from "vuex";
 
@@ -14,6 +13,7 @@ import department from './modules/department'
 import admin from './modules/admin'
 import role from './modules/role'
 import thunder_project from './modules/thunder_project'
+
 const debug = false;
 
 const StoreConstructorOptions = {

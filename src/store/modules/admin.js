@@ -137,6 +137,19 @@ const actions = {
         });
     },
 
+
+    refreshToken({commit}, request) {
+        return node.refreshToken(request).then(rsp => {
+            commit(types.REFRESH_TOKEN, rsp.data);
+            return rsp.data.data;
+        }).catch(error => {
+            console.info('refreshToken Fail');
+            return error;
+        });
+    },
+
+
+
     logout({commit, state}, request) {
 
         return node.logout(request).then(rsp => {

@@ -8,7 +8,7 @@ const isAccessTokenWillOrExpired = function () {
     if (time_difference <= 0) {
         return 'expired';
     }
-    if (time_difference <= 100 && time_difference > 0) {
+    if (time_difference <= 110 && time_difference > 0) {
         return 'will_expired';
     }
 };
