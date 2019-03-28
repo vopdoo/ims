@@ -19,7 +19,7 @@ axios.interceptors.request.use(
                     sessionStorage.clear();
                     Modal.remove();
                     Modal.warning({
-                        title: '登录超时v',
+                        title: '登录超时',
                         okText: '登录',
                         content: '<p>登录超时，请重新登录！</p>',
                         onOk: () => {

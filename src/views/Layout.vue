@@ -34,7 +34,7 @@
                                     </Badge>
                                 </li>
                                 <li class="last">
-                                    <Dropdown placement="bottom" :transfer="true">
+                                    <Dropdown placement="bottom" :transfer="true" @on-click="handleAdminDpdClick">
                                         <Avatar icon="ios-person" size="small"/>
                                         <!--<ButtonGroup vertical slot="list">-->
                                         <!--<Button icon="logo-facebook"></Button>-->
@@ -42,13 +42,20 @@
                                         <!--<Button icon="logo-googleplus"></Button>-->
                                         <!--<Button icon="logo-tumblr"></Button>-->
                                         <!--</ButtonGroup>-->
-                                        <div class="login-user-dropdown-list" slot="list">
-                                            <div class="item">设置</div>
-                                            <div class="item divided">锁屏</div>
-                                            <div class="item">设置</div>
-                                            <div class="item divided">vvv</div>
-                                            <div class="item" @click="logout">退出</div>
-                                        </div>
+                                        <DropdownMenu slot="list">
+                                            <DropdownItem>设置</DropdownItem>
+                                            <DropdownItem>锁屏</DropdownItem>
+                                            <DropdownItem disabled>豆汁儿</DropdownItem>
+                                            <DropdownItem>冰糖葫芦</DropdownItem>
+                                            <DropdownItem divided name="logout">退出</DropdownItem>
+                                        </DropdownMenu>
+                                        <!--<div class="login-user-dropdown-list" slot="list">-->
+                                        <!--<div class="item">设置</div>-->
+                                        <!--<div class="item divided">锁屏</div>-->
+                                        <!--<div class="item">设置</div>-->
+                                        <!--<div class="item divided">vvv</div>-->
+                                        <!--<div class="item" @click="logout">退出</div>-->
+                                        <!--</div>-->
                                     </Dropdown>
                                 </li>
                             </ul>
@@ -145,6 +152,13 @@
             }
         },
         methods: {
+            handleAdminDpdClick(name) {
+                if (name == 'logout') {
+                    this.logout();
+                } else {
+                    console.info(name);
+                }
+            },
             logout() {
                 this.$Modal.confirm({
                     title: '确认提示',
