@@ -41,6 +41,54 @@
 
 <style lang="less">
 
+    .info-menu-aside-vip {
+        margin-top: 3px
+    }
+
+    .info-menu-aside-vip img {
+        width: 12px;
+        height: 12px;
+        vertical-align: middle
+    }
+
+    .info-menu-aside-vip span {
+        font-size: 12px;
+        display: inline-block;
+        vertical-align: middle
+    }
+
+    .info-menu-user {
+        width: 140px
+    }
+
+    .info-menu-user-name {
+        font-size: 16px
+    }
+
+    .info-menu-user {
+        .ivu-dropdown-item {
+
+            font-size: 14px !important;
+            padding: 8px 16px;
+            img {
+                fill: inherit;
+            }
+            i {
+                text-align: center;
+            }
+
+            .ivu-icon {
+                vertical-align: middle;
+                margin-right: 5px;
+                font-size: 22px;
+            }
+            span {
+                vertical-align: middle;
+            }
+        }
+
+    }
+
     .add-edit-modal {
         display: flex;
         align-items: center;

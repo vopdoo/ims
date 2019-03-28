@@ -36,26 +36,23 @@
                                 <li class="last">
                                     <Dropdown placement="bottom" :transfer="true" @on-click="handleAdminDpdClick">
                                         <Avatar icon="ios-person" size="small"/>
-                                        <!--<ButtonGroup vertical slot="list">-->
-                                        <!--<Button icon="logo-facebook"></Button>-->
-                                        <!--<Button icon="logo-twitter"></Button>-->
-                                        <!--<Button icon="logo-googleplus"></Button>-->
-                                        <!--<Button icon="logo-tumblr"></Button>-->
-                                        <!--</ButtonGroup>-->
-                                        <DropdownMenu slot="list">
-                                            <DropdownItem>设置</DropdownItem>
-                                            <DropdownItem>锁屏</DropdownItem>
-                                            <DropdownItem disabled>豆汁儿</DropdownItem>
+                                        <DropdownMenu slot="list" class="info-menu-user">
+                                            <DropdownItem >
+                                                <strong class="info-menu-user-name" >{{admin.name}}</strong>
+                                                <div class="info-menu-aside-vip">
+                                                    <span>{{admin.nick_name}}</span>
+                                                </div>
+                                            </DropdownItem>
+                                            <DropdownItem divided>
+                                                <Icon type="ios-person-outline" />
+                                                <span>我的主页</span>
+                                            </DropdownItem>
                                             <DropdownItem>冰糖葫芦</DropdownItem>
-                                            <DropdownItem divided name="logout">退出</DropdownItem>
+                                            <DropdownItem divided name="logout">
+                                                <Icon type="md-log-out" size="14" />
+                                                <span>退出</span>
+                                            </DropdownItem>
                                         </DropdownMenu>
-                                        <!--<div class="login-user-dropdown-list" slot="list">-->
-                                        <!--<div class="item">设置</div>-->
-                                        <!--<div class="item divided">锁屏</div>-->
-                                        <!--<div class="item">设置</div>-->
-                                        <!--<div class="item divided">vvv</div>-->
-                                        <!--<div class="item" @click="logout">退出</div>-->
-                                        <!--</div>-->
                                     </Dropdown>
                                 </li>
                             </ul>
