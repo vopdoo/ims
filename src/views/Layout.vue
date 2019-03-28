@@ -2,7 +2,7 @@
     <div class="ims-layouts">
         <div class="left" :style="layoutCommonStyles">
             <div class="logo">
-                <span class="title">Vopdoo</span>
+                <span class="title">Ims</span>
             </div>
             <div class="navigation" ref="navigationWrapper">
                 <SiderMenu class="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/>
@@ -34,7 +34,7 @@
                                     </Badge>
                                 </li>
                                 <li class="last">
-                                    <Dropdown placement="bottom">
+                                    <Dropdown placement="bottom" :transfer="true">
                                         <Avatar icon="ios-person" size="small"/>
                                         <!--<ButtonGroup vertical slot="list">-->
                                         <!--<Button icon="logo-facebook"></Button>-->
@@ -45,6 +45,8 @@
                                         <div class="login-user-dropdown-list" slot="list">
                                             <div class="item">设置</div>
                                             <div class="item divided">锁屏</div>
+                                            <div class="item">设置</div>
+                                            <div class="item divided">vvv</div>
                                             <div class="item" @click="logout">退出</div>
                                         </div>
                                     </Dropdown>

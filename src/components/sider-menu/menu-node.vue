@@ -248,7 +248,7 @@
                 font-size: 22px;
             }
             &:hover {
-                background-color: #384f73;
+                /*background-color: #384f73;*/
                 color: #00c1de;
                 .ims-sider-menu-icon {
                     color: #00c1de;
