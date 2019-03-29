@@ -24,34 +24,33 @@
                 <div class="tab-control next" @click="scrollNext">
                     <Icon type="ios-arrow-forward"/>
                 </div>
-                <div class="tab-control refresh">
-                    <Icon type="md-refresh"/>
-                </div>
                 <div class="tab-control oths">
-                    <!--:transfer="true"-->
-                    <Dropdown placement="bottom" >
+
+                    <Dropdown placement="bottom"
+                              :transfer="true"
+                              transfer-class-name="oths-tool"
+                              @on-click="handleOthsTool"
+                    >
+
                         <Icon type="ios-arrow-down"/>
-                        <!--<ButtonGroup vertical slot="list" class="oths-dropdown-tools">-->
-                        <!--<Button icon="logo-facebook"></Button>-->
-                        <!--<Button icon="logo-twitter"></Button>-->
-                        <!--<Button icon="logo-googleplus"></Button>-->
-                        <!--<Button icon="logo-tumblr"></Button>-->
-                        <!--</ButtonGroup>-->
-                        <div slot="list" class="oths-dropdown-tools">
-                            <div class="dropdown-tool-item">
+                        <DropdownMenu slot="list" >
+                            <DropdownItem>
                                 <Icon type="md-expand"/>
-                            </div>
-                            <div class="dropdown-tool-item" @click="toggleThemeDrawer">
+                            </DropdownItem>
+                            <DropdownItem name="theme">
                                 <Icon type="ios-color-palette"/>
-                            </div>
-                            <div class="dropdown-tool-item" @click="closeAllTabs">
+                            </DropdownItem>
+                            <DropdownItem>
                                 <Icon type="md-close"/>
-                            </div>
-                            <div class="dropdown-tool-item">
+                            </DropdownItem>
+                            <DropdownItem>
                                 <Icon type="md-help"/>
-                            </div>
-                        </div>
+                            </DropdownItem>
+                        </DropdownMenu>
                     </Dropdown>
+                </div>
+                <div class="tab-control  refresh">
+                    <Icon type="md-refresh"/>
                 </div>
             </div>
         </div>
@@ -94,6 +93,12 @@
             }
         },
         methods: {
+            handleOthsTool(name) {
+                console.info('handleOthsTool', name);
+                if (name == 'theme') {
+                    this.toggleThemeDrawer();
+                }
+            },
             closeAllTabs() {
                 this.$set(this.data[0], 'selected', true);
                 this.$router.push({path: this.data[0].path});
@@ -251,10 +256,10 @@
                     }
 
                     /*&:hover {*/
-                        /*background-color: #f6f6f6;*/
-                        /*&:after {*/
-                            /*width: 100%;*/
-                        /*}*/
+                    /*background-color: #f6f6f6;*/
+                    /*&:after {*/
+                    /*width: 100%;*/
+                    /*}*/
                     /*}*/
 
                     span {
@@ -286,23 +291,10 @@
         .control-tool-right {
             display: flex;
             .refresh {
-                border: none;
+                border-right: none;
             }
             .oths {
-                border-right: none;
-                .oths-dropdown-tools {
-                    width: 36px;
-                    .dropdown-tool-item {
-                        text-align: center;
-                        i {
-                            color: #17233d;
-                            font-size: 18px;
-                        }
-                        &:hover {
-                            background: #f3f3f3;
-                        }
-                    }
-                }
+                border: none;
             }
         }
     }

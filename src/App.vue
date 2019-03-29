@@ -41,30 +41,39 @@
 
 <style lang="less">
 
+    .oths-tool {
+        .ivu-dropdown-menu {
+            min-width: 28px;
+            .ivu-dropdown-item {
+                i {
+                    text-align: center;
+                }
+                .ivu-icon {
+                    vertical-align: middle;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
     .info-menu-aside-vip {
         margin-top: 3px
     }
-
     .info-menu-aside-vip img {
         width: 12px;
         height: 12px;
         vertical-align: middle
     }
-
     .info-menu-aside-vip span {
         font-size: 12px;
         display: inline-block;
         vertical-align: middle
     }
-
     .info-menu-user {
         width: 140px
     }
-
     .info-menu-user-name {
         font-size: 16px
     }
-
     .info-menu-user {
         .ivu-dropdown-item {
 

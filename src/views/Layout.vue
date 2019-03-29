@@ -38,18 +38,21 @@
                                         <Avatar icon="ios-person" size="small"/>
                                         <DropdownMenu slot="list" class="info-menu-user">
                                             <DropdownItem >
-                                                <strong class="info-menu-user-name" >{{admin.name}}</strong>
+                                                <strong class="info-menu-user-name" >{{admin.name||'名称'}}</strong>
                                                 <div class="info-menu-aside-vip">
-                                                    <span>{{admin.nick_name}}</span>
+                                                    <span>{{admin.nick_name||'角色'}}</span>
                                                 </div>
                                             </DropdownItem>
-                                            <DropdownItem divided>
-                                                <Icon type="ios-person-outline" />
-                                                <span>我的主页</span>
+                                            <!--<DropdownItem divided>-->
+                                                <!--<Icon type="ios-person-outline" />-->
+                                                <!--<span>我的主页</span>-->
+                                            <!--</DropdownItem>-->
+                                            <DropdownItem divided name="lock_screen">
+                                                <Icon type="ios-lock-outline" />
+                                                <span>锁屏</span>
                                             </DropdownItem>
-                                            <DropdownItem>冰糖葫芦</DropdownItem>
                                             <DropdownItem divided name="logout">
-                                                <Icon type="md-log-out" size="14" />
+                                                <Icon type="ios-log-out"  />
                                                 <span>退出</span>
                                             </DropdownItem>
                                         </DropdownMenu>
