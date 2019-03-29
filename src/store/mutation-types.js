@@ -72,4 +72,7 @@ export const GET_ADMINS = 'GET_ADMINS';
 export const GET_ROLES = 'GET_ROLES';
 export const GET_DEPTS = 'GET_DEPTS';
 export const ADD_ROLE = 'ADD_ROLE';
+export const GET_USER_LIST = 'GET_USER_LIST';
+
+
 

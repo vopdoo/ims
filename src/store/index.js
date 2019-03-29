@@ -11,6 +11,8 @@ import banner from './modules/banner'
 import node from './modules/node'
 import department from './modules/department'
 import admin from './modules/admin'
+import user from './modules/user'
+
 import role from './modules/role'
 import thunder_project from './modules/thunder_project'
 
@@ -26,6 +28,7 @@ const StoreConstructorOptions = {
         banner,
         node,
         department,
+        user,
         admin,
         role,
         thunder_project,
