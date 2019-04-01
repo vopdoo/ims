@@ -6,43 +6,111 @@ const state = {
     logining: false,
     is_logined: false,
     lists: {},
+    tags: [
+        {
+            value: 1,
+            label: '有钱人'
+        },
+        {
+            value: 2,
+            label: '鼻子'
+        },
+        {
+            value: 3,
+            label: '面部'
+        },
+    ],
     menu: [],
     nav_menus: [],
     routers: [],
     users: {},
     admins: [],
+
+    // 消费特征	客户状态	所属咨询	客服人员	指派咨询人员	咨询时间	首次预约	咨询项目	拍照	社会属性	区域	开发方式
+    // 咨询项目
+
+
     columns: [
         {
-            title: '姓名',
+            title: '档案编号',
             slot: 'name',
             fixed: 'left',
             width: 100
         },
 
         {
-            title: '昵称',
+            title: '客户姓名',
+            slot: 'name',
+            width: 100
+        },
+
+        {
+            title: '性别',
             slot: 'nick_name',
             width: 100
         },
         {
-            title: '部门',
+            title: '年龄',
             key: 'department_names',
             width: 150,
             tooltip: true
         },
         {
-            title: '角色',
+            title: '职业',
             key: 'role_names',
             width: 150,
             tooltip: true
         },
         {
-            title: '邮箱',
+            title: '手机',
             key: 'email',
             width: 100,
             tooltip: true,
             // slot: 'email'
         },
+        {
+            title: '生日',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+        {
+            title: '微信号',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+        {
+            title: '星座',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+        {
+            title: '兴趣爱好',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+        {
+            title: '通讯地址',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+        {
+            title: '渠道',
+            key: 'email',
+            width: 100,
+            tooltip: true,
+            // slot: 'email'
+        },
+
         {
             title: '状态',
             slot: 'status',
@@ -61,7 +129,7 @@ const state = {
         {
             title: '操作',
             slot: 'action',
-            width: 150,
+            width: 250,
             fixed: 'right'
         }
     ],
@@ -88,6 +156,7 @@ const getters = {
     lists: state => state.lists,
     statusList: state => state.statusList,
     columns: state => state.columns,
+    tags: state => state.tags,
 }
 // actions
 const actions = {
@@ -147,7 +216,6 @@ const actions = {
             return error;
         });
     },
-
 
 
     logout({commit, state}, request) {

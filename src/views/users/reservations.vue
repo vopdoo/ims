@@ -1,48 +1,31 @@
 <template>
     <div>
-        <ImsCurd >
+        <ImsCurd>
             <Form :model="searchForm" class="search-form" inline slot="filter">
                 <FormItem>
-                    <Select v-model="searchForm.status" clearable placeholder="状态" style="width:100px">
-                        <Option v-for="item in statusList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
-                        </Option>
+                    <Select clearable placeholder="状态" style="width:100px">
+                        <Option value="1">未到院</Option>
+                        <Option value="2">已到院</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
-                    <Select v-model="searchForm.status" clearable placeholder="性别" style="width:100px">
-                        <Option v-for="item in statusList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
-                        </Option>
+                    <Select clearable placeholder="类型" style="width:100px">
+                        <Option value="1">初诊</Option>
+                        <Option value="2">复疹</Option>
                     </Select>
                 </FormItem>
-                <FormItem>
-                    <Select v-model="searchForm.role_ids"
-                            multiple
-                            placeholder="标签"
-                            style="width:250px">
-                        <Option v-for="item in tags"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.label }}
-                        </Option>
-                    </Select>
-                </FormItem>
+
                 <FormItem>
                     <Input v-model="searchForm.keywords"
                            class="filter-kws"
                            search
                            @on-search="handleSearch"
-                           placeholder="姓名/昵称/姓名/邮箱"
+                           placeholder="客户姓名/姓名/邮箱"
                     />
                 </FormItem>
             </Form>
             <div slot="actions">
-                <Button @click="handleCreate">添加档案</Button>
+                <Button @click="handleCreate">添加预约</Button>
             </div>
 
             <Table :columns="columns"
@@ -92,13 +75,21 @@
                 </template>
 
                 <template slot-scope="{ row, index }" slot="action">
-                    <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
-                    <Button  size="small" type="text">预约记录</Button>
-                    <Button  size="small" type="text">电子病历</Button>
                     <Poptip
                             confirm
                             :transfer="true"
-                            title="确认要删除此用户？"
+                            title="确认客户已经到院？"
+                            @on-ok="handleDeleteUserOk(row)"
+                            @on-cancel="handleDeleteUserCancel">
+                        <Button size="small" type="text">到院</Button>
+                    </Poptip>
+                    <Button @click="handleTriage(row, index)" size="small" type="text">分诊</Button>
+                    <Button @click="handleConsult(row, index)" size="small" type="text">咨询</Button>
+                    <Button @click="handleAfter(row, index)" size="small" type="text">回访</Button>
+                    <Poptip
+                            confirm
+                            :transfer="true"
+                            title="确认要删除此预约记录？"
                             @on-ok="handleDeleteUserOk(row)"
                             @on-cancel="handleDeleteUserCancel">
                         <Button size="small" type="text">删除</Button>
@@ -110,6 +101,151 @@
             </Table>
 
         </ImsCurd>
+
+        <Modal
+                v-model="triageing"
+                title="分诊"
+                :loading="celoading"
+                class-name="ce-modal"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleCeOk"
+                @on-cancel="handleCeCancel"
+        >
+            <Form  label-position="top">
+                <FormItem label="咨询师" required>
+                    <Select clearable placeholder="请选择咨询师">
+                        <Option value="1">询师1</Option>
+                        <Option value="2">询师2</Option>
+                        <Option value="2">询师3</Option>
+                    </Select>
+                </FormItem>
+
+                <FormItem label="备注">
+                    <Input type="textarea" placeholder="分诊备注"/>
+                </FormItem>
+
+
+
+            </Form>
+
+        </Modal>
+
+
+        <Modal
+                v-model="aftering"
+                title="增加回访记录"
+                :loading="celoading"
+                class-name="ce-modal"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleCeOk"
+                @on-cancel="handleCeCancel"
+        >
+
+            <Form ref="formDynamic" :model="formDynamic"   label-position="top">
+                <FormItem label="客户姓名">
+                    <Input  placeholder="回访客户" readonly  disabled value="张三" />
+                </FormItem>
+                <FormItem label="回访类型">
+                    <CheckboxGroup >
+                        <Checkbox label="术后回访"></Checkbox>
+                        <Checkbox label="服务回访"></Checkbox>
+                    </CheckboxGroup>
+                </FormItem>
+
+                <FormItem label="回访计划">
+                    <DatePicker type="datetime" placeholder="下次回访时间" ></DatePicker>
+                </FormItem>
+
+                <FormItem label="回访情况">
+                    <Input type="textarea" placeholder="回访情况明细" :autosize="{minRows: 5,maxRows: 10}"/>
+                </FormItem>
+
+
+
+            </Form>
+
+        </Modal>
+
+        <Modal
+                v-model="consulting"
+                title="增加咨询记录"
+                :loading="celoading"
+                class-name="ce-modal"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleCeOk"
+                @on-cancel="handleCeCancel"
+        >
+
+
+
+
+            <Form ref="formDynamic" :model="formDynamic"   label-position="top">
+                <FormItem label="咨询明细">
+                    <Input type="textarea" placeholder="咨询明细" :autosize="{minRows: 5,maxRows: 10}"/>
+                </FormItem>
+                <FormItem label="是否成交" required>
+                    <Switch size="large">
+                        <span slot="open">是</span>
+                        <span slot="close">否</span>
+                    </Switch>
+                </FormItem>
+                <FormItem label="医师" required>
+                    <Select clearable placeholder="请选择医师">
+                        <Option value="1">医师1</Option>
+                        <Option value="2">医师2</Option>
+                        <Option value="2">医师3</Option>
+                    </Select>
+                </FormItem>
+                <Divider orientation="left">服务项目</Divider>
+                <FormItem
+                        v-for="(item, index) in formDynamic.items"
+                        v-if="item.status"
+                        :key="index"
+                        :label="'项目 ' + item.index"
+                        :prop="'items.' + index + '.value'"
+                        :rules="{required: true, message: '项目 ' + item.index +' can not be empty', trigger: 'blur'}">
+                    <Row gutter="16">
+                        <Col span="5">
+                            <Select placeholder="请选择项目">
+                                <Option value="1">项目名称1</Option>
+                                <Option value="1">项目名称2</Option>
+                            </Select>
+                        </Col>
+                        <Col span="5">
+                            <InputNumber :max="10" :min="1" />
+                        </Col>
+                        <Col span="5">
+                            <Input  placeholder="请输入价格" />
+                        </Col>
+                        <Col span="5">
+                            <Input  placeholder="折扣" />
+                        </Col>
+                        <Col span="2" offset="1">
+                            <Button @click="handleRemove(index)" >删除</Button>
+                        </Col>
+                    </Row>
+                </FormItem>
+                <FormItem>
+                    <Row gutter="16">
+                        <Col span="12">
+                            <Button type="dashed" long @click="handleAdd" icon="md-add">增加项目</Button>
+                        </Col>
+                        <Col span="12">
+                            <Checkbox >服务项目价格审批</Checkbox>
+                        </Col>
+                    </Row>
+                </FormItem>
+            </Form>
+
+        </Modal>
+
+
 
         <Modal
                 v-model="hasceing"
@@ -125,108 +261,113 @@
             <Form :model="fmData" label-position="top">
                 <Row :gutter="32">
                     <Col span="12">
-                        <FormItem label="客户姓名" required>
-                            <Input  placeholder="客户姓名"/>
+                        <FormItem label="客户" required>
+                            <Select clearable placeholder="请选择客户">
+                                <Option value="1">张三</Option>
+                                <Option value="2">李四</Option>
+                                <Option value="2">客户四</Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="手机" required>
+                            <Input placeholder="手机"/>
+                        </FormItem>
+                    </Col>
+
+                </Row>
+
+                <Row :gutter="32">
+                    <Col span="12">
+                        <FormItem label="年龄" required>
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="性别" required>
-                            <Select  clearable placeholder="请选择性别"  >
+                            <Select clearable placeholder="请选择性别">
                                 <Option value="1">男</Option>
                                 <Option value="2">女</Option>
                             </Select>
                         </FormItem>
                     </Col>
+
                 </Row>
+
+
                 <Row :gutter="32">
                     <Col span="12">
-                        <FormItem label="年龄" required>
-                            <Input  />
+                        <FormItem label="科室">
+                            <Select clearable placeholder="请选择科室">
+                                <Option value="1">科室一</Option>
+                                <Option value="2">科室二</Option>
+                                <Option value="2">科室三</Option>
+                            </Select>
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="职业">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="手机" required>
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="生日" required>
-                            <Input  />
+                        <FormItem label="医生排班">
+                            <Select v-model="model7">
+                                <OptionGroup label="张医生">
+                                    <Option v-for="item in cityList1" :value="item.value" :key="item.value">{{
+                                        item.label }}
+                                    </Option>
+                                </OptionGroup>
+                                <OptionGroup label="李医生">
+                                    <Option v-for="item in cityList2" :value="item.value" :key="item.value">{{
+                                        item.label }}
+                                    </Option>
+                                </OptionGroup>
+                            </Select>
                         </FormItem>
                     </Col>
                 </Row>
 
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="微信号">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="星座">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                </Row>
+                <FormItem label="就诊描述">
+                    <Input type="textarea"/>
+                </FormItem>
+                <FormItem label="心理预期">
+                    <Input type="textarea"/>
+                </FormItem>
 
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="兴趣爱好">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="消费特征">
-                            <Input v-model="fmData.nick_name" />
-                        </FormItem>
-                    </Col>
-                </Row>
+                <FormItem label="上传部位图">
+                    <div class="demo-upload-list" v-for="item in uploadList">
+                        <template v-if="item.status === 'finished'">
+                            <img :src="item.url">
+                            <div class="demo-upload-list-cover">
+                                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                        </template>
+                    </div>
+                    <Upload
+                            ref="upload"
+                            :show-upload-list="false"
+                            :default-file-list="defaultList"
+                            :on-success="handleSuccess"
+                            :format="['jpg','jpeg','png']"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+                            :before-upload="handleBeforeUpload"
+                            multiple
+                            type="drag"
+                            action="//jsonplaceholder.typicode.com/posts/"
+                            style="display: inline-block;width:58px;">
+                        <div style="width: 58px;height:58px;line-height: 58px;">
+                            <Icon type="ios-camera" size="20"></Icon>
+                        </div>
+                    </Upload>
+                    <Modal title="View Image" v-model="visible">
+                        <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible"
+                             style="width: 100%">
+                    </Modal>
+                </FormItem>
 
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="渠道">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="通讯地址">
-                            <Input v-model="fmData.nick_name" />
-                        </FormItem>
-                    </Col>
-                </Row>
 
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="头像">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="咨询项目">
-                            <Input v-model="fmData.nick_name" />
-                        </FormItem>
-                    </Col>
-                </Row>
-
-                <Row :gutter="32">
-                    <Col span="12">
-                        <FormItem label="社会属性">
-                            <Input  />
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="开发方式">
-                            <Input v-model="fmData.nick_name" />
-                        </FormItem>
-                    </Col>
-                </Row>
             </Form>
 
 
@@ -243,7 +384,7 @@
     import ImsCurd from '@/components/ims-curd/index';
 
     export default {
-        name: 'Users',
+        name: 'Reservations',
         components: {
             TableDatetime,
             ImsCurd,
@@ -259,7 +400,6 @@
                 lists: 'user/lists',
                 tags: 'user/tags',
                 statusList: 'user/statusList',
-                columns: 'user/columns',
                 departments: 'department/nodes',
                 depts: 'department/depts',
                 roles: 'role/lists',
@@ -284,6 +424,132 @@
                 });
             };
             return {
+                index: 1,
+                formDynamic: {
+                    items: [
+                        {
+                            value: '',
+                            index: 1,
+                            status: 1
+                        }
+                    ]
+                },
+                triageing: false,
+                consulting: false,
+                aftering: false,
+                defaultList: [
+                    {
+                        'name': 'a42bdcc1178e62b4694c830f028db5c0',
+                        'url': 'https://o5wwk8baw.qnssl.com/a42bdcc1178e62b4694c830f028db5c0/avatar'
+                    },
+                    {
+                        'name': 'bc7521e033abdd1e92222d733590f104',
+                        'url': 'https://o5wwk8baw.qnssl.com/bc7521e033abdd1e92222d733590f104/avatar'
+                    }
+                ],
+                imgName: '',
+                visible: false,
+                uploadList: [],
+                cityList1: [
+                    {
+                        value: '09:00 - 10:00',
+                        label: '09:00 - 10:00'
+                    },
+                    {
+                        value: '01:00 - 11:00',
+                        label: '01:00 - 11:00'
+                    },
+                    {
+                        value: '11:00 - 12:00',
+                        label: '11:00 - 12:00'
+                    }
+                ],
+                cityList2: [
+                    {
+                        value: '09:00 - 10:00',
+                        label: '09:00 - 10:00'
+                    },
+                    {
+                        value: '01:00 - 11:00',
+                        label: '01:00 - 11:00'
+                    },
+                    {
+                        value: '11:00 - 12:00',
+                        label: '11:00 - 12:00'
+                    }
+                ],
+                model7: '',
+                columns: [
+                    {
+                        title: '预约编号',
+                        slot: 'name',
+                        fixed: 'left',
+                        width: 100
+                    },
+                    // 科室	医生排班	预约时间段	姓名	年龄	手机号	过往治疗记录	渠道来源
+                    // 就诊描述	上传部位图	治疗项目	项目报价	心理预期
+                    // 返点比例
+                    //
+                    // 初诊
+                    //
+                    // 复诊
+
+                    {
+                        title: '客户姓名',
+                        slot: 'name',
+                        width: 100
+                    },
+
+                    {
+                        title: '科室',
+                        slot: 'nick_name',
+                        width: 100
+                    },
+                    {
+                        title: '医生排班',
+                        key: 'department_names',
+                        width: 150,
+                        tooltip: true
+                    },
+
+                    {
+                        title: '手机',
+                        key: 'email',
+                        width: 100,
+                        tooltip: true,
+                        // slot: 'email'
+                    },
+                    {
+                        title: '年龄',
+                        key: 'email',
+                        width: 100,
+                        tooltip: true,
+                        // slot: 'email'
+                    },
+
+
+                    {
+                        title: '状态',
+                        slot: 'status',
+                        width: 100
+                    },
+                    {
+                        title: '创建时间',
+                        slot: 'created_at',
+                        width: 150
+                    },
+                    {
+                        title: '更新时间',
+                        slot: 'updated_at',
+                        width: 150
+                    },
+                    {
+                        title: '操作',
+                        slot: 'action',
+                        width: 250,
+                        fixed: 'right'
+                    }
+                ],
                 split1: '200px',
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
@@ -298,7 +564,7 @@
                     status: true,
                 },
                 hasceing: false,
-                cetitle: '增加客户档案',
+                cetitle: '客户预约',
                 celoading: false,
                 tblLoading: false,
                 searchForm: {
@@ -317,6 +583,42 @@
             }
         },
         methods: {
+            handleAdd () {
+                this.index++;
+                this.formDynamic.items.push({
+                    value: '',
+                    index: this.index,
+                    status: 1
+                });
+            },
+            handleRemove (index) {
+                this.formDynamic.items[index].status = 0;
+            },
+            async handleTriage() {
+
+                this.$Loading.start();
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {});
+                this.$Loading.finish();
+                this.triageing = true;
+
+            },
+            async handleAfter() {
+
+                this.$Loading.start();
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {});
+                this.$Loading.finish();
+                this.aftering = true;
+
+            },
+
+
+            async handleConsult() {
+                this.$Loading.start();
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {});
+                this.$Loading.finish();
+                this.consulting = true;
+
+            },
             handleDeleteUserOk(data) {
                 console.info('handleDeleteUserOk', data);
                 this.$store.dispatch('admin/delete', data);

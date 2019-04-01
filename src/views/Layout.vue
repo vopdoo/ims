@@ -2,7 +2,7 @@
     <div class="ims-layouts">
         <div class="left" :style="layoutCommonStyles">
             <div class="logo">
-                <span class="title">Ims</span>
+                <span class="title">菲尔医疗</span>
             </div>
             <div class="navigation" ref="navigationWrapper">
                 <SiderMenu class="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/>
@@ -72,7 +72,10 @@
                 <!--</div>-->
             </div>
             <div class="middle " ref="wrapper">
-                <router-view class="contents"></router-view>
+                <transition name="fade">
+                    <router-view class="contents"></router-view>
+                </transition>
+
             </div>
             <!--<div class="footer">-->
             <!--footer-->
