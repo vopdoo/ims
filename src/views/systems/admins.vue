@@ -224,12 +224,14 @@
                            placeholder="密码"
                     />
                 </FormItem>
+                <FormItem label="排班计划">
+                    <Table :columns="columns1" :data="data1"></Table>
+                </FormItem>
                 <FormItem label="备注">
                     <Input type="textarea" v-model="fmData.remark" :rows="4"
                            placeholder="备注"/>
                 </FormItem>
             </Form>
-            {{fmData}}
         </Modal>
 
     </div>
@@ -282,6 +284,30 @@
                 });
             };
             return {
+                columns1: [
+                    {
+                        title: '时间段',
+                        key: 'name'
+                    },
+                    {
+                        title: '状态',
+                        key: 'age'
+                    }
+                ],
+                data1: [
+                    {
+                        name: '2019-04-01 08:00 - 2019-04-01 09:00',
+                        age: '正常',
+                    },
+                    {
+                        name: '2019-04-01 13:00 - 2019-04-01 17:00',
+                        age: '-',
+                    },
+                    {
+                        name: '2019-04-01 18:00 - 2019-04-01 19:00',
+                        age: '-',
+                    },
+                ],
                 split1: '200px',
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',

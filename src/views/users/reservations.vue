@@ -3,6 +3,13 @@
         <ImsCurd>
             <Form :model="searchForm" class="search-form" inline slot="filter">
                 <FormItem>
+                    <Select clearable placeholder="客户" style="width:100px">
+                        <Option value="1">张三</Option>
+                        <Option value="2">李四</Option>
+                        <Option value="3">王五</Option>
+                    </Select>
+                </FormItem>
+                <FormItem>
                     <Select clearable placeholder="状态" style="width:100px">
                         <Option value="1">未到院</Option>
                         <Option value="2">已到院</Option>
@@ -83,6 +90,7 @@
                             @on-cancel="handleDeleteUserCancel">
                         <Button size="small" type="text">到院</Button>
                     </Poptip>
+                    <Button @click="handleDetail(row, index)" size="small" type="text">详细</Button>
                     <Button @click="handleTriage(row, index)" size="small" type="text">分诊</Button>
                     <Button @click="handleConsult(row, index)" size="small" type="text">咨询</Button>
                     <Button @click="handleAfter(row, index)" size="small" type="text">回访</Button>
@@ -102,6 +110,84 @@
 
         </ImsCurd>
 
+        <Drawer title="预约详细" width="640" v-model="value4">
+            <p :style="pStyle">客户信息</p>
+            <div class="demo-drawer-profile">
+                <Row>
+                    <Col span="12">
+                        姓名: 张三
+                    </Col>
+                    <Col span="12">
+                        邮箱: aresn@aresn.com
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="12">
+                        性别: 男
+                    </Col>
+                    <Col span="12">
+                        XXXX: xxx
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span="12">
+                        XXXX: xxx
+                    </Col>
+                    <Col span="12">
+                        XXXX: xxx
+                    </Col>
+                </Row>
+            </div>
+            <Divider/>
+            <p :style="pStyle">咨询记录</p>
+            <div class="demo-drawer-profile">
+                <Row>
+                    <Col span="12">
+                        咨询师: 咨询师001
+                    </Col>
+                    <Col span="12">
+                        时间: 2019-09-04-12 16:20:33
+                    </Col>
+                </Row>
+                <br>
+                <Form label-position="top">
+
+                    <FormItem label="咨询明细">
+                        咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细
+                        咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细咨询明细
+                    </FormItem>
+
+                    <FormItem label="成交项目">
+                        <Table :columns="columns1" :data="data1"></Table>
+                    </FormItem>
+
+                </Form>
+
+            </div>
+            <Divider/>
+            <p :style="pStyle">回访记录</p>
+            <div class="demo-drawer-profile">
+
+                <Row>
+                    <Col span="12">
+                        客服: 客服001
+                    </Col>
+                    <Col span="12">
+                        时间: 2019-09-04-12 16:20:33
+                    </Col>
+                </Row>
+                <br>
+                <Form label-position="top">
+
+                    <FormItem label="回访明细">
+                        回访XXXXXXXX
+                    </FormItem>
+
+                </Form>
+
+            </div>
+        </Drawer>
+
         <Modal
                 v-model="triageing"
                 title="分诊"
@@ -113,7 +199,7 @@
                 @on-ok="handleCeOk"
                 @on-cancel="handleCeCancel"
         >
-            <Form  label-position="top">
+            <Form label-position="top">
                 <FormItem label="咨询师" required>
                     <Select clearable placeholder="请选择咨询师">
                         <Option value="1">询师1</Option>
@@ -125,7 +211,6 @@
                 <FormItem label="备注">
                     <Input type="textarea" placeholder="分诊备注"/>
                 </FormItem>
-
 
 
             </Form>
@@ -145,25 +230,24 @@
                 @on-cancel="handleCeCancel"
         >
 
-            <Form ref="formDynamic" :model="formDynamic"   label-position="top">
+            <Form ref="formDynamic" :model="formDynamic" label-position="top">
                 <FormItem label="客户姓名">
-                    <Input  placeholder="回访客户" readonly  disabled value="张三" />
+                    <Input placeholder="回访客户" readonly disabled value="张三"/>
                 </FormItem>
                 <FormItem label="回访类型">
-                    <CheckboxGroup >
+                    <CheckboxGroup>
                         <Checkbox label="术后回访"></Checkbox>
                         <Checkbox label="服务回访"></Checkbox>
                     </CheckboxGroup>
                 </FormItem>
 
                 <FormItem label="回访计划">
-                    <DatePicker type="datetime" placeholder="下次回访时间" ></DatePicker>
+                    <DatePicker type="datetime" placeholder="下次回访时间"></DatePicker>
                 </FormItem>
 
                 <FormItem label="回访情况">
                     <Input type="textarea" placeholder="回访情况明细" :autosize="{minRows: 5,maxRows: 10}"/>
                 </FormItem>
-
 
 
             </Form>
@@ -183,9 +267,7 @@
         >
 
 
-
-
-            <Form ref="formDynamic" :model="formDynamic"   label-position="top">
+            <Form ref="formDynamic" :model="formDynamic" label-position="top">
                 <FormItem label="咨询明细">
                     <Input type="textarea" placeholder="咨询明细" :autosize="{minRows: 5,maxRows: 10}"/>
                 </FormItem>
@@ -218,16 +300,16 @@
                             </Select>
                         </Col>
                         <Col span="5">
-                            <InputNumber :max="10" :min="1" />
+                            <InputNumber :max="10" :min="1"/>
                         </Col>
                         <Col span="5">
-                            <Input  placeholder="请输入价格" />
+                            <Input placeholder="请输入价格"/>
                         </Col>
                         <Col span="5">
-                            <Input  placeholder="折扣" />
+                            <Input placeholder="折扣"/>
                         </Col>
                         <Col span="2" offset="1">
-                            <Button @click="handleRemove(index)" >删除</Button>
+                            <Button @click="handleRemove(index)">删除</Button>
                         </Col>
                     </Row>
                 </FormItem>
@@ -237,15 +319,13 @@
                             <Button type="dashed" long @click="handleAdd" icon="md-add">增加项目</Button>
                         </Col>
                         <Col span="12">
-                            <Checkbox >服务项目价格审批</Checkbox>
+                            <Checkbox>服务项目价格审批</Checkbox>
                         </Col>
                     </Row>
                 </FormItem>
             </Form>
 
         </Modal>
-
-
 
         <Modal
                 v-model="hasceing"
@@ -424,6 +504,54 @@
                 });
             };
             return {
+                columns1: [
+                    {
+                        title: '项目',
+                        key: 'name'
+                    },
+                    {
+                        title: '数量',
+                        key: 'age'
+                    },
+                    {
+                        title: '价格',
+                        key: 'price'
+                    },
+                    {
+                        title: '折扣',
+                        key: 'discount'
+                    },
+                    {
+                        title: '小计',
+                        key: 'amount'
+                    }
+
+                ],
+                data1: [
+                    {
+                        name: '项目一',
+                        age: 1,
+                        price: '100.23',
+                        discount: '1%',
+                        amount: '10.23',
+                    },
+                    {
+                        name: '项目二',
+                        age: 2,
+                        price: '99.23',
+                        discount: '17%',
+                        amount: '99.23'
+                    },
+
+                ],
+                value4: false,
+                pStyle: {
+                    fontSize: '16px',
+                    color: 'rgba(0,0,0,0.85)',
+                    lineHeight: '24px',
+                    display: 'block',
+                    marginBottom: '16px'
+                },
                 index: 1,
                 formDynamic: {
                     items: [
@@ -546,7 +674,7 @@
                     {
                         title: '操作',
                         slot: 'action',
-                        width: 250,
+                        width: 280,
                         fixed: 'right'
                     }
                 ],
@@ -583,7 +711,7 @@
             }
         },
         methods: {
-            handleAdd () {
+            handleAdd() {
                 this.index++;
                 this.formDynamic.items.push({
                     value: '',
@@ -591,8 +719,17 @@
                     status: 1
                 });
             },
-            handleRemove (index) {
+            handleRemove(index) {
                 this.formDynamic.items[index].status = 0;
+            },
+
+            async handleDetail() {
+
+                this.$Loading.start();
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {});
+                this.$Loading.finish();
+                this.value4 = true;
+
             },
             async handleTriage() {
 

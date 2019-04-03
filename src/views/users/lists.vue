@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ImsCurd >
+        <ImsCurd>
             <Form :model="searchForm" class="search-form" inline slot="filter">
                 <FormItem>
                     <Select v-model="searchForm.status" clearable placeholder="状态" style="width:100px">
@@ -13,11 +13,8 @@
                 </FormItem>
                 <FormItem>
                     <Select v-model="searchForm.status" clearable placeholder="性别" style="width:100px">
-                        <Option v-for="item in statusList"
-                                :value="item.value"
-                                :key="item.value">
-                            {{ item.label }}
-                        </Option>
+                        <Option>男</Option>
+                        <Option>女</Option>
                     </Select>
                 </FormItem>
                 <FormItem>
@@ -93,8 +90,8 @@
 
                 <template slot-scope="{ row, index }" slot="action">
                     <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
-                    <Button  size="small" type="text">预约记录</Button>
-                    <Button  size="small" type="text">电子病历</Button>
+                    <Button @click="handleOrder(row, index)" size="small" type="text">预约记录</Button>
+                    <Button size="small" type="text">电子病历</Button>
                     <Poptip
                             confirm
                             :transfer="true"
@@ -126,12 +123,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="客户姓名" required>
-                            <Input  placeholder="客户姓名"/>
+                            <Input placeholder="客户姓名"/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="性别" required>
-                            <Select  clearable placeholder="请选择性别"  >
+                            <Select clearable placeholder="请选择性别">
                                 <Option value="1">男</Option>
                                 <Option value="2">女</Option>
                             </Select>
@@ -141,24 +138,24 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="年龄" required>
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="职业">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="手机" required>
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="生日" required>
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -166,12 +163,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="微信号">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="星座">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -179,12 +176,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="兴趣爱好">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="消费特征">
-                            <Input v-model="fmData.nick_name" />
+                            <Input v-model="fmData.nick_name"/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -192,12 +189,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="渠道">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="通讯地址">
-                            <Input v-model="fmData.nick_name" />
+                            <Input v-model="fmData.nick_name"/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -205,12 +202,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="头像">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="咨询项目">
-                            <Input v-model="fmData.nick_name" />
+                            <Input v-model="fmData.nick_name"/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -218,12 +215,12 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="社会属性">
-                            <Input  />
+                            <Input/>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="开发方式">
-                            <Input v-model="fmData.nick_name" />
+                            <Input v-model="fmData.nick_name"/>
                         </FormItem>
                     </Col>
                 </Row>
@@ -317,6 +314,9 @@
             }
         },
         methods: {
+            handleOrder() {
+
+            },
             handleDeleteUserOk(data) {
                 console.info('handleDeleteUserOk', data);
                 this.$store.dispatch('admin/delete', data);
