@@ -20,6 +20,6 @@ export default {
     },
     delete(payload) {
         return axios.delete('departments/' + payload.id);
-    }
+    },
 
 }

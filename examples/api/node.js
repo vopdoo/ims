@@ -2,24 +2,24 @@
  * Node Api
  */
 
-import {axios} from '@/plugins/axios';
+import {axios} from '../plugins/axios';
 
 export default {
     store: (payload) => {
         console.info('store', payload);
         // return utils.ajax.post('nodes', payload);
-        return axios.post('departments', payload);
+        return axios.post('nodes', payload);
     },
     index: (payload) => {
-        return axios.get('departments', {
+        return axios.get('nodes', {
             params: payload
         });
     },
     update(payload) {
-        return axios.put('departments/' + payload.id, payload);
+        return axios.put('nodes/' + payload.id, payload);
     },
     delete(payload) {
-        return axios.delete('departments/' + payload.id);
-    }
+        return axios.delete('nodes/' + payload.id);
+    },
 
 }

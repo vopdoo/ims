@@ -2,7 +2,6 @@
  * Node Api
  */
 
-import {utils} from '../libs/utils'
 import {axios} from '../plugins/axios';
 
 export default {
@@ -21,12 +20,6 @@ export default {
     },
     delete(payload) {
         return axios.delete('nodes/' + payload.id);
-    },
-    validateCode(request) {
-        return utils.ajax({
-            method: 'post',
-            url: '/admin/nodes/validateCode',
-            data: request,
-        });
-    },
+    }
+
 }

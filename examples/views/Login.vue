@@ -3,8 +3,8 @@
 
         <div id="login-fm">
             <div class="header">
-                <h1>{{title}}</h1>
-                <p>{{slogan}}</p>
+                <h1>菲尔医疗</h1>
+                <p>一切从登录开始</p>
             </div>
             <div class="body">
                 <Form ref="loginForm" :model="loginForm" class="login-form" :rules="ruleValidate">
@@ -42,29 +42,11 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import store from '@/store/index';
 
-    console.info(store);
     export default {
         name: "Login",
-        async beforeRouteEnter(to, from, next) {
-            await store.dispatch('login/loginInfo', {is_show_tree: 1, has_admins: 1});
-            console.info('vv');
-            next();
-        },
-        computed: {
-            ...mapGetters({
-                'title': 'login/title',
-                'slogan': 'login/slogan',
-                'logining': 'admin/logining',
-                'is_logined': 'admin/is_logined',
-                'routers': 'admin/routers',
-            })
-        },
         data() {
             return {
-                // title: 'IMS',
-                // slogan: '一切从登录开始',
                 loading: false,
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
@@ -82,6 +64,14 @@
                     ]
                 }
             }
+        },
+
+        computed: {
+            ...mapGetters({
+                'logining': 'admin/logining',
+                'is_logined': 'admin/is_logined',
+                'routers': 'admin/routers',
+            })
         },
 
         methods: {

@@ -3,10 +3,8 @@ import * as types from '../mutation-types'
 import moment from "moment";
 
 const state = {
-    title: 'vvv',
-    slogan: 'dddd',
-    logining: false,
-    is_logined: false,
+    // logining: false,
+    // is_logined: false,
     admin: {},
     menu: [],
     nav_menus: [],
@@ -80,6 +78,8 @@ const state = {
 }
 // getters
 const getters = {
+    logining: state => state.logining,
+    is_logined: state => state.is_logined,
     admin: state => state.admin,
     menu: state => state.menu,
     nav_menus: state => state.nav_menus,

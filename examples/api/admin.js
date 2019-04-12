@@ -24,10 +24,6 @@ export default {
     login: (payload) => {
         return axios.post(`${resource}/login`, payload);
     },
-    loginInfo: (payload) => {
-        return axios.post(`${resource}/login/info`, payload);
-    },
-
     getRoutes(payload) {
         return axios.post(`${resource}/getRoutes`, payload);
     },

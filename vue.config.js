@@ -1,9 +1,8 @@
+const path = require('path');
 module.exports = {
     lintOnSave: false,
     outputDir: '../../ims.vopdoo.com/public',
     publicPath: '/',
-
-    // baseURL:'/prototypes/',
     assetsDir: 'assets',
 
     css: {
@@ -14,7 +13,35 @@ module.exports = {
         },
         sourceMap: true
     },
+    pages: {
+        index: {
+            entry: 'examples/main.js',
+            template: 'public/index.html',
+            filename: 'index.html'
+        }
+    },
+    configureWebpack: {
+
+        resolve: {
+            alias: {
+                '@': path.join(__dirname, 'examples'),
+                '@ims': path.join(__dirname, 'src'),
+            },
+        },
+    },
     chainWebpack: config => {
+        config.module
+            .rule('js')
+            .test(/\.js$/)
+            .include
+            .add(path.join(__dirname, 'src'))
+            .end()
+            .use('babel')
+            .loader('babel-loader')
+            .tap(options => {
+                // 修改它的选项...
+                return options
+            })
         config.module
             .rule('vue')
             .test(/\.vue$/)
