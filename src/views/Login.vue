@@ -48,8 +48,8 @@
     export default {
         name: "Login",
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('login/loginInfo', {is_show_tree: 1, has_admins: 1});
-            console.info('vv');
+            await store.dispatch('test');
+            await store.dispatch('tesb');
             next();
         },
         computed: {

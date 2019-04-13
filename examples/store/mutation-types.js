@@ -15,6 +15,7 @@ export const GET_NAV_MENUS = 'GET_NAV_MENUS';
 
 export const GET_ADMINS = 'GET_ADMINS';
 export const GET_DEPTS = 'GET_DEPTS';
+export const GET_TEST = 'GET_TEST';
 
 
 

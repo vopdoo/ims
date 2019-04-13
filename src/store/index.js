@@ -1,19 +1,21 @@
-import node from './modules/node'
-import login from './modules/login.js'
-import department from './modules/department'
-import admin from './modules/admin'
-import role from './modules/role'
+import state from './state'
+import actions from './actions'
+import getters from './getters'
+import mutations from './mutations'
 
-const debug = false;
 
-const StoreModules = {
-    node,
-    department,
-    admin,
-    login,
-    role,
+
+import login from './modules/login'
+
+
+const StoreConstructorOptions = {
+    state,
+    getters,
+    actions,
+    mutations,
+    modules: {
+        login,
+    }
 }
 
-
-
-export default StoreModules;
+export default StoreConstructorOptions;

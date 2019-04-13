@@ -1,5 +1,7 @@
 import node from '../../api/admin'
 import * as types from '../mutation-types'
+
+console.info(types);
 import moment from "moment";
 
 const state = {
