@@ -1,5 +1,5 @@
 // actions
-import * as types from './mutation-types'
+import types from './mutation-types'
 const actions = {
     tesb({commit, state}, request) {
         console.info('top actions->testb');

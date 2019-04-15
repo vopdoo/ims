@@ -1,6 +1,5 @@
 <template>
     <div id="ims-login-container">
-
         <div id="login-fm">
             <div class="header">
                 <h1>{{title}}</h1>
@@ -44,12 +43,10 @@
     import {mapGetters} from 'vuex'
     import store from '@/store/index';
 
-    console.info(store);
     export default {
         name: "Login",
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('test');
-            await store.dispatch('tesb');
+            await store.dispatch('login/loginInfo',{a:'aa'});
             next();
         },
         computed: {
@@ -63,8 +60,6 @@
         },
         data() {
             return {
-                // title: 'IMS',
-                // slogan: '一切从登录开始',
                 loading: false,
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',

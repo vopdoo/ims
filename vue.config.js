@@ -4,7 +4,6 @@ module.exports = {
     outputDir: '../../ims.vopdoo.com/public',
     publicPath: '/',
     assetsDir: 'assets',
-
     css: {
         loaderOptions: {
             less: {

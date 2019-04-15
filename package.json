@@ -1,10 +1,24 @@
 {
-  "name": "ims",
+  "name": "@vopdoo/ims",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "description": "ims",
+  "main": "dist/ims.umd.min.js",
+  "keyword": "ims admin ivms",
+  "author": "Vopdoo Chen",
+  "homepage": "http://ims.vopdoo.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vopdoo/ims"
+  },
+  "bugs": {
+    "url": "https://github.com/vopdoo/ims/issues"
+  },
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "dist": "vue-cli-service build --target lib --name ims --dest dist src/index.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
