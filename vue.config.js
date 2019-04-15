@@ -20,7 +20,6 @@ module.exports = {
         }
     },
     configureWebpack: {
-
         resolve: {
             alias: {
                 '@': path.join(__dirname, 'examples'),
@@ -53,6 +52,5 @@ module.exports = {
 
     baseUrl: undefined,
     runtimeCompiler: undefined,
-    productionSourceMap: undefined,
     parallel: undefined
 }

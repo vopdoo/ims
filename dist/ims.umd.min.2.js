@@ -1,0 +1,2 @@
+(("undefined"!==typeof self?self:this)["webpackJsonpims"]=("undefined"!==typeof self?self:this)["webpackJsonpims"]||[]).push([[2],{"8cdb":function(e,n,t){"use strict";t.r(n);var s=function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",{staticClass:"wrapper404"},[e._v("\n    404\n")])},c=[],i={name:"NotFound"},f=i,u=(t("973b"),t("2877")),a=Object(u["a"])(f,s,c,!1,null,"27219579",null);n["default"]=a.exports},"973b":function(e,n,t){"use strict";var s=t("c1e0"),c=t.n(s);c.a},c1e0:function(e,n,t){}}]);
+//# sourceMappingURL=ims.umd.min.2.js.map
