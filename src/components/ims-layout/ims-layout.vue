@@ -91,8 +91,8 @@
 </template>
 
 <script>
-    import SiderMenu from '@ims/components/sider-menu/index'
-    import HorizontalTabBar from '@ims/components/horizontal-tab-bar/index'
+    import SiderMenu from '../components/sider-menu/index'
+    import HorizontalTabBar from '../components/horizontal-tab-bar/index'
     // import {mapGetters} from 'vuex'
     // import store from '@ims/store/index';
 
