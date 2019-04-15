@@ -1,6 +1,9 @@
 
 import ImsCurd from './components/ims-curd';
 import ImsLayout from './components/ims-layout';
+import storeConstructorOptions from './store';
+
+import routes from './routes';
 
 // import locale from './locale/index';
 
@@ -47,5 +50,11 @@ const API = {
 
 
 // module.exports.default = module.exports = API;   // eslint-disable-line no-undef
+export {
+    storeConstructorOptions,
+    routes
+}
 
 export default API
+
+// module.exports.default = API;

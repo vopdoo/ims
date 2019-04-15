@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from "vuex";
 
-import DefaultStoreConstructorOptions from '@ims/store';
+import {storeConstructorOptions as imsStoreConstructorOptions} from '@ims';
 
 import rootActions from './actions'
 import rootGetters from './getters'
@@ -10,22 +10,22 @@ import rootMutations from './mutations'
 
 const state = {
     ...rootState,
-    ...DefaultStoreConstructorOptions.state
+    ...imsStoreConstructorOptions.state
 }
 
 const actions = {
     ...rootActions,
-    ...DefaultStoreConstructorOptions.actions,
+    ...imsStoreConstructorOptions.actions,
 }
 //
 const getters = {
     ...rootGetters,
-    ...DefaultStoreConstructorOptions.getters,
+    ...imsStoreConstructorOptions.getters,
 }
 
 const mutations = {
     ...rootMutations,
-    ...DefaultStoreConstructorOptions.mutations,
+    ...imsStoreConstructorOptions.mutations,
 }
 
 import node from './modules/node'
@@ -40,7 +40,7 @@ const StoreConstructorOptions = {
     getters,
     mutations,
     modules: {
-        ...DefaultStoreConstructorOptions.modules,
+        ...imsStoreConstructorOptions.modules,
         node,
         department,
         // admin,

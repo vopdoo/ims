@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DefaultRoutes from '@ims/routes'
+
+import {routes as imsRoutes} from '@ims';
 
 import {LoadingBar, Modal} from 'iview'
 
 import * as storages from '@/utils/storages';
 
 import store from '@/store/index';
-
 
 Vue.use(Router);
 
@@ -32,10 +32,10 @@ const createRouter = () => new Router({
                     component: () => import('@/views/abc.vue')
 
                 },
-                ...DefaultRoutes.children
+                ...imsRoutes.children
             ]
         },
-        ...DefaultRoutes.top
+        ...imsRoutes.top
     ]
 });
 
