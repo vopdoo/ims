@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import {routes as imsRoutes} from '@ims';
+import {routes as imsRoutes} from '@vopdoo/ims'
 
 import {LoadingBar, Modal} from 'iview'
 

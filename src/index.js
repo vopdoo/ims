@@ -38,7 +38,9 @@ const API = {
     // locale: locale.use,
     // i18n: locale.i18n,
     install,
-    ...components
+    ...components,
+    // storeConstructorOptions,
+    // routes
 };
 
 // API.lang = (code) => {

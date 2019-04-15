@@ -727,6 +727,41 @@
   resolved "http://registry.npm.taobao.org/@types/q/download/@types/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha1-aQoUdbhPKohP0HzXl8APXzE1bqg=
 
+"@vopdoo/ims@0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@vopdoo/ims/-/ims-0.1.7.tgz#5db31356bf0edc4541825f2f4f92a8bada9a0c80"
+  integrity sha512-zezUDXkB9W473uhQak4nPvTj+cMwEbBf3hkjeJp5vuUdBzDB7a61BqQ+8quWs/djfU8XDspi4xaL/8EmQ22VCQ==
+  dependencies:
+    "@vopdoo/ims" "^0.1.6"
+    axios "^0.18.0"
+    better-scroll "^1.13.2"
+    iview "^3.0.1"
+    jsonp "^0.2.1"
+    lodash "^4.17.11"
+    moment "^2.22.2"
+    vue "^2.5.17"
+    vue-grid-layout "^2.2.0"
+    vue-router "^3.0.1"
+    vuex "^3.0.1"
+    vuex-persistedstate "^2.5.4"
+
+"@vopdoo/ims@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@vopdoo/ims/-/ims-0.1.6.tgz#9fb16a6ae11e51e44b94cf23d7f9aee8bcbbe568"
+  integrity sha512-PH19JmmTEhS5Qg/R7kxyHXfOsAy3m4bAO+XKD0k48IinGDKVSDJeFcShpOHrXa2k4NOpFOXZ+0qMaD9EtIfs0Q==
+  dependencies:
+    axios "^0.18.0"
+    better-scroll "^1.13.2"
+    iview "^3.0.1"
+    jsonp "^0.2.1"
+    lodash "^4.17.11"
+    moment "^2.22.2"
+    vue "^2.5.17"
+    vue-grid-layout "^2.2.0"
+    vue-router "^3.0.1"
+    vuex "^3.0.1"
+    vuex-persistedstate "^2.5.4"
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0-beta.3":
   version "1.0.0-beta.3"
   resolved "http://registry.npm.taobao.org/@vue/babel-helper-vue-jsx-merge-props/download/@vue/babel-helper-vue-jsx-merge-props-1.0.0-beta.3.tgz#e4c2e7125b3e0d2a9d493e457850b2abb0fd3cad"

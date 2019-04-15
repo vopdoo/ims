@@ -46,7 +46,7 @@
     export default {
         name: "Login",
         async beforeRouteEnter(to, from, next) {
-            await store.dispatch('login/loginInfo',{a:'aa'});
+            // await store.dispatch('login/loginInfo',{a:'aa'});
             next();
         },
         computed: {

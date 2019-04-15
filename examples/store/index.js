@@ -1,7 +1,9 @@
 import Vue from 'vue'
-import Vuex from "vuex";
+import Vuex from "vuex"
 
-import {storeConstructorOptions as imsStoreConstructorOptions} from '@ims';
+import {storeConstructorOptions as imsStoreConstructorOptions} from '@vopdoo/ims'
+
+console.info(imsStoreConstructorOptions);
 
 import rootActions from './actions'
 import rootGetters from './getters'

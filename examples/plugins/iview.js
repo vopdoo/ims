@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import iView from 'iview'
-import ims from '@ims';
+import ims from '@vopdoo/ims';
+
+// console.info(imss);
 
 Vue.use(iView);
 Vue.use(ims);
