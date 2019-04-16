@@ -1,17 +1,17 @@
 <template>
-    <div class="ims-layouts">
-        <div class="left" :style="layoutCommonStyles">
-            <div class="logo">
-                <span class="title">菲尔医疗</span>
+    <div :class="classes">
+        <div class="left" :class="layoutLeftClasses" :style="layoutCommonStyles">
+            <div :class="logoClasses">
+                <span :class="logoTitleClasses">Ims</span>
             </div>
-            <div class="navigation" ref="navigationWrapper">
+            <div class="navigation" :class="navigationClasses" ref="navigationWrapper">
                 <!-- <SiderMenu class="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/> -->
             </div>
-            <div class="trigger">
+            <div :class="triggerClasses">
                 <Icon type="md-swap" @click="navigationTrigger" size="16"/>
             </div>
         </div>
-        <div class="right" :style="layoutRightStyles">
+        <div :class="layoutRightClasses" :style="layoutRightStyles">
             <div class="header">
                 <div class="horizontal-nav">
                     <Row class-name="top-tools">
@@ -37,8 +37,8 @@
                                     <Dropdown placement="bottom" :transfer="true" @on-click="handleAdminDpdClick">
                                         <Avatar icon="ios-person" size="small"/>
                                         <DropdownMenu slot="list" class="info-menu-user">
-                                            <DropdownItem >
-                                                <strong class="info-menu-user-name" >名称</strong>
+                                            <DropdownItem>
+                                                <strong class="info-menu-user-name">名称</strong>
                                                 <div class="info-menu-aside-vip">
                                                     <span>角色</span>
                                                 </div>
@@ -48,11 +48,11 @@
                                             <!--<span>我的主页</span>-->
                                             <!--</DropdownItem>-->
                                             <DropdownItem divided name="lock_screen">
-                                                <Icon type="ios-lock-outline" />
+                                                <Icon type="ios-lock-outline"/>
                                                 <span>锁屏</span>
                                             </DropdownItem>
                                             <DropdownItem divided name="logout">
-                                                <Icon type="ios-log-out"  />
+                                                <Icon type="ios-log-out"/>
                                                 <span>退出</span>
                                             </DropdownItem>
                                         </DropdownMenu>
@@ -93,6 +93,8 @@
 <script>
     import SiderMenu from '../sider-menu/index'
     import HorizontalTabBar from '../horizontal-tab-bar/index'
+
+    const prefixCls = 'ims-layout';
     // import {mapGetters} from 'vuex'
     // import store from '@ims/store/index';
 
@@ -121,6 +123,29 @@
             // this.navigationWrapperScrollInitDestroy()
         },
         computed: {
+            classes() {
+                return `${prefixCls}`;
+            },
+            layoutLeftClasses() {
+                return `${prefixCls}-left`;
+            },
+            logoClasses() {
+                return `${prefixCls}-left-logo`;
+            },
+            logoTitleClasses() {
+                return `${prefixCls}-left-logo-title`;
+            },
+            navigationClasses() {
+                return `${prefixCls}-left-navigation`;
+            },
+            triggerClasses() {
+                return `${prefixCls}-left-trigger`;
+            },
+            layoutRightClasses() {
+                return `${prefixCls}-right`;
+            },
+
+
             layoutCommonStyles() {
                 return this.menu_expanded ? {width: '200px', minWidth: '200px'} : {width: '60px', minWidth: '60px'};
             },
@@ -246,357 +271,3 @@
         }
     }
 </script>
-
-<style lang="less" scoped>
-    .ims-layouts {
-        display: flex;
-        height: 100vh;
-
-        .left {
-            width: 50px;
-            height: 100%;
-            /*border-right: 1px solid red;*/
-            display: flex;
-            flex-direction: column;
-            background: #041527;
-
-            .logo {
-                height: 50px;
-                line-height: 50px;
-                text-align: center;
-                background: #07213E;
-                color: #fff;
-                cursor: pointer;
-                .title {
-                    display: inline-block;
-                    width: 100%;
-                    height: 20px;
-                    line-height: 20px;
-                    font-size: 14px;
-                    color: #fff;
-                    font-weight: bold;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-            }
-
-            .navigation {
-                flex: 1;
-                overflow-y: auto;
-                overflow-x: hidden;
-                color: #fff;
-
-                .menu {
-                }
-            }
-
-            .trigger {
-                height: 40px;
-                line-height: 40px;
-                text-align: center;
-                background: #07213E;
-                color: #fff;
-                cursor: pointer;
-            }
-        }
-
-        .right-explaned {
-            width: calc(100% - 200px);
-        }
-
-        .right-shrink {
-            width: calc(100% - 60px);
-        }
-
-        .right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-
-            .header {
-                /*height: 118px;*/
-                background: #fff;
-                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .1);
-                display: flex;
-                flex-direction: column;
-                z-index: 1;
-                .breadcrumb-wrapper {
-                    height: 28px;
-                    line-height: 28px;
-                    padding: 0 16px 0 16px;
-                    /*padding: 8px 16px 8px 16px;*/
-                    box-shadow: 0 -1px 0 0 #e8eaec;
-                }
-                .horizontal-nav {
-                    height: 50px;
-                    line-height: 50px;
-                    /*border-bottom: 1px solid #f6f6f6;*/
-                    box-shadow: 0 1px 0 0 #e8eaec;;
-                    /*border-bottom: 1px solid #e8eaec;*/
-                    padding: 0 16px 0 16px;
-                    .top-tools {
-                        .nav {
-                            /*padding-left: 16px;*/
-                            ul {
-                                list-style: none;
-                                li {
-                                    display: inline-block;
-                                    height: 50px;
-                                    line-height: 50px;
-                                    margin-right: 20px;
-                                    position: relative;
-                                    vertical-align: middle;
-                                    font-size: 14px;
-                                    transition: all .3s;
-                                    cursor: pointer;
-                                    color: #17233d;
-                                    font-weight: 700;
-
-                                    i {
-                                        color: #17233d;
-                                        line-height: 40px;
-                                        font-size: 24px;
-                                        font-weight: 700;
-
-                                    }
-
-                                    &:after {
-                                        content: '';
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        width: 0;
-                                        height: 2px;
-                                        border-radius: 0;
-                                        background-color: #00c1de;
-                                        transition: all .3s;
-                                    }
-
-                                    &:hover {
-                                        color: #2db7f5;
-                                        i {
-                                            color: #2db7f5;
-                                        }
-                                        &:after {
-                                            width: 100%;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .custom {
-                            text-align: right;
-                            ul {
-                                list-style: none;
-                                .last {
-                                    margin-right: 10px;
-                                }
-                                li {
-                                    display: inline-block;
-                                    height: 50px;
-                                    line-height: 50px;
-                                    margin-right: 20px;
-                                    position: relative;
-                                    vertical-align: middle;
-                                    font-size: 14px;
-                                    transition: all .3s;
-                                    cursor: pointer;
-
-                                    .login-user-dropdown-list {
-                                        .item {
-                                            text-align: left;
-                                            margin: 0;
-                                            line-height: normal;
-                                            padding: 7px 16px;
-                                            vertical-align: middle;
-                                            clear: both;
-                                            color: #515a6e;
-                                            font-size: 12px !important;
-                                            white-space: nowrap;
-                                            list-style: none;
-                                            cursor: pointer;
-                                            transition: background .2s ease-in-out;
-                                            i {
-                                                font-size: 14px;
-                                            }
-                                            &:hover {
-                                                background: #f3f3f3;
-                                            }
-                                        }
-                                        .disabled {
-                                            color: #c5c8ce;
-                                            cursor: not-allowed;
-                                        }
-                                        .divided {
-                                            margin-top: 5px;
-                                            border-top: 1px solid #e8eaec;
-                                        }
-
-                                    }
-                                    &:after {
-                                        content: '';
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        width: 0;
-                                        height: 2px;
-                                        border-radius: 0;
-                                        background-color: #00c1de;
-                                        transition: all .3s;
-                                    }
-
-                                    &:hover {
-                                        color: #2db7f5;
-                                        i {
-                                            color: #2db7f5;
-                                        }
-                                        &:after {
-                                            width: 100%;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-                .horizontal-tab-bar {
-                    height: 40px;
-                    line-height: 40px;
-                    display: flex;
-
-                    .tab-control {
-                        cursor: pointer;
-                        width: 40px;
-                        text-align: center;
-                        border-left: 1px solid #f6f6f6;
-                        border-right: 1px solid #f6f6f6;
-                    }
-                    .control-tool-left {
-                        float: left;
-                        text-align: center;
-
-                        .prev {
-                            border-left: none;
-                        }
-
-                    }
-                    .control-tabs {
-                        overflow: hidden;
-                        flex: 1;
-                        .tabs {
-                            font-size: 0;
-                            transition: all .2s;
-                            width: 100%;
-                            white-space: nowrap;
-                            display: block;
-                            li {
-                                display: inline-block;
-                                line-height: 40px;
-                                max-width: 160px;
-                                text-overflow: ellipsis;
-                                overflow: hidden;
-                                border-right: 1px solid #f6f6f6;
-                                vertical-align: top;
-                                font-size: 14px;
-                                position: relative;
-                                padding: 0 25px 0 10px;
-                                text-align: center;
-                                cursor: pointer;
-                                list-style: none;
-
-                                &:after {
-                                    content: '';
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 0;
-                                    height: 2px;
-                                    border-radius: 0;
-                                    background-color: #515a6e;
-                                    transition: all .3s;
-                                }
-
-                                &:hover {
-                                    background-color: #f6f6f6;
-                                    &:after {
-                                        width: 100%;
-                                    }
-                                }
-
-                                span {
-                                    display: inline-block;
-                                    width: auto;
-                                    &:hover {
-                                        color: #000;
-                                    }
-                                }
-
-                                .tab-close {
-                                    position: absolute;
-                                    right: 8px;
-                                    top: 50%;
-                                    margin: -7px 0 0;
-                                    width: 16px;
-                                    height: 16px;
-                                    line-height: 16px;
-                                    border-radius: 50%;
-                                    font-size: 16px;
-                                    &:hover {
-                                        color: red;
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                    .control-tool-right {
-                        display: flex;
-                        .refresh {
-                            border: none;
-                        }
-                        .oths {
-                            border-right: none;
-                            .oths-dropdown-tools {
-                                width: 36px;
-                                .dropdown-tool-item {
-                                    text-align: center;
-                                    i {
-                                        color: #17233d;
-                                        font-size: 18px;
-                                    }
-                                    &:hover {
-                                        background: #f3f3f3;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .middle {
-                flex: 1;
-                overflow-y: auto;
-                overflow-x: hidden;
-                background-color: #fff;
-                .contents {
-                    padding: 8px 16px 8px 16px;
-                }
-            }
-            .footer {
-                height: 30px;
-                line-height: 30px;
-                text-align: center;
-                background: #fff;
-                color: #808695;
-                box-shadow: 0 -1px 0 0 #e8eaec;
-                border-top: 1px solid #07213E;
-                /*<!--box-shadow: 0 -1px 0 #07213E;-->*/
-
-            }
-
-        }
-    }
-</style>

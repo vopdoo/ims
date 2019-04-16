@@ -55,11 +55,8 @@
             classes () {
                 return [
                     `${prefixCls}`,
-                    {
-                        // [`${prefixCls}-bordered`]: this.bordered && !this.shadow,
-                        // [`${prefixCls}-dis-hover`]: this.disHover || this.shadow,
-                        // [`${prefixCls}-shadow`]: this.shadow
-                    }
+                    {}
+
                 ];
             },
             wrapClasses () {

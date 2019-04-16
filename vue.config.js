@@ -1,4 +1,5 @@
 const path = require('path');
+const resolve = dir => require('path').join(__dirname, dir);
 module.exports = {
     lintOnSave: false,
     outputDir: '../../ims.vopdoo.com/public',
@@ -22,9 +23,9 @@ module.exports = {
     configureWebpack:  {
         resolve: {
             alias: {
-                '@': path.join(__dirname, 'examples'),
-                '@ims': path.join(__dirname, 'src'),
-                '@dist': path.join(__dirname, 'dist'),
+                '@': resolve('examples'),
+                '@ims': resolve('src'),
+                '@dist': resolve('dist'),
             },
         },
     },

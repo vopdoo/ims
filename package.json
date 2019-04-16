@@ -18,6 +18,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "dist:style": "vue-cli-service build --target lib --name ims --dest dist/styles src/styles/index.less",
     "dist": "vue-cli-service build --target lib --name ims --dest dist src/index.js",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
