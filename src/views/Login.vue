@@ -1,11 +1,11 @@
 <template>
-    <div id="ims-login-container">
-        <div id="login-fm">
-            <div class="header">
+    <div :class="classes" >
+        <div id="login-fm"  :class="wrapClasses">
+            <div  :class="headerClasses">
                 <h1>{{title}}</h1>
                 <p>{{slogan}}</p>
             </div>
-            <div class="body">
+            <div  :class="bodyClasses">
                 <Form ref="loginForm" :model="loginForm" class="login-form" :rules="ruleValidate">
                     <FormItem prop="account">
                         <Input element-id="account" v-model="loginForm.account" prefix="ios-contact"
@@ -25,7 +25,7 @@
                         <Tooltip content="请勿在公共场所使用" placement="right">
                             <Checkbox v-model="loginForm.rememb">记住密码</Checkbox>
                         </Tooltip>
-                        <Tooltip class="forgetpwd" placement="right" content="忘记密码请联系管理员">
+                        <Tooltip :class="forgetPasswordClasses" placement="right" content="忘记密码请联系管理员">
                             <span> 忘记密码？ </span>
                         </Tooltip>
                     </FormItem>
@@ -43,6 +43,8 @@
     import {mapGetters} from 'vuex'
     import store from '@/store/index';
 
+    const prefixCls = 'ims-login';
+
     export default {
         name: "Login",
         async beforeRouteEnter(to, from, next) {
@@ -50,6 +52,32 @@
             next();
         },
         computed: {
+            classes () {
+                return [
+                    `${prefixCls}`,
+                    {
+                        // [`${prefixCls}-bordered`]: this.bordered && !this.shadow,
+                        // [`${prefixCls}-dis-hover`]: this.disHover || this.shadow,
+                        // [`${prefixCls}-shadow`]: this.shadow
+                    }
+                ];
+            },
+            wrapClasses () {
+                return [
+                    `${prefixCls}-wrap`,
+                    {}
+                ];
+            },
+            headerClasses () {
+                return `${prefixCls}-header`;
+            },
+            bodyClasses () {
+                return `${prefixCls}-body`;
+            },
+            forgetPasswordClasses () {
+                return `${prefixCls}-forget-password`;
+            },
+
             ...mapGetters({
                 'title': 'login/title',
                 'slogan': 'login/slogan',
@@ -117,40 +145,3 @@
         }
     }
 </script>
-
-<style lang="less" scoped>
-    #ims-login-container {
-        display: flex;
-
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-
-        #login-fm {
-            width: 300px;
-            /*height: 200px;*/
-            .header {
-                text-align: center;
-                margin-bottom: 20px;
-                h1 {
-                    margin-bottom: 10px;
-                    font-weight: 300;
-                    font-size: 30px;
-                    color: #17233d;
-                }
-                p {
-                    color: #808695;
-                    font-weight: 300;
-                }
-            }
-            .body {
-                .forgetpwd {
-                    float: right;
-                    margin-right: 0;
-                    cursor: pointer;
-                }
-            }
-        }
-
-    }
-</style>

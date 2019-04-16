@@ -1,22 +1,22 @@
 <template>
-    <div class="wrapper404">
+    <div :class="classes">
         404
     </div>
 </template>
 
 <script>
+    const prefixCls = 'ims-404';
     export default {
-        name: "NotFound"
+        name: "NotFound",
+        computed: {
+            classes () {
+                return [
+                    `${prefixCls}`,
+                    {
+                    }
+                ];
+            },
+
+        },
     }
 </script>
-
-<style scoped>
-    .wrapper404 {
-        text-align: center;
-        list-style: 100%;
-        height: 100%;
-        font-size: 32px;
-        margin: 0 auto;
-    }
-
-</style>

@@ -5,6 +5,9 @@ import storeConstructorOptions from './store';
 
 import routes from './routes';
 
+import "./styles/index.less";
+// @import()
+
 // import locale from './locale/index';
 
 const components = {
@@ -48,8 +51,6 @@ const API = {
 //     if (code === langObject.i.locale) locale.use(langObject);
 //     else console.log(`The ${code} language pack is not loaded.`); // eslint-disable-line no-console
 // };
-
-
 
 // module.exports.default = module.exports = API;   // eslint-disable-line no-undef
 export {

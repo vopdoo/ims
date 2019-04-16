@@ -19,11 +19,12 @@ module.exports = {
             filename: 'index.html'
         }
     },
-    configureWebpack: {
+    configureWebpack:  {
         resolve: {
             alias: {
                 '@': path.join(__dirname, 'examples'),
                 '@ims': path.join(__dirname, 'src'),
+                '@dist': path.join(__dirname, 'dist'),
             },
         },
     },

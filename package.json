@@ -23,7 +23,6 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@vopdoo/ims": "0.1.7",
     "axios": "^0.18.0",
     "better-scroll": "^1.13.2",
     "iview": "^3.0.1",

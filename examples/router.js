@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import {routes as imsRoutes} from '@vopdoo/ims'
+// import {routes as imsRoutes} from '@dist/ims.umd.min.js'
+import {routes as imsRoutes} from '@ims'
+console.info('imsRoutes',imsRoutes);
 
 import {LoadingBar, Modal} from 'iview'
 

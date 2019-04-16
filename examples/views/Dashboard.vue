@@ -14,7 +14,8 @@
                     :use-css-transforms="true"
             >
 
-                <grid-item v-for="item in testLayout"
+                <grid-item v-for="(item,index) in testLayout"
+                           :key="index"
                            :x="item.x"
                            :y="item.y"
                            :w="item.w"
