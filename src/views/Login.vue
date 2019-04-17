@@ -49,6 +49,9 @@
         name: "Login",
         async beforeRouteEnter(to, from, next) {
             // await store.dispatch('login/loginInfo',{a:'aa'});
+            // //    "vuex-persistedstate": "^2.5.4"
+            //    "lodash": "^4.17.11",
+//    "moment": "^2.22.2",
             next();
         },
         computed: {

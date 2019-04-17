@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <Row type="flex" justify="space-between" align="top" >
             <Col span="20">
                 <slot name="filter"></slot>
@@ -82,13 +81,3 @@
         }
     }
 </script>
-
-<style  lang="less">
-    .list-tlbr {
-        float: right;
-        text-align: right;
-        .ivu-btn {
-            margin-left: 5px;
-        }
-    }
-</style>

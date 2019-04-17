@@ -786,12 +786,12 @@ try {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"7022e74e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/iview-loader??ref--0-2!./src/views/Login.vue?vue&type=template&id=84569014&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0c67ec4e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/iview-loader??ref--0-2!./src/views/Login.vue?vue&type=template&id=3ecbe2b8&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:_vm.classes},[_c('div',{class:_vm.wrapClasses,attrs:{"id":"login-fm"}},[_c('div',{class:_vm.headerClasses},[_c('h1',[_vm._v(_vm._s(_vm.title))]),_c('p',[_vm._v(_vm._s(_vm.slogan))])]),_c('div',{class:_vm.bodyClasses},[_c('Form',{ref:"loginForm",staticClass:"login-form",attrs:{"model":_vm.loginForm,"rules":_vm.ruleValidate}},[_c('FormItem',{attrs:{"prop":"account"}},[_c('Input',{attrs:{"element-id":"account","prefix":"ios-contact","placeholder":"账号/邮箱/手机号"},model:{value:(_vm.loginForm.account),callback:function ($$v) {_vm.$set(_vm.loginForm, "account", $$v)},expression:"loginForm.account"}})],1),_c('FormItem',{attrs:{"prop":"password"}},[_c('Input',{attrs:{"element-id":"password","type":_vm.passwordInputType,"prefix":"ios-unlock","icon":_vm.passwordInputSuffixIcon,"placeholder":"密码"},on:{"on-click":_vm.showPwd},model:{value:(_vm.loginForm.password),callback:function ($$v) {_vm.$set(_vm.loginForm, "password", $$v)},expression:"loginForm.password"}})],1),_c('FormItem',[_c('Tooltip',{attrs:{"content":"请勿在公共场所使用","placement":"right"}},[_c('Checkbox',{model:{value:(_vm.loginForm.rememb),callback:function ($$v) {_vm.$set(_vm.loginForm, "rememb", $$v)},expression:"loginForm.rememb"}},[_vm._v("记住密码")])],1),_c('Tooltip',{class:_vm.forgetPasswordClasses,attrs:{"placement":"right","content":"忘记密码请联系管理员"}},[_c('span',[_vm._v(" 忘记密码？ ")])])],1),_c('FormItem',[_c('Button',{attrs:{"type":"success","loading":_vm.logining,"long":""},on:{"click":function($event){return _vm.login('loginForm')}}},[_vm._v("登录")])],1)],1)],1)])])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/views/Login.vue?vue&type=template&id=84569014&
+// CONCATENATED MODULE: ./src/views/Login.vue?vue&type=template&id=3ecbe2b8&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.function.name.js
 var es6_function_name = __webpack_require__("7f7f");
@@ -871,6 +871,9 @@ var prefixCls = 'ims-login';
           switch (_context.prev = _context.next) {
             case 0:
               // await store.dispatch('login/loginInfo',{a:'aa'});
+              // //    "vuex-persistedstate": "^2.5.4"
+              //    "lodash": "^4.17.11",
+              //    "moment": "^2.22.2",
               next();
 
             case 1:
@@ -889,10 +892,7 @@ var prefixCls = 'ims-login';
   }(),
   computed: Object(objectSpread["a" /* default */])({
     classes: function classes() {
-      return ["".concat(prefixCls), {// [`${prefixCls}-bordered`]: this.bordered && !this.shadow,
-        // [`${prefixCls}-dis-hover`]: this.disHover || this.shadow,
-        // [`${prefixCls}-shadow`]: this.shadow
-      }];
+      return ["".concat(prefixCls), {}];
     },
     wrapClasses: function wrapClasses() {
       return ["".concat(prefixCls, "-wrap"), {}];

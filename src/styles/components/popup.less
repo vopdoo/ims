@@ -1,0 +1,26 @@
+@current-prefix-cls: ~"@{css-prefix}popup";
+
+.@{current-prefix-cls} {
+  /*background: gray;*/
+  /*border: 1px solid red;*/
+  &-rel {
+    &:hover {
+      /*background: gold;*/
+    }
+  }
+  &-popper {
+    width: 200px;
+    background-color: #071526;
+    /*margin: 5px 5px;*/
+    padding: 5px 0;
+    margin-left: 5px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
+    position: absolute;
+    z-index: 900;
+    &-content {
+      background: gold;
+    }
+  }
+}

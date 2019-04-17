@@ -36,81 +36,46 @@
     </div>
 </template>
 
-<style lang="less" scoped>
-    .vpd-popup {
-        /*background: gray;*/
-        /*border: 1px solid red;*/
+<!--<style lang="less" scoped>-->
+    <!--.vpd-popup {-->
+        <!--/*background: gray;*/-->
+        <!--/*border: 1px solid red;*/-->
 
-        .vpd-popup-rel {
-            &:hover {
-                /*background: gold;*/
-            }
-        }
+        <!--.vpd-popup-rel {-->
+            <!--&:hover {-->
+                <!--/*background: gold;*/-->
+            <!--}-->
+        <!--}-->
 
-        .vpd-popup-popper {
-            width: 200px;
-            background-color: #071526;
-            /*margin: 5px 5px;*/
-            padding: 5px 0;
-            margin-left: 5px;
-            box-sizing: border-box;
-            border-radius: 4px;
-            box-shadow: 0 1px 6px rgba(0,0,0,.2);
-            position: absolute;
-            z-index: 900;
-            .vpd-popup-popper-content {
-                background: gold;
-            }
-        }
-    }
-</style>
+        <!--.vpd-popup-popper {-->
+            <!--width: 200px;-->
+            <!--background-color: #071526;-->
+            <!--/*margin: 5px 5px;*/-->
+            <!--padding: 5px 0;-->
+            <!--margin-left: 5px;-->
+            <!--box-sizing: border-box;-->
+            <!--border-radius: 4px;-->
+            <!--box-shadow: 0 1px 6px rgba(0,0,0,.2);-->
+            <!--position: absolute;-->
+            <!--z-index: 900;-->
+            <!--.vpd-popup-popper-content {-->
+                <!--background: gold;-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+<!--</style>-->
 
 <script>
     import Popper from 'iview/src/components/base/popper';
     import {oneOf} from 'iview/src/utils/assist';
 
-    const prefixCls = 'vpd-popup';
+    const prefixCls = 'ims-popup';
 
     export default {
-        name: "VpdPopup",
+        name: "ImsPopup",
         mixins: [Popper],
         directives: {},
         components: {},
-        props: {
-            trigger: {
-                validator(value) {
-                    return oneOf(value, ['click', 'focus', 'hover']);
-                },
-                default: 'click'
-            },
-            placement: {
-                validator(value) {
-                    return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
-                },
-                default: 'right'
-            },
-            title: {
-                type: [String, Number]
-            },
-            content: {
-                type: [String, Number],
-                default: ''
-            },
-            width: {
-                type: [String, Number]
-            },
-            popperClass: {
-                type: String
-            },
-            padding: {
-                type: String
-            }
-        },
-        data() {
-            return {
-                prefixCls: prefixCls,
-            };
-        },
         computed: {
             classes() {
                 return [
@@ -149,6 +114,41 @@
                 if (this.padding !== '') styles['padding'] = this.padding;
                 return styles;
             }
+        },
+        props: {
+            trigger: {
+                validator(value) {
+                    return oneOf(value, ['click', 'focus', 'hover']);
+                },
+                default: 'click'
+            },
+            placement: {
+                validator(value) {
+                    return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
+                },
+                default: 'right'
+            },
+            title: {
+                type: [String, Number]
+            },
+            content: {
+                type: [String, Number],
+                default: ''
+            },
+            width: {
+                type: [String, Number]
+            },
+            popperClass: {
+                type: String
+            },
+            padding: {
+                type: String
+            }
+        },
+        data() {
+            return {
+                prefixCls: prefixCls,
+            };
         },
         methods: {
             handleClick() {
@@ -237,7 +237,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>

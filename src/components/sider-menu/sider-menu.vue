@@ -100,39 +100,3 @@
         }
     }
 </script>
-
-<style lang="less">
-    .ims-sider-menu {
-        overflow-y: auto;
-        overflow-x: hidden;
-        user-select: none;
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
-
-            li {
-                list-style: none;
-                line-height: 40px;
-                box-sizing: border-box;
-                display: inline-block;
-                width: 100%;
-                /*padding: 8px;*/
-                .ims-sider-menu-icon {
-                    margin-right: 5px;
-                    font-size: 16px;
-                }
-
-                white-space: nowrap;
-                outline: 0;
-
-                ul {
-                    margin: 0;
-                    /*padding: 0 0 0 5px;*/
-                }
-            }
-        }
-
-    }
-</style>

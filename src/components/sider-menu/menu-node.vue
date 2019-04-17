@@ -42,13 +42,13 @@
     import Popper from 'iview/src/components/base/popper';
     import {oneOf} from 'iview/src/utils/assist';
 
-    import Vpdpopup from '@/components/popup';
+    import ImsPopup from '@/components/popup';
 
     export default {
         name: "MenuNode",
         mixins: [Popper, Emitter],
         components: {
-            Vpdpopup
+            ImsPopup
         },
         props: {
             data: {
@@ -209,114 +209,3 @@
         }
     }
 </script>
-
-<style scoped lang="less">
-
-    .ims-sider-menu-submenu {
-        display: flex;
-        flex-direction: column;
-
-    }
-
-    .ims-sider-menu-item-children {
-        &:after {
-            position: relative;
-            float: right;
-            margin-right: 10px;
-            content: '\F116';
-            font-family: "Ionicons";
-            font-size: 14px;
-            display: inline-block;
-            transition: all .2s ease-in-out;
-        }
-
-        &:hover {
-        }
-    }
-
-    .ims-sider-menu-item {
-        .ims-sider-menu-item-expanded {
-            &:after {
-                content: '\F124';
-            }
-        }
-        .ims-sider-menu-item-title {
-            display: inline-block;
-            width: 100%;
-            cursor: pointer;
-            .ims-sider-menu-icon {
-                font-size: 22px;
-            }
-            &:hover {
-                /*background-color: #384f73;*/
-                color: #00c1de;
-                .ims-sider-menu-icon {
-                    color: #00c1de;
-                }
-            }
-        }
-
-
-        .ims-sider-menu-item-top-lv {
-            text-align: center;
-            padding-left: 0 !important;
-
-            .ims-sider-menu-icon {
-                font-size: 32px;
-            }
-            &:after {
-                position: relative;
-                float: right;
-                margin-right: 10px;
-                content: '\F11F';
-                font-family: "Ionicons";
-                font-size: 14px;
-                display: none;
-                transition: all .2s ease-in-out;
-            }
-            .ims-sider-menu-item-title-text {
-                display: none;
-            }
-        }
-
-    }
-
-
-    .ims-sider-menu-submenu-normal {
-        background: #071526;
-        display: flex;
-        flex-direction: column;
-        position: inherit !important;
-        top: inherit !important;
-        left: inherit !important;
-        will-change: inherit !important;
-    }
-
-    .ims-sider-menu-submenu-popup {
-        .ims-sider-menu-submenu-popper {
-            background: #071526;
-            display: flex;
-            flex-direction: column;
-            width: 200px;
-            z-index: 9999;
-            margin-left: 1px;
-            border-radius: 2px;
-            padding: 5px 0;
-            .ims-sider-menu-item-children {
-                &:after {
-                    content: '\F11F';
-                }
-            }
-            .ims-sider-menu-item-title {
-                padding-left: 10px !important;
-            }
-
-        }
-    }
-
-    .ims-sider-menu-item-selected {
-        background-color: #384f73;
-    }
-
-
-</style>

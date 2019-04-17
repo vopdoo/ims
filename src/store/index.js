@@ -2,20 +2,13 @@ import state from './state'
 import actions from './actions'
 import getters from './getters'
 import mutations from './mutations'
-
-
-
-import login from './modules/login'
-
+import modules from './modules'
 
 const StoreConstructorOptions = {
     state,
     getters,
     actions,
     mutations,
-    modules: {
-        login,
-    }
+    modules
 }
-
 export default StoreConstructorOptions;
