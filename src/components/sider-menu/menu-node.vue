@@ -4,15 +4,15 @@
             :class="menuItemClasses"
             @mouseenter="handleMouseenter"
             @mouseleave="handleMouseleave"
-
     >
         <span :class="itemClasses"
-             :style="abc"
-             @click="handleSelect"
-             :ref="triggerRelatedRef.relRef"
+              :style="abc"
+              @click="handleSelect"
+              :ref="triggerRelatedRef.relRef"
         >
             <Icon :type="data.icon" :class="iconClasses"></Icon>
-            <span :class="titleClasses" >{{ data.name }}</span>
+            <span :class="titleClasses">{{ data.name }}</span>
+
         </span>
         <ul
                 v-if="children"
@@ -150,6 +150,7 @@
                 return [
                     // `${prefixCls}-submenu-popper`,
                     // `${prefixCls}-submenu-poptip`:this.data.poptip,
+                    // && this.trigger == 'hover'
                     {
                         [`${prefixCls}-submenu-popper`]: this.data[this.childrenKey] && this.data[this.childrenKey].length && this.trigger == 'hover',
                         [`${prefixCls}-submenu-normal`]: this.data[this.childrenKey] && this.data[this.childrenKey].length && this.trigger == 'click',
@@ -162,7 +163,7 @@
                 ];
             },
             children() {
-                return  this.data[this.childrenKey];
+                return this.data[this.childrenKey];
             }
         },
         methods: {
@@ -170,6 +171,12 @@
 
                 if (this.trigger !== 'hover') {
                     return false;
+                } else {
+                    // console.info('vv');
+                    // document.querySelector('#navigations').style.position = '';
+                    //
+                    // document.querySelector('#navigations').style.overflow = 'auto';
+                    // document.querySelector('#navigations').style.transform = '';
                 }
                 if (this.enterTimer) clearTimeout(this.enterTimer);
                 this.enterTimer = setTimeout(() => {
@@ -178,16 +185,21 @@
 
             },
             handleMouseleave() {
-                // console.info('handleMouseleave');
-
                 if (this.trigger !== 'hover') {
                     return false;
+                } else {
+                    // document.querySelector('#navigations').style.position = 'relative';
+                    // document.querySelector('#navigations').style.overflow = 'hidden';
                 }
                 if (this.enterTimer) {
                     clearTimeout(this.enterTimer);
                     this.enterTimer = setTimeout(() => {
                         this.visible = false;
+                        // document.querySelector('#navigations').style.position = 'relative';
+                        // document.querySelector('#navigations').style.overflow = 'hidden';
+
                     }, 100);
+
                 }
             },
             indent() {
@@ -197,7 +209,7 @@
             handleSelect() {
                 console.info(this.data);
                 // this.data.type == 2 &&
-                if(this.data[this.childrenKey]) {
+                if (this.data[this.childrenKey]) {
                     if (this.trigger !== 'click') {
                         return false;
                     }
@@ -209,3 +221,4 @@
         }
     }
 </script>
+

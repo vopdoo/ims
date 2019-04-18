@@ -12,7 +12,7 @@
                 @mouseup="handleBlur(false)">
             <slot></slot>
         </div>
-
+        <!--v-show="visible"-->
         <transition name="fade">
             <div
                     :class="popperClasses"
@@ -36,38 +36,11 @@
     </div>
 </template>
 
-<!--<style lang="less" scoped>-->
-    <!--.vpd-popup {-->
-        <!--/*background: gray;*/-->
-        <!--/*border: 1px solid red;*/-->
-
-        <!--.vpd-popup-rel {-->
-            <!--&:hover {-->
-                <!--/*background: gold;*/-->
-            <!--}-->
-        <!--}-->
-
-        <!--.vpd-popup-popper {-->
-            <!--width: 200px;-->
-            <!--background-color: #071526;-->
-            <!--/*margin: 5px 5px;*/-->
-            <!--padding: 5px 0;-->
-            <!--margin-left: 5px;-->
-            <!--box-sizing: border-box;-->
-            <!--border-radius: 4px;-->
-            <!--box-shadow: 0 1px 6px rgba(0,0,0,.2);-->
-            <!--position: absolute;-->
-            <!--z-index: 900;-->
-            <!--.vpd-popup-popper-content {-->
-                <!--background: gold;-->
-            <!--}-->
-        <!--}-->
-    <!--}-->
-<!--</style>-->
 
 <script>
     import Popper from 'iview/src/components/base/popper';
     import {oneOf} from 'iview/src/utils/assist';
+    import { transferIndex, transferIncrease } from 'iview/src/utils/transfer-queue';
 
     const prefixCls = 'ims-popup';
 
@@ -91,6 +64,8 @@
                 if (this.width) {
                     style.width = `${this.width}px`;
                 }
+                style['z-index'] = 1060 + this.tIndex;
+                // if (this.transfer) style['z-index'] = 1060 + this.tIndex;
                 return style;
             },
             popperClasses () {
@@ -122,6 +97,12 @@
                 },
                 default: 'click'
             },
+            transfer: {
+                type: Boolean,
+                default () {
+                    return true;
+                }
+            },
             placement: {
                 validator(value) {
                     return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
@@ -148,9 +129,14 @@
         data() {
             return {
                 prefixCls: prefixCls,
+                tIndex: this.handleGetIndex()
             };
         },
         methods: {
+            handleGetIndex () {
+                transferIncrease();
+                return transferIndex;
+            },
             handleClick() {
                 if (this.confirm) {
                     this.visible = !this.visible;
@@ -182,6 +168,10 @@
             handleMouseenter() {
                 if (this.trigger !== 'hover') {
                     return false;
+                } else {
+                    // console.info('popup vvv');
+                    // document.querySelector('#navigations').style.position = '';
+                    // document.querySelector('#navigations').style.overflow = 'auto';
                 }
                 if (this.enterTimer) clearTimeout(this.enterTimer);
                 this.enterTimer = setTimeout(() => {
@@ -191,6 +181,9 @@
             handleMouseleave() {
                 if (this.trigger !== 'hover') {
                     return false;
+                } else {
+                    // document.querySelector('#navigations').style.position = 'relative';
+                    // document.querySelector('#navigations').style.overflow = 'hidden';
                 }
                 if (this.enterTimer) {
                     clearTimeout(this.enterTimer);

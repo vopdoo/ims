@@ -1,4 +1,7 @@
-.ims-layout {
+@layout-prefix-cls: ~"@{css-prefix}layout";
+
+.@{layout-prefix-cls} {
+
   display: flex;
   height: 100vh;
   &-left {
@@ -32,9 +35,14 @@
 
     &-navigation {
       flex: 1;
-      overflow-y: hidden;
-      overflow-x: hidden;
+      //width: 180px;
+      //border: 1px solid red;
+      //overflow-y: auto;
+      //overflow-x: auto;
+      overflow: hidden;
+      //visibility: hidden;
       color: #fff;
+      z-index: 99999999999999 !important;
 
       .menu {
       }
@@ -331,6 +339,7 @@
       flex: 1;
       overflow-y: hidden;
       overflow-x: hidden;
+      position: relative; // bs
       background-color: #fff;
       .contents {
         padding: 8px 16px 8px 16px;
