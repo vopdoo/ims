@@ -32,6 +32,10 @@
       }
     }
 
+    //&-menus {
+    //  height: calc(100% - 90px);
+    //  overflow: hidden;
+    //}
 
     &-navigation {
       flex: 1;
@@ -46,6 +50,18 @@
 
       .menu {
       }
+      .bscroll-vertical-scrollbar {
+        position: fixed !important;
+        width: 4px !important;
+        bottom: 40px;
+        top: 50px;
+        overflow: hidden;
+        opacity: 0;
+        transition-duration: 500ms;
+        left: 56px;
+        margin-top: 50px;
+        margin-bottom: 40px;
+      }
     }
 
     &-trigger {
@@ -57,8 +73,6 @@
       cursor: pointer;
     }
   }
-
-
 
   .right-explaned {
     width: calc(100% - 200px);

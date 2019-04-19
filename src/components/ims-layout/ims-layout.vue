@@ -7,7 +7,13 @@
             <!--style="position: relative;"-->
             <div :class="navigationClasses" id="navigations" :ref="navigationWrapper"
                  style="color: #fff;">
-                <SiderMenu class="sider-menu" id="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/>
+                <div  :style="layoutCommonStyles" ref="siderMenu" id="side-meun">
+                    <SiderMenu class="sider-menu" id="sider-menu" @on-select-change="selectMenu" :data="nav_menus" :trigger="menuTrigger"/>
+                </div>
+                <!--<SiderMenu class="sider-menu" id="sider-menu" ref="siderMenu" @on-select-change="selectMenu"-->
+                           <!--:data="nav_menus" :trigger="menuTrigger"/>-->
+
+
             </div>
             <div :class="triggerClasses">
                 <Icon type="md-swap" @click="navigationTrigger" size="16"/>
@@ -136,6 +142,9 @@
             },
             classes() {
                 return `${prefixCls}`;
+            },
+            layoutMenuClasses() {
+                return `${prefixCls}-menus`;
             },
             layoutLeftClasses() {
                 return `${prefixCls}-left`;
@@ -328,8 +337,8 @@
                         "id": 121,
                         "pid": 0,
                         "type": 2,
-                        "icon": "md-apps",
-                        "name": "会员",
+                        "icon": "md-add",
+                        "name": "会员1",
                         "code": "uses",
                         "options": {
                             "tree_path": "0"
@@ -379,8 +388,8 @@
                         "id": 1,
                         "pid": 0,
                         "type": 2,
-                        "icon": "md-apps",
-                        "name": "系统",
+                        "icon": "md-alarm",
+                        "name": "系统2",
                         "code": "systems",
                         "options": {
                             "name": "systems_nodes",
@@ -530,8 +539,8 @@
                         "id": 121,
                         "pid": 0,
                         "type": 2,
-                        "icon": "md-apps",
-                        "name": "会员",
+                        "icon": "md-at",
+                        "name": "会员vvv",
                         "code": "uses",
                         "options": {
                             "tree_path": "0"
@@ -581,8 +590,8 @@
                         "id": 1,
                         "pid": 0,
                         "type": 2,
-                        "icon": "md-apps",
-                        "name": "系统",
+                        "icon": "md-boat",
+                        "name": "系统3434",
                         "code": "systems",
                         "options": {
                             "name": "systems_nodes",
@@ -732,7 +741,7 @@
                         "id": 121,
                         "pid": 0,
                         "type": 2,
-                        "icon": "md-apps",
+                        "icon": "ios-body",
                         "name": "会员",
                         "code": "uses",
                         "options": {
@@ -831,8 +840,8 @@
             handleBeforeScrollStart() {
                 console.info('beforeScrollStart');
             },
-            onScrollEnd(){
-              console.info('onScrollEnd');
+            onScrollEnd() {
+                console.info('onScrollEnd');
             },
 
             navigationWrapperScrollInit() {
@@ -843,6 +852,49 @@
                         interactive: false // 1.8.0 新增
                     }
                 })
+                if (this.navigationBS !== null) {
+                    // let that = this;
+
+                    // this.navigationBS.on('beforeScrollStart', () => {
+                    //     // console.log('beforeScrollStart');
+                    //     // console.info(this.menuTrigger);
+                    //
+                    // })
+                    this.navigationBS.on('scrollStart', () => {
+                        // console.log('scrollEnd');
+                        // console.info(this.menuTrigger);
+                        // if (this.menuTrigger == 'hover') {
+                        //     this.menuTrigger == 'click';
+                        // }
+                        // this.menuTrigger == 'click';
+
+
+                    })
+                    this.navigationBS.on('scrollEnd', (position) => {
+                        // console.log(this.$refs.siderMenu.$el);
+                        if(this.menuTrigger == 'hover') {
+                            document.querySelector('#side-meun').style.position = 'absolute';
+                        } else {
+                            document.querySelector('#side-meun').style.position = '';
+                        }
+
+                        // this.$refs.siderMenu.$el.style.position = 'absolute';
+
+                        // this.menuTrigger == 'click';
+                        // setTimeout(() => {
+
+                            // this.$refs.siderMenu.$el.style.transform = '';
+                            // this.$refs.siderMenu.$el.style.marginTop = position.y + 'px';
+
+
+                            // console.info(this.$refs.siderMenu.$el.style.transform);
+                            // console.info(this.$refs.siderMenu.$el.style.marginTop);
+                        // }, 200)
+
+                        // console.info(this.$refs.siderMenu.style);
+
+                    })
+                }
                 // console.info(this.navigationBS);
                 // this.navigationBS.on('beforeScrollStart', () => {
                 //     console.log('beforeScrollStart')
