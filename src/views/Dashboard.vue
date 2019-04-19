@@ -1,6 +1,8 @@
 <template>
     <div class="dashboard">
 
+        <Table width="550" border :columns="columns2" :data="data3"></Table>
+
         <div style="height: 2000px;border: none;">
             <grid-layout
                     :layout="testLayout"
