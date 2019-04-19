@@ -2734,8 +2734,10 @@
                 this.menu_expanded = !this.menu_expanded;
                 if (this.menu_expanded) {
                     this.menuTrigger = 'click';
+                    document.querySelector('.bscroll-vertical-scrollbar').style.left = '196px';
                 } else {
                     this.menuTrigger = 'hover';
+                    document.querySelector('.bscroll-vertical-scrollbar').style.left = '56px';
 
                 }
 
