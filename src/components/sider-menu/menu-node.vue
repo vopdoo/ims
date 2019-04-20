@@ -76,7 +76,7 @@
                 validator(value) {
                     return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
                 },
-                default: 'right'
+                default: 'right-end'
             },
 
         },
@@ -168,18 +168,27 @@
         },
         methods: {
             handleMouseenter(event) {
-
+                // console.info('pageY',event.pageY);
+                // console.info('screenY ',event.screenY );
+                // console.info('y ',event.y );
+                // let childrenHeight = 0;
+                // console.info(this.children)
+                // if(this.children) {
+                //     childrenHeight = 10 + this.children.length * 40;
+                //
+                // }
+                // console.info(childrenHeight);
+                // console.info(this.children.length)
                 if (this.trigger !== 'hover') {
                     return false;
-                } else {
-                    // console.info('vv');
-                    // document.querySelector('#navigations').style.position = '';
-                    //
-                    // document.querySelector('#navigations').style.overflow = 'auto';
-                    // document.querySelector('#navigations').style.transform = '';
                 }
+                // console.info('event',event);
+                // console.info(event.target.childNodes[1]);
+                // console.info(event.target.childNodes[1].offsetHeight);
+
                 if (this.enterTimer) clearTimeout(this.enterTimer);
                 this.enterTimer = setTimeout(() => {
+                    // console.info('显示之前',event.target.childNodes[1].style.top);
                     this.visible = true;
                 }, 100);
 

@@ -4564,7 +4564,7 @@ iview-loader@^1.2.2:
   dependencies:
     loader-utils "^1.1.0"
 
-iview@^3.0.1:
+iview@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/iview/-/iview-3.4.0.tgz#4b969fe6089065a583e092a92e463cd54e7ebfe9"
   integrity sha512-MSqro+YxJ91MnxkAd4iR4VK9usEIX2+qE4W5qwnbbFSaVevbc6x+CVSxeg3H8U7XcbP/n9wWBXAQIY3vxniHlw==

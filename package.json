@@ -26,7 +26,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "better-scroll": "^1.15.2",
-    "iview": "^3.0.1",
+    "iview": "3.4.0",
     "jsonp": "^0.2.1",
     "moment": "^2.24.0",
     "vue": "^2.5.17",
