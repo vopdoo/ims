@@ -1,11 +1,11 @@
 <template>
-    <div :class="classes" >
-        <div id="login-fm"  :class="wrapClasses">
-            <div  :class="headerClasses">
+    <div :class="classes">
+        <div id="login-fm" :class="wrapClasses">
+            <div :class="headerClasses">
                 <h1>{{title}}</h1>
                 <p>{{slogan}}</p>
             </div>
-            <div  :class="bodyClasses">
+            <div :class="bodyClasses">
                 <Form ref="loginForm" :model="loginForm" class="login-form" :rules="ruleValidate">
                     <FormItem prop="account">
                         <Input element-id="account" v-model="loginForm.account" prefix="ios-contact"
@@ -52,24 +52,24 @@
             next();
         },
         computed: {
-            classes () {
+            classes() {
                 return [
                     `${prefixCls}`,
                 ];
             },
-            wrapClasses () {
+            wrapClasses() {
                 return [
                     `${prefixCls}-wrap`,
                     {}
                 ];
             },
-            headerClasses () {
+            headerClasses() {
                 return `${prefixCls}-header`;
             },
-            bodyClasses () {
+            bodyClasses() {
                 return `${prefixCls}-body`;
             },
-            forgetPasswordClasses () {
+            forgetPasswordClasses() {
                 return `${prefixCls}-forget-password`;
             },
 
@@ -126,8 +126,8 @@
                                 this.$Message.error('账号或密码错误!');
                             }
                         }).catch(error => {
-                            console.info('catch -- error');
-                            console.info(error);
+                            this.$Message.error('登录失败请重新登录!');
+                            // console.info('catch -- error',error);
                         });
                     } else {
                         // this.$Message.error('请正确输入账号密码');

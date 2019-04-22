@@ -236,13 +236,6 @@
             lockScreen() {
                 console.info('lockScreen');
             },
-            handleBeforeScrollStart() {
-                console.info('beforeScrollStart');
-            },
-            onScrollEnd() {
-                console.info('onScrollEnd');
-            },
-
             navigationWrapperScrollInit() {
                 this.navigationBS = new BScroll(this.$refs.navigationWrapper, {
                     mouseWheel: true,
@@ -256,9 +249,9 @@
 
                     })
                     this.navigationBS.on('scrollEnd', (position) => {
-                        // console.log(this.$refs.siderMenu.$el);
                         if(this.menuTrigger == 'hover') {
                             document.querySelector('#side-meun').style.position = 'absolute';
+
                         } else {
                             document.querySelector('#side-meun').style.position = '';
                         }
@@ -320,6 +313,7 @@
                 } else {
                     this.menuTrigger = 'hover';
                     document.querySelector('.bscroll-vertical-scrollbar').style.left = '56px';
+                    this.navigationBS.scrollTo(0, 0, 500);
 
                 }
 
