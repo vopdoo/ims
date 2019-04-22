@@ -1,8 +1,8 @@
-
 import ImsCurd from './components/ims-curd';
 import ImsLayout from './components/ims-layout';
-import storeConstructorOptions from './store';
+// import storeConstructorOptions from './store';
 
+sessionStorage.setItem('storeConstructorOptions', 'vvv');
 import routes from './routes';
 
 import "./styles/index.less";
@@ -20,7 +20,7 @@ const ims = {
 };
 
 
-const install = function(Vue, opts = {}) {
+const install = function (Vue, opts = {}) {
     if (install.installed) return;
     // locale.use(opts.locale);
     // locale.i18n(opts.i18n);
@@ -54,7 +54,7 @@ const API = {
 
 // module.exports.default = module.exports = API;   // eslint-disable-line no-undef
 export {
-    storeConstructorOptions,
+    // storeConstructorOptions,
     routes
 }
 

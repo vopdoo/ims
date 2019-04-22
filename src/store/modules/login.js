@@ -1,8 +1,7 @@
 import api from '../../api/login'
 import types from '../mutation-types/login'
 import moment from "moment";
-import imsRoutes from '../../routes/index.js'
-// import router from '@/router.js';
+// import imsRoutes from '../../routes/index.js'
 
 
 const state = {
@@ -10,7 +9,8 @@ const state = {
     slogan: '一切从登录开始',
     logining: false,
     is_logined: false,
-    imsRoutes: imsRoutes.children,
+    // imsRoutes: imsRoutes.children,
+    imsRoutes: [],
     routers: [],
 }
 // getters

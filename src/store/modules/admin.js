@@ -227,35 +227,6 @@ const mutations = {
     [types.GET_NAV_MENUS](state, data) {
         state.nav_menus = data;
     },
-    [types.GET_ROUTES](state, data) {
-        // let willAddedRoutes = [
-        //     {
-        //         path: '/',
-        //         component: () => import('@/views/Layout.vue'),
-        //         children: [
-        //             {
-        //                 path: '/',
-        //                 name: 'dashboard',
-        //                 component: () => import('@/views/Dashboard.vue')
-        //             },
-        //         ]
-        //     }
-        // ];
-        // data.forEach((item, index) => {
-        //     if (item.type == 1 && item.options.path && item.options.name) {
-        //         willAddedRoutes[0].children.push({
-        //             path: item.options.path,
-        //             name: item.options.name,
-        //             meta: {
-        //                 index: index
-        //             },
-        //             component: () => import('@/views/' + item.options.path + '.vue')
-        //         });
-        //     }
-        // });
-        state.routers = [];
-    },
-
 
 }
 export default {

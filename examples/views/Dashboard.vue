@@ -1,6 +1,5 @@
 <template>
     <div class="dashboard">
-
         <div style="height: 2000px;border: none;">
             <grid-layout
                     :layout="testLayout"

@@ -7,29 +7,15 @@ import {routes as imsRoutes} from '@ims'
 
 import {LoadingBar, Modal} from 'iview'
 
-import * as storages from '@/utils/storages';
-
-import store from '@/store/index';
+// import * as storages from '@/utils/storages';
+//
+// import store from '@/store/index';
 
 Vue.use(Router);
 
 const createRouter = () => new Router({
     // mode: 'history',
     routes: [
-        // {
-        //     path: '/admin',
-        //     component: () => import('@/views/admin.vue'),
-        //     children: [
-        //         {
-        //             path: '/',
-        //             name: 'dashboard',
-        //             // /* webpackChunkName: "Dashboard" */
-        //             component: () => import('@/views/Dashboard.vue')
-        //
-        //         },
-        //         ...imsRoutes.children
-        //     ]
-        // },
         ...imsRoutes.top
     ]
 });

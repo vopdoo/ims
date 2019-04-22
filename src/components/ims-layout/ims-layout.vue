@@ -113,7 +113,6 @@
             HorizontalTabBar
         },
         props:{
-
             menus: {
                 type: Array,
                 default() {
@@ -121,16 +120,7 @@
                 }
             },
         },
-        // async
-        beforeRouteEnter(to, from, next) {
-            console.info('vvv');
-            // await store.dispatch('admin/getNavMenus', {});
-            next(vm => {
-                // vm.nick_name = sessionStorage.getItem('nick_name');
-            });
-        },
         created() {
-            console.info('ImsLayout Created....');
         },
         mounted() {
             this.$nextTick(() => {

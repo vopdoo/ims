@@ -41,13 +41,16 @@
 
 <script>
     import {mapGetters} from 'vuex'
-    import store from '@/store/index';
+    // import store from '@/store/index';
+
+    // console.info('store',store);
 
     const prefixCls = 'ims-login';
 
     export default {
         name: "Login",
-        async beforeRouteEnter(to, from, next) {
+        // async
+        beforeRouteEnter(to, from, next) {
             // await store.dispatch('login/loginInfo',{a:'aa'});
             next();
         },

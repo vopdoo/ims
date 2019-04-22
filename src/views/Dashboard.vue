@@ -1,30 +1,9 @@
 <template>
     <div class="dashboard">
 
-        <Table width="550" border :columns="columns2" :data="data3"></Table>
 
         <div style="height: 2000px;border: none;">
-            <grid-layout
-                    :layout="testLayout"
-                    :col-num="12"
-                    :row-height="30"
-                    :is-draggable="true"
-                    :is-resizable="false"
-                    :is-mirrored="false"
-                    :vertical-compact="true"
-                    :margin="[5, 5]"
-                    :use-css-transforms="true"
-            >
-
-                <grid-item v-for="item in testLayout"
-                           :x="item.x"
-                           :y="item.y"
-                           :w="item.w"
-                           :h="item.h"
-                           :i="item.i">
-                    {{item.i}}
-                </grid-item>
-            </grid-layout>
+            vvvvv
         </div>
 
     </div>
