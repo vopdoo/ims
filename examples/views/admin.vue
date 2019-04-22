@@ -153,6 +153,242 @@
                                                 "sort": 0,
                                                 "status": true,
                                                 "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42",
+                                                "children":[
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理3",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },{
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理3",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },{
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    },
+                                                    {
+                                                        "id": 118,
+                                                        "pid": 117,
+                                                        "type": 1,
+                                                        "icon": "md-apps",
+                                                        "name": "渠道管理3",
+                                                        "code": "sdfsdfvvvv",
+                                                        "options": {
+                                                            "name": "sdfsdfvvv",
+                                                            "path": "prototypes/channel",
+                                                            "tree_path": "1,116,117"
+                                                        },
+                                                        "sort": 0,
+                                                        "status": true,
+                                                        "created_at": "2019-03-14 22:30:24",
+                                                        "updated_at": "2019-03-15 10:14:42"
+                                                    }
+                                                ]
+                                            },{
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42"
+                                            },
+                                            {
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理3",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42"
+                                            },
+                                            {
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42"
+                                            },{
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42"
+                                            },
+                                            {
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理3",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
+                                                "updated_at": "2019-03-15 10:14:42"
+                                            },
+                                            {
+                                                "id": 118,
+                                                "pid": 117,
+                                                "type": 1,
+                                                "icon": "md-apps",
+                                                "name": "渠道管理",
+                                                "code": "sdfsdfvvvv",
+                                                "options": {
+                                                    "name": "sdfsdfvvv",
+                                                    "path": "prototypes/channel",
+                                                    "tree_path": "1,116,117"
+                                                },
+                                                "sort": 0,
+                                                "status": true,
+                                                "created_at": "2019-03-14 22:30:24",
                                                 "updated_at": "2019-03-15 10:14:42"
                                             },{
                                                 "id": 118,

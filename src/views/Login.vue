@@ -49,17 +49,12 @@
         name: "Login",
         async beforeRouteEnter(to, from, next) {
             // await store.dispatch('login/loginInfo',{a:'aa'});
-            // //    "vuex-persistedstate": "^2.5.4"
-            //    "lodash": "^4.17.11",
-//    "moment": "^2.22.2",
             next();
         },
         computed: {
             classes () {
                 return [
                     `${prefixCls}`,
-                    {}
-
                 ];
             },
             wrapClasses () {
@@ -81,9 +76,9 @@
             ...mapGetters({
                 'title': 'login/title',
                 'slogan': 'login/slogan',
-                'logining': 'admin/logining',
-                'is_logined': 'admin/is_logined',
-                'routers': 'admin/routers',
+                'logining': 'login/logining',
+                'is_logined': 'login/is_logined',
+                'routers': 'login/routers',
             })
         },
         data() {
@@ -120,15 +115,13 @@
             login(name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        console.info('logining....');
-                        this.$store.dispatch('admin/login', this.loginForm).then(() => {
+                        this.$store.dispatch('login/login', this.loginForm).then(() => {
                             if (this.is_logined) {
-                                console.info('logined.......', this.routers);
                                 this.$router.addRoutes(this.routers.concat([{
                                     path: '*',
                                     redirect: '/404'
                                 }]));
-                                this.$router.push('/');
+                                this.$router.push('/admin');
                             } else {
                                 this.$Message.error('账号或密码错误!');
                             }

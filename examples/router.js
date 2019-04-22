@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 // import {routes as imsRoutes} from '@dist/ims.umd.min.js'
 import {routes as imsRoutes} from '@ims'
-console.info('imsRoutes',imsRoutes);
+// console.info('imsRoutes',imsRoutes);
 
 import {LoadingBar, Modal} from 'iview'
 
@@ -16,27 +16,20 @@ Vue.use(Router);
 const createRouter = () => new Router({
     // mode: 'history',
     routes: [
-        {
-            path: '/admin',
-            component: () => import('@/views/admin.vue'),
-            children: [
-                {
-                    path: '/',
-                    name: 'dashboard',
-                    // /* webpackChunkName: "Dashboard" */
-                    component: () => import('@/views/Dashboard.vue')
-
-                },
-                {
-                    path: 'abc',
-                    name: 'abc',
-                    // /* webpackChunkName: "Dashboard" */
-                    component: () => import('@/views/abc.vue')
-
-                },
-                ...imsRoutes.children
-            ]
-        },
+        // {
+        //     path: '/admin',
+        //     component: () => import('@/views/admin.vue'),
+        //     children: [
+        //         {
+        //             path: '/',
+        //             name: 'dashboard',
+        //             // /* webpackChunkName: "Dashboard" */
+        //             component: () => import('@/views/Dashboard.vue')
+        //
+        //         },
+        //         ...imsRoutes.children
+        //     ]
+        // },
         ...imsRoutes.top
     ]
 });
