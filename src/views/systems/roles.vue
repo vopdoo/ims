@@ -159,6 +159,7 @@
             </Form>
         </Modal>
 
+
     </div>
 
 </template>
@@ -173,9 +174,13 @@
         components: {
             TableDatetime,
         },
-        async beforeRouteEnter(to, from, next) {
-            await store.dispatch('role/lists');
-            next();
+        // async beforeRouteEnter(to, from, next) {
+        //     await store.dispatch('role/lists');
+        //     next();
+        // },
+        async created() {
+            await this.$store.dispatch('role/lists');
+            await this.$store.dispatch('system/changeSpining',{spining:false});
         },
         computed: {
             ...mapGetters({
@@ -205,6 +210,7 @@
                 });
             };
             return {
+                spinShow:true,
                 fmData: {
                     name: '',
                     code: '',
@@ -470,27 +476,3 @@
         }
     }
 </script>
-
-
-<style lang="less">
-    .list-tlbr {
-        float: right;
-        text-align: right;
-    }
-
-    .demo-split {
-        height: 100%;
-
-    }
-
-    .demo-split-left-pane {
-        height: 100%;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    .demo-split-right-pane {
-        padding-left: 16px;
-    }
-
-</style>

@@ -239,7 +239,7 @@
 </template>
 <script>
     import {mapGetters} from 'vuex'
-    import store from '@/store/index';
+    // import store from '@/store/index';
 
     import TableDatetime from '@/components/table-datetime/index';
 
@@ -248,12 +248,11 @@
         components: {
             TableDatetime,
         },
-        async beforeRouteEnter(to, from, next) {
-            console.info('beforeRouteEnter','====');
-            await store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
-            await store.dispatch('role/lists', {status: 1, per_page: 1000});
-            await store.dispatch('admin/lists');
-            next();
+        async created() {
+            await this.$store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
+            await this.$store.dispatch('role/lists', {status: 1, per_page: 1000});
+            await this.$store.dispatch('admin/lists');
+            await this.$store.dispatch('system/changeSpining',{spining:false});
         },
         computed: {
             ...mapGetters({

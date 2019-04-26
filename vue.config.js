@@ -1,5 +1,7 @@
 const path = require('path');
 const resolve = dir => require('path').join(__dirname, dir);
+// 增加环境变量
+process.env.VUE_APP_VERSION = require('./package.json').version
 module.exports = {
     lintOnSave: false,
     outputDir: '../../ims.vopdoo.com/public',

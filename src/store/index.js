@@ -11,5 +11,4 @@ const StoreConstructorOptions = {
     mutations,
     modules
 }
-console.info('StoreConstructorOptions Index.js');
 export default StoreConstructorOptions;

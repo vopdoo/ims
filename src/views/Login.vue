@@ -35,25 +35,21 @@
                 </Form>
             </div>
         </div>
+        <Spin size="large" fix v-if="spinShow"></Spin>
 
     </div>
 </template>
 
 <script>
     import {mapGetters} from 'vuex'
-    // import store from '@/store/index';
-
-    // console.info('store',store);
+    import { mapActions } from 'vuex'
+    import _  from 'lodash';
+    // console.info(_.now());
 
     const prefixCls = 'ims-login';
 
     export default {
         name: "Login",
-        // async
-        beforeRouteEnter(to, from, next) {
-            // await store.dispatch('login/loginInfo',{a:'aa'});
-            next();
-        },
         computed: {
             classes() {
                 return [
@@ -84,8 +80,15 @@
                 'routers': 'login/routers',
             })
         },
+        async created() {
+            await this.$store.dispatch('login/loginInfo', {});
+
+            this.spinShow = false;
+        },
         data() {
             return {
+
+                spinShow: true,
                 loading: false,
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
@@ -106,6 +109,10 @@
         },
 
         methods: {
+            ...mapActions('db', [
+                'database',
+            ]),
+
             showPwd() {
                 if (this.passwordInputType == 'password') {
                     this.passwordInputType = 'text';
@@ -124,6 +131,7 @@
                                     path: '*',
                                     redirect: '/404'
                                 }]));
+                                // sessionStorage.setItem('test','vvvv');
                                 this.$router.push('/admin');
                             } else {
                                 this.$Message.error('账号或密码错误!');

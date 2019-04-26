@@ -1,22 +1,28 @@
 <template>
     <div>
         <ImsLayout :menus="nav_menus"></ImsLayout>
+
     </div>
 </template>
 
 <script>
     import {mapGetters} from 'vuex'
 
-    // import store from '@/store/index';
 
-    // console.info('store',store);
     export default {
         name: "Admin",
         // async
-        beforeRouteEnter(to, from, next) {
-            console.info('admin beforeRouteEnter');
-            // await store.dispatch('admin/getNavMenus',{a:'aa'});
-            next();
+        // beforeRouteEnter(to, from, next) {
+        //     console.info('admin beforeRouteEnter');
+        //     // await store.dispatch('admin/getNavMenus',{a:'aa'});
+        //     next();
+        // },
+        async created() {
+            // this.$Spin.show();
+            await this.$store.dispatch('admin/getNavMenus', {});
+            // setTimeout(() => {
+            //     this.$Spin.hide();
+            // }, 3000);
         },
         computed: {
             ...mapGetters({
@@ -25,7 +31,6 @@
         },
         data() {
             return {
-
             }
         }
     }

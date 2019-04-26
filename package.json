@@ -1,6 +1,6 @@
 {
   "name": "@vopdoo/ims",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": false,
   "description": "ims",
   "main": "dist/ims.umd.min.js",
@@ -24,10 +24,13 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@vopdoo/ims": "0.1.9",
     "axios": "^0.18.0",
     "better-scroll": "^1.15.2",
     "iview": "3.4.0",
+    "js-cookie": "^2.2.0",
     "jsonp": "^0.2.1",
+    "lowdb": "^1.0.0",
     "moment": "^2.24.0",
     "vue": "^2.5.17",
     "vue-grid-layout": "^2.2.0",

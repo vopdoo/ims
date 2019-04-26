@@ -2,7 +2,7 @@
  * Node Api
  */
 
-import {axios} from '@/plugins/axios';
+import {axios} from '@ims/plugins/axios';
 
 export default {
     store: (payload) => {

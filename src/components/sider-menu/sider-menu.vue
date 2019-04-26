@@ -82,12 +82,11 @@
             },
 
             handleSelect(nodeKey) {
-                console.info(nodeKey);
+                // console.info('sdfsdfsdfdsf');
                 const node = this.flatState[nodeKey].node;
                 const currentSelectedKey = this.flatState.findIndex(obj => obj.node.selected);
                 if (currentSelectedKey >= 0 && currentSelectedKey !== nodeKey) this.$set(this.flatState[currentSelectedKey].node, 'selected', false);
                 if (!(node[this.childrenKey] && node[this.childrenKey].length)) this.$set(node, 'selected', !node.selected);
-                console.info(node);
                 this.$emit('on-select-change', node);
             },
         },

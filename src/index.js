@@ -1,8 +1,7 @@
 import ImsCurd from './components/ims-curd';
 import ImsLayout from './components/ims-layout';
-// import storeConstructorOptions from './store';
+import storeConstructorOptions from './store';
 
-sessionStorage.setItem('storeConstructorOptions', 'vvv');
 import routes from './routes';
 
 import "./styles/index.less";
@@ -37,7 +36,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 const API = {
-    version: process.env.VERSION, // eslint-disable-line no-undef
+    version: process.env.VUE_APP_VERSION, // eslint-disable-line no-undef
     // locale: locale.use,
     // i18n: locale.i18n,
     install,
@@ -54,7 +53,7 @@ const API = {
 
 // module.exports.default = module.exports = API;   // eslint-disable-line no-undef
 export {
-    // storeConstructorOptions,
+    storeConstructorOptions,
     routes
 }
 

@@ -1,20 +1,23 @@
 import node from '../../api/role'
-import * as types from '../mutation-types'
+import types from '../mutation-types/role'
 
 const state = {
-    lists: [],
+    lists: {
+        data: [],
+        meta: {
+            total: 0
+        }
+    },
     columns: [
         {
             title: '名称',
             slot: 'name',
             fixed: 'left'
         },
-
         {
             title: '标识',
             slot: 'code'
         },
-
         {
             title: '关联部门',
             key: 'department_names', // Authorized
@@ -26,11 +29,11 @@ const state = {
             key: 'node_names',
             tooltip: true
         },
-        {
-            title: '状态',
-            slot: 'status',
-            width: 100
-        },
+        // {
+        //     title: '状态',
+        //     slot: 'status',
+        //     width: 100
+        // },
         {
             title: '创建时间',
             slot: 'created_at',

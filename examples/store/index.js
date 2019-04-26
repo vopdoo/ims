@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from "vuex"
 
-// import {storeConstructorOptions as imsStoreConstructorOptions} from '@ims/store'
-// console.info('vvv');
+import {storeConstructorOptions as imsStoreConstructorOptions} from '@ims'
+
 
 import rootActions from './actions'
 import rootGetters from './getters'
@@ -12,27 +12,27 @@ import businessModules from './modules'
 
 const state = {
     ...rootState,
-    // ...imsStoreConstructorOptions.state
+    ...imsStoreConstructorOptions.state
 }
 
 const actions = {
     ...rootActions,
-    // ...imsStoreConstructorOptions.actions,
+    ...imsStoreConstructorOptions.actions,
 }
 //
 const getters = {
     ...rootGetters,
-    // ...imsStoreConstructorOptions.getters,
+    ...imsStoreConstructorOptions.getters,
 }
 
 const mutations = {
     ...rootMutations,
-    // ...imsStoreConstructorOptions.mutations,
+    ...imsStoreConstructorOptions.mutations,
 }
 
 
 const modules = {
-    // ...imsStoreConstructorOptions.modules,
+    ...imsStoreConstructorOptions.modules,
     ...businessModules
 }
 

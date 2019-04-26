@@ -6,7 +6,7 @@
 
 <script>
 
-    import {checkLogin} from './utils/storages';
+
 
     import {mapGetters} from 'vuex'
 
@@ -18,23 +18,45 @@
                 'routers': 'admin/routers',
             })
         },
-        created() {
-            // this.checkLogin();
+        beforeMount() {
+            // window.onbeforeunload = e => {      //刷新时弹出提示
+            //     // console.info(e);
+            //     localStorage.setItem('is_refresh', 'app');
+            //     localStorage.setItem('cur_time_app', new Date().getTime());
+            //     // localStorage.setItem('cur_time_app', new Date().getMilliseconds());
+            //
+            //     // return ''
+            //     // console.info('onbeforeunload');
+            // };
+        },
+        beforeDestroy() {
+            window.onbeforeunload = e => {      //刷新时弹出提示
+                // console.info(e);
+
+                localStorage.setItem('cur_time_app', new Date().getTime());
+                localStorage.setItem('is_refresh', 'app');
+                // localStorage.setItem('cur_time_app', new Date().getMilliseconds());
+
+                // return ''
+                // console.info('onbeforeunload');
+            };
+        },
+        mounted() {
+
+        },
+        beforeRouteLeave (to, from, next) {
+            console.info('beforeRouteLeave App');
+            // 导航离开该组件的对应路由时调用
+            // 可以访问组件实例 `this`
+        },
+
+        async created() {
+            console.info('App created');
+            await this.$store.dispatch('system/getNavTabs');
+            // console.info('before getNavTabs');
         },
         methods: {
-            checkLogin() {
-                // 检查是否登录
-                if (!checkLogin()) {
-                    this.$router.replace({name: 'login'});
-                } else {
-                    this.$store.dispatch('admin/getRoutes').then(rsp => {
-                        this.$router.addRoutes(this.routers.concat([{
-                            path: '*',
-                            redirect: '/404'
-                        }]));
-                    });
-                }
-            }
+
         }
     }
 </script>

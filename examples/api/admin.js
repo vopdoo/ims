@@ -2,7 +2,7 @@
  * Admin Api
  */
 
-import {axios} from '../plugins/axios';
+import {axios} from '@ims/plugins/axios';
 
 let resource = 'admins';
 

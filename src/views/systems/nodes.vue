@@ -8,15 +8,6 @@
                 <Button type="success" @click="addTopMenu">增加顶级节点</Button>
             </Col>
         </Row>
-        <!--<Row type="flex" justify="space-between" align="top">-->
-        <!--<Col span="20">-->
-        <!--&nbsp;-->
-        <!--</Col>-->
-        <!--<Col span="4" class="list-tlbr">-->
-        <!--<Button  type="success" @click="createNode(0,0)">增加顶级节点</Button>-->
-        <!--</Col>-->
-        <!--</Row>-->
-
 
         <Tree :data="nodes" :render="renderContent"></Tree>
         <Modal
@@ -62,19 +53,20 @@
                 <Alert closable>{{ menuFm }}</Alert>
             </Form>
         </Modal>
+        <!--<Spin size="large" fix v-if="spinShow"></Spin>-->
     </div>
 
 
 </template>
 <script>
     import {mapGetters} from 'vuex'
-    import store from '@/store/index';
+    // import store from '@/store/index';
 
     export default {
         name: 'Node',
-        async beforeRouteEnter(to, from, next) {
-            await store.dispatch('node/lists', {is_show_tree: 1});
-            next();
+        async created() {
+            await this.$store.dispatch('node/lists', {is_show_tree: 1});
+            await this.$store.dispatch('system/changeSpining',{spining:false});
         },
         computed: {
             ...mapGetters({
@@ -178,10 +170,10 @@
             },
             createNode(data) {
                 console.info(data.id);
-                if(data.id) {
+                if (data.id) {
                     console.info('zi  node');
                     this.menuFm.pid = data.id;
-                    if(data.pid === 0) {
+                    if (data.pid === 0) {
                         // 一级节点
                         this.menuFm.options.tree_path = `${data.id}`;
                     } else {
@@ -293,7 +285,7 @@
                             props: {
                                 confirm: true,
                                 title: '确认要删除',
-                                transfer:true,
+                                transfer: true,
                             },
                             on: {
                                 'on-ok': () => {

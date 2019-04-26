@@ -94,7 +94,6 @@
         },
         methods: {
             handleOthsTool(name) {
-                console.info('handleOthsTool', name);
                 if (name == 'theme') {
                     this.toggleThemeDrawer();
                 }
@@ -125,7 +124,6 @@
                 this.setOffset(newOffset);
             },
             scrollPrev() {
-                console.info('scrollPrev');
                 const navTabs = this.$refs.navTabs;
                 const containerWidth = navTabs.offsetWidth;
                 let liOffsetWidth = 0;
@@ -151,13 +149,13 @@
                 this.navTabsStyle.transform = `translateX(-${value}px)`;
             },
 
-            remove(item, index) {
+            async remove(item, index) {
                 if (item.options.name === this.$route.name) {
                     let lastHistoryRouteName = sessionStorage.getItem('last_history_route_name')
                     const lastHistoryRouteIndex = this.data.findIndex(obj => obj.name == lastHistoryRouteName);
                     console.info(lastHistoryRouteIndex);
                     if (lastHistoryRouteIndex == -1) {
-                        this.$router.push({path: '/'});
+                        this.$router.push({path: '/admin'});
                         this.$set(this.data[0], 'selected', true);
                     } else {
                         this.$router.push({name: lastHistoryRouteName});
@@ -165,17 +163,24 @@
                     }
                 }
                 this.data.splice(index, 1);
+                const db = await this.$store.dispatch('db/database', {user: true});
+                db.set('nav_tabs',this.data).write();
+                this.$store.dispatch('system/getNavTabs');
             },
-            tabChange(item, index) {
+
+            async tabChange(item, index) {
                 const currentSelectedIndex = this.data.findIndex(obj => obj.selected);
                 if (currentSelectedIndex >= 0 && currentSelectedIndex !== index) this.$set(this.data[currentSelectedIndex], 'selected', false);
                 this.$set(this.data[index], 'selected', true);
-                console.info(item);
-                if (item.path === '/') {
-                    this.$router.push({path: '/'});
+                if (item.path === '/admin') {
+                    this.$router.push({path: '/admin'});
                 } else {
                     if (this.$router.currentRoute.name !== item.name) this.$router.push({name: item.options.name});
                 }
+                // console.info(this.data)
+                const db = await this.$store.dispatch('db/database', {user: true});
+                db.set('nav_tabs',this.data).write();
+                this.$store.dispatch('system/getNavTabs');
 
             },
             toggleThemeDrawer() {

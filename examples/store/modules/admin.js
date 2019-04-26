@@ -7,7 +7,12 @@ const state = {
     menu: [],
     nav_menus: [],
     users: {},
-    admins: [],
+    admins: {
+        data:[],
+        meta:{
+            total:0
+        }
+    },
     columns: [
         {
             title: '姓名',
@@ -124,7 +129,6 @@ const actions = {
             commit(types.REFRESH_TOKEN, rsp.data);
             return rsp.data.data;
         }).catch(error => {
-            console.info('refreshToken Fail');
             return error;
         });
     },
@@ -133,8 +137,8 @@ const actions = {
             commit(types.GET_NAV_MENUS, rsp.data.data);
             return rsp.data.data;
         });
-
     }
+
 
 }
 

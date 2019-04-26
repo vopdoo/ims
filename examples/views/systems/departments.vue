@@ -80,15 +80,13 @@
 </template>
 <script>
     import {mapGetters} from 'vuex'
-    import store from '@/store/index';
-
 
     export default {
         name: 'Departments',
-        async beforeRouteEnter(to, from, next) {
-            await store.dispatch('department/lists', {is_show_tree: 1});
-            await store.dispatch('role/lists', {status: 1, per_page: 1000});
-            next();
+        async created() {
+            await this.$store.dispatch('department/lists', {is_show_tree: 1});
+            await this.$store.dispatch('role/lists', {status: 1, per_page: 100});
+            await this.$store.dispatch('system/changeSpining',{spining:false});
         },
         computed: {
             ...mapGetters({

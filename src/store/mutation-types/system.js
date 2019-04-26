@@ -1,0 +1,7 @@
+
+const types = {
+    GET_NAV_TABS:'GET_NAV_TABS',
+    CHANGE_SPINING:'CHANGE_SPINING',
+    SYSTEM_REFRESH_TOKEN:'SYSTEM_REFRESH_TOKEN',
+}
+export default types;

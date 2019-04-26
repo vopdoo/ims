@@ -1,29 +1,9 @@
 <template>
     <div class="dashboard">
+        vvvv
         <div style="height: 2000px;border: none;">
-            <grid-layout
-                    :layout="testLayout"
-                    :col-num="12"
-                    :row-height="30"
-                    :is-draggable="true"
-                    :is-resizable="false"
-                    :is-mirrored="false"
-                    :vertical-compact="true"
-                    :margin="[5, 5]"
-                    :use-css-transforms="true"
-            >
-
-                <grid-item v-for="item in testLayout"
-                           :x="item.x"
-                           :y="item.y"
-                           :w="item.w"
-                           :h="item.h"
-                           :i="item.i">
-                    {{item.i}}
-                </grid-item>
-            </grid-layout>
+           vvssdf
         </div>
-
     </div>
 </template>
 
@@ -33,6 +13,10 @@
     export default {
         name: "Dashboard",
         components: {VueGridLayout},
+        async created() {
+            await this.$store.dispatch('login/loginInfo', {});
+            await this.$store.dispatch('system/changeSpining',{spining:false});
+        },
         data() {
             return {
                 testLayout: [

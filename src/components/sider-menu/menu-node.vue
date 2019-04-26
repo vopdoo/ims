@@ -216,8 +216,6 @@
                 // return 10;
             },
             handleSelect() {
-                console.info(this.data);
-                // this.data.type == 2 &&
                 if (this.data[this.childrenKey]) {
                     if (this.trigger !== 'click') {
                         return false;

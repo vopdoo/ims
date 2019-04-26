@@ -70,7 +70,7 @@
                     </Row>
                 </div>
                 <!-- hor-tab-bar -->
-                <HorizontalTabBar :data="navTabs" @on-close-all="closeAll"/>
+                <HorizontalTabBar :data="nav_tabs" @on-close-all="closeAll"/>
                 <!--<div  class="breadcrumb-wrapper">-->
                 <!--<Breadcrumb>-->
                 <!--<BreadcrumbItem to="/">系统</BreadcrumbItem>-->
@@ -78,10 +78,13 @@
                 <!--</Breadcrumb>-->
                 <!--</div>-->
             </div>
-            <div class="middle " ref="wrapper">
-                <transition name="fade">
-                    <router-view class="contents"></router-view>
-                </transition>
+            <div class="middle" ref="wrapper" >
+
+                <!--<div  style="position: relative;overflow: auto;"> </div>-->
+                    <transition name="fade">
+                        <router-view class="contents"></router-view>
+                    </transition>
+                <Spin size="large" fix v-if="spining"></Spin>
 
             </div>
             <!--<div class="footer">-->
@@ -103,7 +106,7 @@
     import BScroll from 'better-scroll'
 
     const prefixCls = 'ims-layout';
-    // import {mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
     // import store from '@ims/store/index';
 
     export default {
@@ -120,12 +123,14 @@
                 }
             },
         },
+
         created() {
+            console.info('layout created')
         },
         mounted() {
             this.$nextTick(() => {
                 this.navigationWrapperScrollInit();
-                this.scrollInit();
+                // this.scrollInit();
             })
         },
         beforeDestroy() {
@@ -160,24 +165,22 @@
             layoutRightClasses() {
                 return `${prefixCls}-right`;
             },
-
-
             layoutCommonStyles() {
                 return this.menu_expanded ? {width: '200px', minWidth: '200px'} : {width: '60px', minWidth: '60px'};
             },
             layoutRightStyles() {
                 return this.menu_expanded ? {width: 'calc(100% - 200px)'} : {width: 'calc(100% - 60px)'};
             },
-            // ...mapGetters({
-            //     'admin': 'admin/admin',
-            //     'is_logined': 'admin/is_logined',
-            //     'menus': 'admin/menus',
-            //     'nav_menus': 'admin/nav_menus'
-            // })
+            ...mapGetters({
+                'nav_tabs': 'system/nav_tabs',
+                'spining': 'system/spining',
+                // 'is_logined': 'admin/is_logined',
+                // 'menus': 'admin/menus',
+                // 'nav_menus': 'admin/nav_menus'
+            })
         },
         data() {
             return {
-
                 BS: null,
                 navigationBS: null,
                 testBS: null,
@@ -214,7 +217,7 @@
                     content: '<p>确定要退出吗？</p>',
                     loading: true,
                     onOk: () => {
-                        this.$store.dispatch('admin/logout', {}).then(rsp => {
+                        this.$store.dispatch('login/logout', {}).then(rsp => {
                             this.$Modal.remove();
                             this.$router.replace({path: '/login'});
                         }).catch(error => {
@@ -276,17 +279,23 @@
             closeAll(data) {
                 this.navTabs = [data];
             },
-            selectMenu(node) {
-                const hasExist = this.navTabs.findIndex(obj => obj.name === node.name);
-                // console.info('ss', node);
-                hasExist < 0 && this.navTabs.push(node);
-                // console.info(this.navTabs);
-                this.navTabs[0].selected = false;
+
+            async selectMenu(node) {
+                const hasExist = this.nav_tabs.findIndex(obj => obj.name === node.name);
+                const db = await this.$store.dispatch('db/database', {user: true});
+                if(hasExist < 0) {
+                    this.nav_tabs[0].selected = false;
+                    this.nav_tabs.forEach((item)=>{
+                        item.selected = false;
+                    })
+                    node.selected = true;
+                    this.nav_tabs.push(node);
+                    db.set('nav_tabs',this.nav_tabs).write();
+                    await this.$store.dispatch('system/getNavTabs');
+                }
+
                 if (this.$router.currentRoute.name !== node.name) {
-                    // console.info(node);
-                    // return false;
                     this.$router.push({name: node.options.name});
-                    // this.$router.push({name: 'settings_nodes'});
                 }
             },
             toggleNotificationsDrawer() {

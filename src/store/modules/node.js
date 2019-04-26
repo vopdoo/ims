@@ -1,5 +1,5 @@
 import node from '../../api/node'
-import * as types from '../mutation-types'
+import types from '../mutation-types/node'
 
 const state = {
     nodes: [],
