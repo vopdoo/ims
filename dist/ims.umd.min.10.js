@@ -1,0 +1,2 @@
+(("undefined"!==typeof self?self:this)["webpackJsonpims"]=("undefined"!==typeof self?self:this)["webpackJsonpims"]||[]).push([[10],{"8cdb":function(e,s,n){"use strict";n.r(s);var t=function(){var e=this,s=e.$createElement,n=e._self._c||s;return n("div",{class:e.classes},[e._v("\n    404\n")])},c=[],l="ims-404",u={name:"NotFound",computed:{classes:function(){return["".concat(l),{}]}}},f=u,i=n("2877"),a=Object(i["a"])(f,t,c,!1,null,null,null);s["default"]=a.exports}}]);
+//# sourceMappingURL=ims.umd.min.10.js.map

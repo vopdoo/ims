@@ -1,0 +1,2 @@
+(("undefined"!==typeof self?self:this)["webpackJsonpims"]=("undefined"!==typeof self?self:this)["webpackJsonpims"]||[]).push([[9],{baa5:function(e,s,n){"use strict";n.r(s);var t=function(){var e=this,s=e.$createElement,n=e._self._c||s;return n("div",[e._v("\n    ActionLogs vvv ss\n")])},i=[],a={name:"ActionLogs",async created(){await this.$store.dispatch("system/changeSpining",{spining:!1})}},c=a,l=n("2877"),f=Object(l["a"])(c,t,i,!1,null,null,null);s["default"]=f.exports}}]);
+//# sourceMappingURL=ims.umd.min.9.js.map
