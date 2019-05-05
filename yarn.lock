@@ -727,21 +727,6 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
-"@vopdoo/ims@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@vopdoo/ims/-/ims-0.1.9.tgz#179f16f0a74e7cb75084e7669320048980f4af4a"
-  integrity sha512-EZQF/hDZFs8eYBmanyGqo29z1/5uutJCSvUS7Z3i2cPSc+FhRWcBIfOb9WAsSDHaW/KWXORCrSV7qg5Gso+dYg==
-  dependencies:
-    axios "^0.18.0"
-    better-scroll "^1.15.2"
-    iview "3.4.0"
-    jsonp "^0.2.1"
-    moment "^2.24.0"
-    vue "^2.5.17"
-    vue-grid-layout "^2.2.0"
-    vue-router "^3.0.1"
-    vuex "^3.0.1"
-
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0-beta.3":
   version "1.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/@vue/babel-helper-vue-jsx-merge-props/-/babel-helper-vue-jsx-merge-props-1.0.0-beta.3.tgz#e4c2e7125b3e0d2a9d493e457850b2abb0fd3cad"

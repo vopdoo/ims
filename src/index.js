@@ -5,9 +5,6 @@ import storeConstructorOptions from './store';
 import routes from './routes';
 
 import "./styles/index.less";
-// @import()
-
-// import locale from './locale/index';
 
 const components = {
     ImsCurd,
@@ -41,7 +38,7 @@ const API = {
     // i18n: locale.i18n,
     install,
     ...components,
-    // storeConstructorOptions,
+    storeConstructorOptions,
     // routes
 };
 

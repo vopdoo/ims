@@ -8,7 +8,7 @@ import utils from '../../utils'
 // console.info(imsRoutes.children);
 
 const state = {
-    title: 'IMSss',
+    title: '菲尔医疗',
     slogan: '一切从登录开始',
     logining: false,
     is_logined: false,

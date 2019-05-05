@@ -21,11 +21,9 @@ util.isAccessTokenWillOrExpired = function () {
     let current_at = moment().unix();
     let time_difference = expired_at - current_at;
     if (time_difference <= 0) {
-        console.info('expired');
         return 'expired';
     }
     if (time_difference <= 110 && time_difference > 0) {
-        console.info('will_expired');
         return 'will_expired';
     }
 };

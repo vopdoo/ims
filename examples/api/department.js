@@ -4,6 +4,7 @@
 
 import {axios} from '@ims/plugins/axios';
 
+
 export default {
     store: (payload) => {
         console.info('store', payload);

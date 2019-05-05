@@ -59,6 +59,26 @@ axios.interceptors.request.use(
     }
 );
 
+// 添加响应拦截器
+// axios.interceptors.response.use(function (response) {
+//     // 对响应数据做点什么
+//     console.info(response);
+//     return response;
+// }, function (error) {
+//     console.info('error',error);
+//     Modal.remove();
+//     Modal.warning({
+//         title: '提示',
+//         okText: '确定',
+//         content: '<p>数据请求错误！</p>',
+//         onOk: () => {
+//             // window.location.href = '/#/login';
+//         }
+//     });
+//     // 对响应错误做点什么
+//     return Promise.reject(error);
+// });
+
 export {
     axios
 }

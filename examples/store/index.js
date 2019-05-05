@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from "vuex"
 
 import {storeConstructorOptions as imsStoreConstructorOptions} from '@ims'
-
+// import imsStoreConstructorOptions  from '@vopdoo/ims/src/store'
 
 import rootActions from './actions'
 import rootGetters from './getters'

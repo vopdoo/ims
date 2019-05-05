@@ -224,14 +224,47 @@
                            placeholder="密码"
                     />
                 </FormItem>
-                <FormItem label="排班计划">
-                    <Table :columns="columns1" :data="data1"></Table>
+                <!--{{schedules}}-->
+                <FormItem label="排班计划" v-if="fmData.has_schedule">
+                    <span slot="label">
+                        <span>排班计划</span>
+                        <Button @click="handleAddSchedule" icon="ios-add-circle" type="text"></Button>
+                    </span>
+                    <Table :columns="columns1" :data="schedules.data"></Table>
                 </FormItem>
                 <FormItem label="备注">
                     <Input type="textarea" v-model="fmData.remark" :rows="4"
                            placeholder="备注"/>
                 </FormItem>
             </Form>
+        </Modal>
+
+        <!--class-name="ce-modal"-->
+        <Modal
+                v-model="scheduleing"
+                title="排班"
+                :loading="scheduleLoading"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleScheduleOk('schedule')"
+                @on-cancel="handleScheduleCancel('schedule')"
+        >
+            <Form :model="scheduleFmData"
+                  :rules="rules"
+                  label-position="top"
+                  ref="schedule"
+            >
+
+                <FormItem label="排班时间段" prop="se_at">
+                    <DatePicker type="datetimerange"
+                                v-model="scheduleFmData.se_at"
+                                format="yyyy-MM-dd HH:mm"
+                                @on-change="handleScheduleAeChange"
+                                placeholder="请选择排班时间" style="width: 300px;"></DatePicker>
+                </FormItem>
+            </Form>
+
         </Modal>
 
     </div>
@@ -252,7 +285,7 @@
             await this.$store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
             await this.$store.dispatch('role/lists', {status: 1, per_page: 1000});
             await this.$store.dispatch('admin/lists');
-            await this.$store.dispatch('system/changeSpining',{spining:false});
+            await this.$store.dispatch('system/changeSpining', {spining: false});
         },
         computed: {
             ...mapGetters({
@@ -261,6 +294,7 @@
                 columns: 'admin/columns',
                 departments: 'department/nodes',
                 depts: 'department/depts',
+                schedules: 'schedules/lists',
                 roles: 'role/lists',
             })
         },
@@ -282,30 +316,42 @@
                     }
                 });
             };
+            const validateSeAt = (rule, value, callback) => {
+                if (value.length != 2) {
+                    return callback(new Error('请选择排班时间段'));
+                }
+                if (value[0] == '' || value[1] == '') {
+                    return callback(new Error('请选择排班时间段'));
+                }
+                callback();
+            };
             return {
+                rules: {
+                    se_at: [
+                        {required: true, type: 'array', message: '请选择排班时间段', trigger: 'change'},
+                        {validator: validateSeAt, trigger: 'change'}
+                    ],
+                },
+                scheduleFmData: {
+                    type: '',
+                    admin_id: '',
+                    se_at: [],
+                    start_at: '',
+                    end_at: ''
+                },
                 columns1: [
                     {
-                        title: '时间段',
-                        key: 'name'
+                        title: '开始时间',
+                        key: 'start_at'
                     },
                     {
-                        title: '状态',
-                        key: 'age'
-                    }
-                ],
-                data1: [
-                    {
-                        name: '2019-04-01 08:00 - 2019-04-01 09:00',
-                        age: '正常',
+                        title: '结束时间',
+                        key: 'end_at'
                     },
-                    {
-                        name: '2019-04-01 13:00 - 2019-04-01 17:00',
-                        age: '-',
-                    },
-                    {
-                        name: '2019-04-01 18:00 - 2019-04-01 19:00',
-                        age: '-',
-                    },
+                    // {
+                    //     title: '状态',
+                    //     key: 'age'
+                    // }
                 ],
                 split1: '200px',
                 passwordInputType: 'password',
@@ -321,6 +367,8 @@
                     status: true,
                 },
                 hasceing: false,
+                scheduleing: false,
+                scheduleLoading: false,
                 cetitle: '增加用户',
                 celoading: false,
                 tblLoading: false,
@@ -340,6 +388,39 @@
             }
         },
         methods: {
+            handleScheduleAeChange(value, type) {
+                // console.info(value, type);
+                this.scheduleFmData.start_at = value[0];
+                this.scheduleFmData.end_at = value[1];
+            },
+            handleScheduleOk(ref) {
+
+                this.$refs[ref].validate((valid) => {
+                    if (valid) {
+                        this.$store.dispatch('schedules/create', this.scheduleFmData);
+                        this.$Message.success('增加排班成功！');
+                        this.scheduleLoading = false;
+                        this.scheduleing = false;
+                    } else {
+                        // this.$Message.error('Fail!');
+                    }
+                })
+            },
+            handleScheduleCancel(ref) {
+                this.$refs[ref].resetFields();
+                this.scheduleFmData = {
+                    type: '',
+                    admin_id: '',
+                    se_at: [],
+                    start_at: '',
+                    end_at: ''
+                };
+            },
+            handleAddSchedule() {
+                console.info('handleAddSchedule', this.fmData);
+                this.scheduleLoading = true;
+                this.scheduleing = true;
+            },
             handleDeleteUserOk(data) {
                 console.info('handleDeleteUserOk', data);
                 this.$store.dispatch('admin/delete', data);
@@ -352,6 +433,7 @@
                 console.info(nodes);
             },
             handleDepartmentTreeChange(nodes) {
+                console.info(nodes)
                 if (nodes.length) {
                     let dept_names = [];
                     let dept_ids = [];
@@ -546,6 +628,33 @@
                 console.info('handleStatusChange', status);
             },
             async handleEdit(row, index) {
+                await this.$store.dispatch('schedules/lists', {admin_id: row.id});
+                let has_schedule = -1;
+                let type = 1;
+                has_schedule = row.role_ids.findIndex((line) => {
+                    if (line == 31 || line == 39 || line == 40) {
+                        switch (line) {
+                            case 31:
+                                type = 2;
+                                break;
+                            case 40:
+                                type = 1;
+                                break;
+                            case 39:
+                                type = 3;
+                                break;
+                            default:
+                                type = 1;
+                        }
+                        if (line == 40) {
+                            type = 1;
+                        }
+                        return true;
+                    }
+                })
+                console.info(type);
+                this.scheduleFmData.type = type;
+                this.scheduleFmData.admin_id = row.id;
                 this.$Loading.start();
                 await this.$store.dispatch('department/withCheckedDepartmentlists', {
                     is_show_tree: 1,
@@ -553,6 +662,7 @@
                     checked_department_ids: row.department_ids
                 });
                 this.fmData = row;
+                this.fmData.has_schedule = has_schedule >= 0 ? true : false;
                 this.$Loading.finish();
                 this.hasceing = true;
             },

@@ -1,9 +1,6 @@
 <template>
     <div class="dashboard">
-        vvvv
-        <div style="height: 2000px;border: none;">
-           vvssdf
-        </div>
+        控制台-首页
     </div>
 </template>
 

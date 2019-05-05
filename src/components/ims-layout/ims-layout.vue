@@ -3,7 +3,7 @@
         <div class="left" :class="layoutLeftClasses" :style="layoutCommonStyles">
             <div :class="logoClasses" style="9999999999999999 !important;">
                 <div style="z-index: 99999999999 !important;">
-                    <span :class="logoTitleClasses">Ims</span>
+                    <span :class="logoTitleClasses">菲尔医疗</span>
                 </div>
 
             </div>

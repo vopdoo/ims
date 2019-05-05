@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import {routes as imsRoutes} from '@dist/ims.umd.min.js'
 import {routes as imsRoutes} from '@ims'
 import {LoadingBar, Modal} from 'iview'
 
@@ -47,21 +46,24 @@ const reAddRoutes = async function () {
                 ]
             }
         ];
-        routes.forEach((item, index) => {
-            const lastHistoryRouteIndex = imsRoutes.children.findIndex(obj => {
-                return obj.path == item.options.path
-            });
-            if (item.type == 1 && item.options.path && item.options.name && lastHistoryRouteIndex < 0) {
-                willAddedRoutes[0].children.push({
-                    path: item.options.path,
-                    name: item.options.name,
-                    meta: {
-                        index: index
-                    },
-                    component: () => import('@/views/' + item.options.path + '.vue')
+        if(routes) {
+            routes.forEach((item, index) => {
+                const lastHistoryRouteIndex = imsRoutes.children.findIndex(obj => {
+                    return obj.path == item.options.path
                 });
-            }
-        });
+                if (item.type == 1 && item.options.path && item.options.name && lastHistoryRouteIndex < 0) {
+                    willAddedRoutes[0].children.push({
+                        path: item.options.path,
+                        name: item.options.name,
+                        meta: {
+                            index: index
+                        },
+                        component: () => import('@/views/' + item.options.path + '.vue')
+                    });
+                }
+            });
+        }
+
         willAddedRoutes = willAddedRoutes.concat([{
             path: '*',
             redirect: '/404'
