@@ -4,16 +4,13 @@
 
 import {axios} from '@ims/plugins/axios';
 
-let resource = 'users';
+let resource = 'hospitals';
 
 export default {
     index: (payload) => {
         return axios.get(resource, {
             params: payload
         });
-    },
-    show: (payload) => {
-        return axios.get(`${resource}/${payload.id}`, payload);
     },
     store: (payload) => {
         return axios.post(resource, payload);

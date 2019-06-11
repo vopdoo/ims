@@ -4,6 +4,8 @@ import channel from './channel'
 import users from './users'
 import reservations from './reservations'
 import schedules from './schedules'
+import hospitals from './hospitals'
+import revisits from './revisits'
 import items from './items'
 
 const modules = {
@@ -13,6 +15,8 @@ const modules = {
     users,
     reservations,
     schedules,
+    revisits,
+    hospitals,
     items,
 }
 

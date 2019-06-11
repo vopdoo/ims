@@ -4,6 +4,13 @@
             <Col span="20">
                 <Form :model="searchForm" class="search-form" inline>
                     <FormItem>
+                        <Select v-model="searchForm.hospital_id" clearable placeholder="医院" style="width:100px">
+                            <Option v-for="item in hospitals.data" :value="item.id" :key="item.id">{{ item.name
+                                }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem>
                         <Select v-model="searchForm.gender" clearable placeholder="性别" style="width:100px">
                             <Option v-for="item in genderList"
                                     :value="item.value"
@@ -34,14 +41,13 @@
                :loading="tblLoading"
         >
             <template slot-scope="{ row, index }" slot="name">
-                <Input type="text" v-model="editName" v-if="editIndex === index"/>
-                <span v-else>{{ row.name }}</span>
+                <Avatar size="small" :src="row.avatar"/>
+                <span style="margin-left: 5px;">{{row.name}}</span>
             </template>
 
             <template slot-scope="{ row, index }" slot="gender">
-                <span >{{ row.gender == 0 ?'女':'男' }}</span>
+                <span>{{ row.gender == 0 ?'女':'男' }}</span>
             </template>
-
 
 
             <template slot-scope="{ row, index }" slot="departments">
@@ -50,28 +56,16 @@
                             </span>
                 <span v-else>-</span>
             </template>
-
-
             <template slot-scope="{ row, index }" slot="nick_name">
-                <Input type="text" v-model="editAge" v-if="editIndex === index"/>
-                <span v-else>{{ row.nick_name }}</span>
+                <span>{{ row.nick_name }}</span>
             </template>
 
             <template slot-scope="{ row, index }" slot="email">
-                <Input type="text" v-model="editBirthday" v-if="editIndex === index"/>
-                <span v-else>{{row.email }}</span>
+
+                <span>{{row.email }}</span>
             </template>
 
             <template slot-scope="{ row, index }" slot="status">
-                <!--<Poptip-->
-                <!--confirm-->
-                <!--:transfer="true"-->
-                <!--title="确认要禁用此用户？"-->
-                <!--@on-ok="handleSwitchStatusOk(row)"-->
-                <!--@on-cancel="handleSwitchStatusCancel">-->
-
-                <!--</Poptip>-->
-
                 <Switch size="large" v-model="row.status">
                     <span slot="open">启用</span>
                     <span slot="close">禁用</span>
@@ -81,15 +75,7 @@
 
             <template slot-scope="{ row, index }" slot="action">
                 <Button @click="handleEdit(row, index)" size="small" type="text">编辑</Button>
-                <Tooltip
-                        :content="`已有 ${row.reservations.length} 条预约记录，请到预约管理查看`"
-                        :transfer="true"
-                        :disabled="!row.reservations.length"
-                >
-                    <!--@click="handleShowReservations(row, index)"-->
-                    <Button  size="small"  :disabled="!row.reservations.length" type="text">预约记录</Button>
-                </Tooltip>
-
+                <Button size="small" type="text" @click="handleCreateReservation(row)">预约</Button>
                 <Button @click="handleShowEmr(row, index)" size="small" disabled type="text">电子病历</Button>
                 <Poptip
                         confirm
@@ -137,19 +123,38 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="客户姓名" prop="name">
-                            <Input v-model="fmData.name" placeholder="请输入客户姓名"/>
+                            <Input v-model="fmData.name" placeholder="请输入客户姓名">
+                            <Select v-model="fmData.hospital_id"
+                                    slot="prepend"
+                                    placeholder="医院"
+                                    style="width: 80px;"
+                            >
+                                <Option :value="item.id" v-for="(item) in hospitals.data" :key="item.id">
+                                    {{item.name}}
+                                </Option>
+                            </Select>
+                            </Input>
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="昵称">
-                            <Input v-model="fmData.nick_name" placeholder="请输入昵称"/>
+                        <FormItem label="头像">
+                            <Upload
+                                    :action="uploadAction"
+                                    accept="image/jpeg, image/png"
+                                    :max-size="1024"
+                                    :on-success="handleAvatarUploadSuccess"
+                                    :data="{is_batch:false,model:'user'}"
+                                    :show-upload-list="false"
+                            >
+                                <Avatar :src="fmData.avatar"/>
+                            </Upload>
                         </FormItem>
                     </Col>
                 </Row>
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="手机" prop="mobile">
-                            <Input v-model="fmData.mobile" placeholder="请输入客户手机号码"/>
+                            <Input v-model="fmData.mobile" :maxlength="11" placeholder="请输入客户手机号码"/>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -161,8 +166,10 @@
                 <Row :gutter="32">
                     <Col span="12">
                         <FormItem label="性别" prop="gender">
-                            <Select v-model="fmData.gender"  placeholder="请选择性别" >
-                                <Option v-for="item in genderList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            <Select v-model="fmData.gender" placeholder="请选择性别">
+                                <Option v-for="item in genderList" :value="item.value" :key="item.value">{{ item.label
+                                    }}
+                                </Option>
                             </Select>
                         </FormItem>
                     </Col>
@@ -180,7 +187,7 @@
                         </FormItem>
                     </Col>
                     <Col span="12">
-                        <FormItem label="出生日期" >
+                        <FormItem label="出生日期">
                             <DatePicker type="date"
                                         v-model="fmData.birthday"
                                         @on-change="handleBirthdayChange"
@@ -205,6 +212,18 @@
                     <Col span="12">
                         <FormItem label="兴趣爱好">
                             <Input v-model="fmData.hobbies" placeholder="兴趣爱好"/>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="昵称">
+                            <Input v-model="fmData.nick_name" placeholder="请输入昵称"/>
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row :gutter="32">
+                    <Col span="12">
+                        <FormItem label="需求标签">
+                            <Input v-model="fmData.tags" placeholder="需求标签"/>
                         </FormItem>
                     </Col>
                     <Col span="12">
@@ -238,12 +257,163 @@
                     </Col>
                 </Row>
 
+
                 <FormItem label="备注">
                     <Input type="textarea" v-model="fmData.remark" :rows="4"
                            placeholder="备注"/>
                 </FormItem>
+
+                <FormItem label="相册">
+                    <div class="demo-upload-list" v-for="item in fmData.uploadList">
+                        <template v-if="item.status === 'finished'">
+                            <img :src="item.url">
+                            <div class="demo-upload-list-cover">
+                                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                        </template>
+                    </div>
+                    <Upload
+                            ref="upload"
+                            :show-upload-list="false"
+                            :default-file-list="fmData.defaultList"
+                            :on-success="handleSuccess"
+                            :format="['jpg','jpeg','png']"
+                            accept="image/jpeg, image/png"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+                            :before-upload="handleBeforeUpload"
+                            multiple
+                            type="drag"
+                            :action="uploadAction"
+                            style="display: inline-block;width:58px;">
+                        <div style="width: 58px;height:58px;line-height: 58px;">
+                            <Icon type="ios-camera" size="20"></Icon>
+                        </div>
+                    </Upload>
+
+                </FormItem>
             </Form>
         </Modal>
+
+        <Modal
+                v-model="visible"
+                footer-hide
+        >
+            <img :src="imgName" v-if="visible" style="width: 100%">
+        </Modal>
+        <Modal
+                v-model="reservationing"
+                title="添加预约"
+                :loading="celoading"
+                class-name="ce-modal"
+                width="600"
+                :mask-closable="false"
+                :scrollable="true"
+                @on-ok="handleCeReservationOk"
+                @on-cancel="handleCeReservationCancel"
+
+        >
+            <Form :model="reservationFmData" label-position="top" :rules="rules">
+
+                <Row :gutter="16">
+                    <Col span="12">
+                        <FormItem label="类型" prop="type">
+                            <Select v-model="reservationFmData.type" :disabled="fmData.id >0" clearable
+                                    placeholder="请选择预约类型">
+                                <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label
+                                    }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="医院" prop="hospital_id">
+                            <Select v-model="reservationFmData.hospital_id"
+                                    clearable
+                                    placeholder="请选择医院"
+                                    @on-change="handleHospitalChange"
+                            >
+                                <Option v-for="(item,index) in hospitals.data" :value="item.id" :key="index">
+                                    {{ item.name}}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                </Row>
+
+                <FormItem label="医生排班">
+
+                    <Select v-model="reservationFmData.doctor_schedule_id" placeholder="选择医生排班">
+                        <OptionGroup v-for="item in schedules.data"
+                                     :label="item[0].admin.name +' ('+item[0].admin.departments[0].name+')'"
+                                     :key="item.id">
+                            <Option v-for="line in item" :value="line.id"
+                                    :label="line.admin.name + ' '+line.start_at.substring(5) +'-' + line.end_at.substring(5)"
+                                    :key="line.id">
+                                <span>{{ line.start_at }} - {{ line.end_at }}</span>
+                                <!--<span style="float:right;color:#ccc">{{line.admin.name}}</span>-->
+                            </Option>
+                        </OptionGroup>
+
+                    </Select>
+                </FormItem>
+
+                <Row :gutter="16">
+                    <Col span="12">
+                        <FormItem label="治疗项目">
+                            <Input v-model="reservationFmData.project" placeholder="请输入治疗项目"/>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="项目报价">
+                            <Input v-model="reservationFmData.quotation" placeholder="请输入项目报价"/>
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row :gutter="16">
+                    <Col span="12">
+                        <FormItem label="心理预期">
+                            <Input v-model="reservationFmData.expectation" placeholder="请输入客户心理预期"/>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="返点比例">
+                            <InputNumber :max="99" :min="0" v-model="reservationFmData.deal_ratio" placeholder="返点比例"/>
+                            %
+                        </FormItem>
+                    </Col>
+                </Row>
+
+                <FormItem label="过往治疗记录">
+                    <Input type="textarea"
+                           v-model="reservationFmData.doctored_record"
+                           :rows="4"
+                           placeholder="备注 预约情况介绍"
+                    />
+                </FormItem>
+                <FormItem label="就诊描述">
+                    <Input type="textarea"
+                           v-model="reservationFmData.doctor_desc"
+                           :rows="4"
+                           placeholder="就诊描述"
+                    />
+                </FormItem>
+                <FormItem label="备注">
+                    <Input type="textarea"
+                           v-model="reservationFmData.remark"
+                           :rows="4"
+                           placeholder="备注 预约情况介绍"
+                    />
+                </FormItem>
+            </Form>
+        </Modal>
+
+        <span v-if="tmpchange"></span>
 
     </div>
 
@@ -261,6 +431,7 @@
             TableDatetime,
         },
         async created() {
+            await this.$store.dispatch('hospitals/lists', {status: 1, per_page: 1000});
             await this.$store.dispatch('users/lists');
             await this.$store.dispatch('system/changeSpining', {spining: false});
         },
@@ -268,6 +439,8 @@
             ...mapGetters({
                 lists: 'users/lists',
                 statusList: 'users/statusList',
+                schedules: 'schedules/lists',
+                hospitals: 'hospitals/lists',
                 columns: 'users/columns',
             })
         },
@@ -290,9 +463,43 @@
                 });
             };
             return {
-                // serial_number,name,nick_name,mobile,wechat_id,age,birthday,address,email,hobbies,consumption_feature,social_attribute
-                // development_mode,channel_id,consulting_project
+                tmpchange:false,
+
+                uploadAction: process.env.VUE_APP_API_BASE_URL + 'files',
+
+                typeList: [
+                    {
+                        value: '1',
+                        label: '初诊'
+                    },
+                    {
+                        value: '2',
+                        label: '复诊'
+                    },
+
+                ],
+                imgName: '',
+                visible: false,
+                reservationFmData: {
+                    user_id: '',
+                    type: '',
+                    mobile: '',
+                    doctor_schedule_id: '',
+                    hospital_id: '',
+                    project: '',
+                    quotation: '',
+                    expectation: '',
+                    deal_ratio: 0,
+                    doctored_record: '',
+                    doctor_desc: '',
+                    remark: '',
+
+                },
                 fmData: {
+                    hospital_id: 1,
+                    uploadList: [],
+                    defaultList: [],
+                    avatar: '',
                     name: '',
                     nick_name: '',
                     mobile: '',
@@ -312,8 +519,8 @@
                     sort: 0,
                     status: true,
                     remark: '',
+                    tags: '',
                 },
-
                 rules: {
                     name: [
                         {required: true, message: '请输入客户姓名', trigger: 'blur'}
@@ -343,8 +550,9 @@
                     ],
                 },
                 hasceing: false,
-                show_emr_ing:false,
-                show_reservations_ing:false,
+                reservationing: false,
+                show_emr_ing: false,
+                show_reservations_ing: false,
                 cetitle: '增加用户',
                 celoading: false,
                 tblLoading: false,
@@ -360,6 +568,7 @@
 
                 ],
                 searchForm: {
+                    hospital_id: '',
                     dept_ids: [],
                     role_ids: [],
                     keywords: '',
@@ -368,22 +577,108 @@
                     page: 1,
                     per_page: 10,
                 },
-                editIndex: -1,  // 当前聚焦的输入框的行数
-                editName: '',  // 第一列输入框，当然聚焦的输入框的输入内容，与 data 分离避免重构的闪烁
-                editAge: '',  // 第二列输入框
-                editBirthday: '',  // 第三列输入框
-                editAddress: '',  // 第四列输入框
             }
         },
         methods: {
-            handleShowReservations(){
 
+            handleHospitalChange(value) {
+                this.$store.dispatch('schedules/lists', {is_group: 1, type: 1, status: 1, hospital_id: value});
+            },
+
+            async handleCeReservationOk() {
+                this.celoading = true;
+                this.tblLoading = true;
+                let action = 'reservations/create';
+                let data = this.reservationFmData;
+                data.filter = {};
+                console.info(data);
+                await this.$store.dispatch(action, data);
+                this.celoading = false;
+                this.tblLoading = false;
+                // this.hasceing = true;
+            },
+            handleCeReservationCancel() {
+                console.info('handleCeReservationCancel');
+                this.initReservationFmData();
+            },
+            initReservationFmData() {
+                this.reservationFmData = {
+                    user_id: '',
+                    type: '',
+                    mobile: '',
+                    doctor_schedule_id: '',
+                    project: '',
+                    quotation: '',
+                    expectation: '',
+                    deal_ratio: 0,
+                    doctored_record: '',
+                    doctor_desc: '',
+                    remark: '',
+
+                };
+            },
+            async handleCreateReservation(row) {
+                this.$Loading.start();
+                await this.$store.dispatch('users/lists', {});
+
+                this.$Loading.finish();
+                this.reservationFmData.user_id = row.id;
+                this.reservationFmData.hospital_id = row.hospital_id;
+                this.reservationFmData.mobile = row.mobile;
+                await this.$store.dispatch('schedules/lists', {is_group: 1, type: 1,status:1,hospital_id:row.hospital_id});
+                this.reservationing = !this.reservationing;
+            },
+            handleView(name) {
+                this.imgName = name;
+                this.visible = true;
+            },
+            handleRemove(file) {
+                console.info(file);
+                const fileList = this.$refs.upload.fileList;
+                this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+                this.tmpchange = !this.tmpchange;
+                // this.handleView(file.name,false);
+                // console.info(this.$refs.upload.fileList);
+                // let tmp =  JSON.parse(JSON.stringify(this.$refs.upload.fileList));
+                //
+                // this.fmData.uploadList = [];
+                // tmp.forEach((item,index)=>{
+                //     this.$set(this.fmData.uploadList, index, item);
+                //     // this.fmData.uploadList.push(item);
+                // });
+                //
+                // console.info(this.fmData.uploadList);
+            },
+            handleSuccess(res, file) {
+                file.url = res.data.uri;
+                file.name = res.data.uri;
+                this.tmpchange = !this.tmpchange;
+            },
+            handleBeforeUpload() {
+                this.fmData.uploadList = this.$refs.upload.fileList;
+            },
+            handleFormatError(file) {
+                this.$Notice.warning({
+                    title: 'The file format is incorrect',
+                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                });
+            },
+            handleMaxSize(file) {
+                this.$Notice.warning({
+                    title: 'Exceeding file size limit',
+                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+                });
+            },
+            handleAvatarUploadSuccess(response) {
+                this.fmData.avatar = response.data.uri;
+            },
+            handleShowReservations() {
                 this.show_reservations_ing = true;
             },
             handleShowEmr() {
                 this.show_emr_ing = true;
             },
-            handleBirthdayChange(date,type){
+            handleBirthdayChange(date, type) {
                 // console.info(date,type);
                 this.fmData.birthday = date;
             },
@@ -396,29 +691,32 @@
                 console.info('handleDeleteUserCancel');
             },
             initFmData() {
-                this.fmData =
-                    {
-
-                        name: '',
-                        nick_name: '',
-                        mobile: '',
-                        wechat_id: '',
-                        age: 1,
-                        gender: '',
-                        occupation: '',
-                        birthday: '',
-                        address: '',
-                        email: '',
-                        hobbies: '',
-                        consumption_feature: '',
-                        social_attribute: '',
-                        development_mode: '',
-                        channel_id: 0,
-                        consulting_project: '',
-                        sort: 0,
-                        status: true,
-                        remark: '',
-                    };
+                this.fmData = {
+                    hospital_id: 1,
+                    uploadList: [],
+                    defaultList: [],
+                    avatar: '',
+                    name: '',
+                    nick_name: '',
+                    mobile: '',
+                    wechat_id: '',
+                    age: 1,
+                    gender: '',
+                    occupation: '',
+                    birthday: '',
+                    address: '',
+                    email: '',
+                    hobbies: '',
+                    consumption_feature: '',
+                    social_attribute: '',
+                    development_mode: '',
+                    channel_id: 0,
+                    consulting_project: '',
+                    sort: 0,
+                    status: true,
+                    remark: '',
+                    tags: '',
+                };
             },
             handleTogglePassword() {
                 if (this.passwordInputType == 'password') {
@@ -449,7 +747,7 @@
                 this.initFmData();
             },
             async handleCreate() {
-
+                this.fmData.uploadList = this.$refs.upload.fileList;
                 this.hasceing = !this.hasceing;
             },
             async handlePageChange(page) {
@@ -476,22 +774,29 @@
             handleStatusChange(status) {
                 console.info('handleStatusChange', status);
             },
-            async handleEdit(row, index) {
+            async handleEdit(row) {
+                const editRow = row;
+                this.fmData = editRow;
+                this.fmData.gender = editRow.gender.toString();
 
-                this.fmData = row;
-                this.fmData.gender  = row.gender.toString();
-                console.info(row);
-                console.info(this.fmData.gender)
+                this.fmData.defaultList = [];
+                if (editRow.albums.length) {
+                    editRow.albums.forEach((item, index) => {
+                        this.fmData.defaultList.push({url: item.uri, name: item.uri});
+                    })
+                }
+                await setTimeout(() => {
+                    this.fmData.uploadList = this.$refs.upload.fileList;
+                    console.info(this.fmData.uploadList);
+                    this.hasceing = true;
 
-
-                this.hasceing = true;
+                }, 20)
             },
             handleSave(index) {
                 this.data[index].name = this.editName;
                 this.data[index].age = this.editAge;
                 this.data[index].birthday = this.editBirthday;
                 this.data[index].address = this.editAddress;
-                this.editIndex = -1;
             },
             getBirthday(birthday) {
                 const date = new Date(parseInt(birthday));
@@ -524,6 +829,47 @@
 
     .demo-split-right-pane {
         padding-left: 16px;
+    }
+
+    .demo-upload-list {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        margin-right: 4px;
+    }
+
+    .demo-upload-list img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .demo-upload-list-cover {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .6);
+    }
+
+    .demo-upload-list:hover .demo-upload-list-cover {
+        display: block;
+    }
+
+    .demo-upload-list-cover i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
     }
 
 </style>

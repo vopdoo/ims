@@ -13,15 +13,14 @@ const state = {
             title: '档案编号',
             key:'serial_number',
             fixed: 'left',
-            width: 150
+            width: 100
         },
         {
             title: '姓名',
             slot: 'name',
             fixed: 'left',
-            width: 100
+            width: 120
         },
-
         {
             title: '昵称',
             slot: 'nick_name',
@@ -37,7 +36,7 @@ const state = {
         {
             title: '手机号码',
             key: 'mobile',
-            width: 100,
+            width: 115,
         },
         {
             title: '邮箱',
@@ -141,6 +140,13 @@ const actions = {
             dispatch('lists', filter);
         });
     },
+    show({commit, state, dispatch}, request) {
+        return api.show(request).then(rsp => {
+            // commit(types.GET_USERS, rsp.data);
+            return rsp.data.data;
+        });
+    },
+
     delete({dispatch}, request) {
         return api.delete(request).then(rsp => {
             dispatch('lists', {is_show_tree: 1});

@@ -91,9 +91,7 @@
             <!--footer-->
             <!--</div>-->
             <Drawer title="消息通知" :closable="true" v-model="is_show_notifications_drawer">
-                <p>消息通知</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <slot name="notifications"></slot>
             </Drawer>
 
         </div>

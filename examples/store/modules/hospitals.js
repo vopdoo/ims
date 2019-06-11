@@ -1,5 +1,5 @@
-import api from '../../api/reservations'
-import types from '../mutation-types/reservations'
+import api from '../../api/hospitals'
+import types from '../mutation-types/hospitals'
 
 const state = {
     lists: {
@@ -10,80 +10,40 @@ const state = {
     },
     columns: [
         {
-            title: '预约编号',
-            key:'id',
-            fixed: 'left',
-            width: 90
-        },
-        {
-            title: '类型',
-            slot: 'type',
-            width: 80,
-            fixed: 'left',
-        },
-        {
-            title: '客户姓名',
-            slot: 'user_name',
-            fixed: 'left',
-            width: 100
+            title: '名称',
+            key: 'name',
+            width: 120
         },
         {
             title: '状态',
-            slot: 'status',
+            key: 'status',
             width: 100,
         },
         {
-            title: '手机',
-            key: 'mobile',
-            width: 120
-        },
-
-        {
-            title: '科室',
-            slot: 'department',
-            width: 100
-        },
-        {
-            title: '医生',
-            slot: 'admin',
-            width: 100
-        },
-        {
-            title: '预约时间段',
-            slot: 'schedule_at',
-            width: 280
-        },
-        {
-            title: '预约时间',
+            title: '创建时间',
             slot: 'created_at',
-            fixed: 'right',
             width: 150
         },
         {
-            title: '回访',
-            slot: 'revisits',
-            fixed: 'right',
-            width: 80
+            title: '更新时间',
+            slot: 'updated_at',
+            width: 150
         },
         {
             title: '操作',
             slot: 'action',
-            width: 320,
+            width: 280,
             fixed: 'right'
         }
     ],
     statusList: [
         {
-            value: '1',
+            value: 1,
             label: '待到院'
         },
         {
-            value: '2',
+            value: 2,
             label: '待分诊'
-        },
-        {
-            value: '3',
-            label: '已分诊'
         },
     ],
 }
@@ -97,7 +57,7 @@ const getters = {
 const actions = {
     lists({commit, state}, request) {
         return api.index(request).then(rsp => {
-            commit(types.GET_RESERVATIONS, rsp.data);
+            commit(types.GET_SCHEDULES, rsp.data);
             return rsp.data.data;
         });
     },
@@ -123,18 +83,6 @@ const actions = {
             return rsp.data.data.result;
         });
     },
-    consult({dispatch}, request) {
-        return api.consult(request).then(rsp => {
-            dispatch('lists');
-        });
-    },
-    revisit({dispatch}, request) {
-        return api.revisit(request).then(rsp => {
-            dispatch('lists');
-        });
-    },
-
-
 
 
 
@@ -143,7 +91,7 @@ const actions = {
 // mutations
 const mutations = {
 
-    [types.GET_RESERVATIONS](state, data) {
+    [types.GET_SCHEDULES](state, data) {
         // state.admins = data.data;
         state.lists = {
             data: data.data,

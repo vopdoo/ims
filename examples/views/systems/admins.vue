@@ -60,8 +60,7 @@
                            :loading="tblLoading"
                     >
                         <template slot-scope="{ row, index }" slot="name">
-                            <Input type="text" v-model="editName" v-if="editIndex === index"/>
-                            <span v-else>{{ row.name }}</span>
+                            <span>{{ row.name }}</span>
                         </template>
 
                         <template slot-scope="{ row, index }" slot="departments">
@@ -73,13 +72,13 @@
 
 
                         <template slot-scope="{ row, index }" slot="nick_name">
-                            <Input type="text" v-model="editAge" v-if="editIndex === index"/>
-                            <span v-else>{{ row.nick_name }}</span>
+
+                            <span>{{ row.nick_name }}</span>
                         </template>
 
                         <template slot-scope="{ row, index }" slot="email">
-                            <Input type="text" v-model="editBirthday" v-if="editIndex === index"/>
-                            <span v-else>{{row.email }}</span>
+
+                            <span>{{row.email }}</span>
                         </template>
 
                         <template slot-scope="{ row, index }" slot="status">
@@ -186,18 +185,37 @@
                     </Col>
                 </Row>
 
-                <FormItem label="角色">
-                    <Select v-model="fmData.role_ids"
-                            multiple
-                            placeholder="请选择角色"
-                    >
-                        <Option v-for="item in roles.data"
-                                :value="item.id"
-                                :key="item.id">
-                            {{ item.name }}
-                        </Option>
-                    </Select>
-                </FormItem>
+
+                <Row :gutter="32">
+                    <Col span="12">
+                        <FormItem label="角色">
+                            <Select v-model="fmData.role_ids"
+                                    multiple
+                                    placeholder="请选择角色"
+                            >
+                                <Option v-for="item in roles.data"
+                                        :value="item.id"
+                                        :key="item.id">
+                                    {{ item.name }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                    <Col span="12">
+                        <FormItem label="医院" prop="hospital_ids">
+                            <Select v-model="fmData.hospital_ids"
+                                    clearable
+                                    multiple
+                                    placeholder="请选择医院"
+                                    @on-change="handleHospitalChange"
+                            >
+                                <Option v-for="item in hospitals.data" :value="item.id" :key="item.id">{{ item.name
+                                    }}
+                                </Option>
+                            </Select>
+                        </FormItem>
+                    </Col>
+                </Row>
 
                 <Row :gutter="32">
                     <Col span="12">
@@ -230,7 +248,29 @@
                         <span>排班计划</span>
                         <Button @click="handleAddSchedule" icon="ios-add-circle" type="text"></Button>
                     </span>
-                    <Table :columns="columns1" :data="schedules.data"></Table>
+                    <Table :columns="columns1" border :data="schedules.data">
+
+                        <template slot-scope="{ row, index }" slot="hospital">
+                            <span v-if="row.hospital_id == 1">菲尔</span>
+                            <span v-else>天使</span>
+                        </template>
+
+                        <template slot-scope="{ row, index }" slot="se_at">
+                            <span>{{row.start_at}} - {{row.end_at}}</span>
+                        </template>
+                        <template slot-scope="{ row, index }" slot="action">
+                            <!--@on-cancel="cancel"-->
+                            <Poptip
+                                    confirm
+                                    :transfer="true"
+                                    title="确定要修改此排班的状态？"
+                                    @on-ok="handleScheduleDisable(row)"
+                            >
+                                <Button size="small" type="text">{{row.status?'禁用':'启用'}}</Button>
+                            </Poptip>
+
+                        </template>
+                    </Table>
                 </FormItem>
                 <FormItem label="备注">
                     <Input type="textarea" v-model="fmData.remark" :rows="4"
@@ -243,6 +283,7 @@
         <Modal
                 v-model="scheduleing"
                 title="排班"
+                class-name="ce-modal"
                 :loading="scheduleLoading"
                 width="600"
                 :mask-closable="false"
@@ -255,13 +296,36 @@
                   label-position="top"
                   ref="schedule"
             >
-
-                <FormItem label="排班时间段" prop="se_at">
-                    <DatePicker type="datetimerange"
-                                v-model="scheduleFmData.se_at"
-                                format="yyyy-MM-dd HH:mm"
+                <FormItem label="选择排班日期" prop="selected_dates">
+                    <DatePicker type="date"
+                                multiple
+                                v-model="scheduleFmData.selected_dates"
+                                :options="ScheduleDatesOptions"
                                 @on-change="handleScheduleAeChange"
-                                placeholder="请选择排班时间" style="width: 300px;"></DatePicker>
+                                @on-clear="handleScheduleSelectedDatesClear"
+                                placeholder="请选择排班时间" style="width: 100%;"
+                    >
+                    </DatePicker>
+                </FormItem>
+                <FormItem label="确定排班">
+                    <CheckboxGroup v-model="scheduleFmData.lists">
+                        <Table border :columns="scheduleColumns" :data="scheduleFmData.dates">
+                            <template slot-scope="{ row, index }" slot="hospital">
+                                <span v-if="row.hospital_id == 1">菲尔</span>
+                                <span v-else>天使</span>
+                            </template>
+                            <template slot-scope="{ row, index }" slot="am">
+                                <Checkbox :label="`${row.am_se_at}*${row.hospital_id}`">
+                                    <span>{{scheduleAts.am_s_at}}-{{scheduleAts.am_e_at}}</span>
+                                </Checkbox>
+                            </template>
+                            <template slot-scope="{ row, index }" slot="pm">
+                                <Checkbox :label="`${row.pm_se_at}*${row.hospital_id}`">
+                                    <span>{{scheduleAts.pm_s_at}}-{{scheduleAts.pm_e_at}}</span>
+                                </Checkbox>
+                            </template>
+                        </Table>
+                    </CheckboxGroup>
                 </FormItem>
             </Form>
 
@@ -284,6 +348,7 @@
         async created() {
             await this.$store.dispatch('department/lists', {is_show_tree: 1, has_admins: 1});
             await this.$store.dispatch('role/lists', {status: 1, per_page: 1000});
+            await this.$store.dispatch('hospitals/lists', {status: 1, per_page: 1000});
             await this.$store.dispatch('admin/lists');
             await this.$store.dispatch('system/changeSpining', {spining: false});
         },
@@ -294,6 +359,7 @@
                 columns: 'admin/columns',
                 departments: 'department/nodes',
                 depts: 'department/depts',
+                hospitals: 'hospitals/lists',
                 schedules: 'schedules/lists',
                 roles: 'role/lists',
             })
@@ -316,42 +382,93 @@
                     }
                 });
             };
-            const validateSeAt = (rule, value, callback) => {
-                if (value.length != 2) {
-                    return callback(new Error('请选择排班时间段'));
+
+            const validateSelectedDates = (rule, value, callback) => {
+                if (!value.length) {
+                    return callback(new Error('请选择排班日期'));
+                } else {
+                    callback();
                 }
-                if (value[0] == '' || value[1] == '') {
-                    return callback(new Error('请选择排班时间段'));
-                }
-                callback();
             };
+
             return {
                 rules: {
-                    se_at: [
-                        {required: true, type: 'array', message: '请选择排班时间段', trigger: 'change'},
-                        {validator: validateSeAt, trigger: 'change'}
+                    selected_dates: [
+                        {required: true, validator: validateSelectedDates, message: '请选择排班日期', trigger: 'change'}
                     ],
+                    hospital_ids: [
+                        {required: true, message: '请选择医院', trigger: 'blur'}
+                    ],
+                },
+                ScheduleDatesOptions: {
+                    disabledDate(date) {
+                        return date && date.valueOf() < Date.now() - 86400000;
+                    }
                 },
                 scheduleFmData: {
                     type: '',
                     admin_id: '',
                     se_at: [],
                     start_at: '',
-                    end_at: ''
+                    end_at: '',
+                    selected_dates: '',
+                    dates: [],
+                    lists: [],
                 },
-                columns1: [
+                scheduleColumns: [
                     {
-                        title: '开始时间',
-                        key: 'start_at'
+                        title: '医院ID',
+                        key: 'hospital_id',
+                        sortable: true,
+                        sortType: 'asc',
                     },
                     {
-                        title: '结束时间',
-                        key: 'end_at'
+                        title: '医院名称',
+                        slot: 'hospital',
+                    },
+                    {
+                        title: '排班日期',
+                        key: 'date',
+                        width: 100
+                    },
+                    {
+                        title: '上午',
+                        slot: 'am',
+                        width: 130
+                    },
+                    {
+                        title: '下午',
+                        slot: 'pm',
+                        width: 130
+                    }
+                ],
+                columns1: [
+
+                    {
+                        title: '医院ID',
+                        key: 'hospital_id',
+                        sortable: true,
+                        sortType: 'asc',
+                    },
+                    {
+                        title: '医院名称',
+                        slot: 'hospital',
+                    },
+                    {
+                        title: '开始结束时间段',
+                        slot: 'se_at',
+                        width: 280
+
                     },
                     // {
-                    //     title: '状态',
-                    //     key: 'age'
-                    // }
+                    //     title: '结束时间',
+                    //     key: 'end_at',
+                    //     width:140
+                    // },
+                    {
+                        title: '操作',
+                        slot: 'action'
+                    }
                 ],
                 split1: '200px',
                 passwordInputType: 'password',
@@ -359,6 +476,7 @@
                 fmData: {
                     name: '',
                     nick_name: '',
+                    hospital_ids: [],
                     department_ids: [],
                     role_ids: [],
                     department_names: '',
@@ -366,6 +484,16 @@
                     sort: 0,
                     status: true,
                 },
+                hospitalList: [
+                    {
+                        value: 1,
+                        label: '菲尔'
+                    },
+                    {
+                        value: 2,
+                        label: '天使'
+                    },
+                ],
                 hasceing: false,
                 scheduleing: false,
                 scheduleLoading: false,
@@ -380,21 +508,49 @@
                     page: 1,
                     per_page: 10,
                 },
-                editIndex: -1,  // 当前聚焦的输入框的行数
-                editName: '',  // 第一列输入框，当然聚焦的输入框的输入内容，与 data 分离避免重构的闪烁
-                editAge: '',  // 第二列输入框
-                editBirthday: '',  // 第三列输入框
-                editAddress: '',  // 第四列输入框
+                scheduleAts: {
+                    am_s_at: '09:00',
+                    am_e_at: '12:00',
+                    pm_s_at: '14:00',
+                    pm_e_at: '18:00',
+                },
             }
         },
         methods: {
-            handleScheduleAeChange(value, type) {
-                // console.info(value, type);
-                this.scheduleFmData.start_at = value[0];
-                this.scheduleFmData.end_at = value[1];
+            // async await
+            handleHospitalChange(value) {
+                console.info(value);
+                // this.$store.dispatch('schedules/lists', {is_group: 1, type: 1, hospital_id: value});
+            },
+            handleScheduleSelectedDatesClear() {
+                this.scheduleFmData.dates = [];
+                this.scheduleFmData.lists = [];
+            },
+            handleScheduleAeChange(dates) {
+                console.info(dates);
+                let selectedDates = dates.split(',');
+                this.scheduleFmData.dates = [];
+                this.scheduleFmData.lists = [];
+                selectedDates.forEach((line, index) => {
+                    let am_se_at = line + ' ' + this.scheduleAts.am_s_at + ',' + line + ' ' + this.scheduleAts.am_e_at;
+                    let pm_se_at = line + ' ' + this.scheduleAts.pm_s_at + ',' + line + ' ' + this.scheduleAts.pm_e_at;
+                    this.fmData.hospital_ids.forEach((item) => {
+                        this.scheduleFmData.dates.push({
+                            date: line,
+                            hospital_id: item,
+                            am_se_at: am_se_at,
+                            pm_se_at: pm_se_at
+                        });
+                        this.scheduleFmData.lists.push(`${am_se_at}*${item}`, `${pm_se_at}*${item}`);
+                        // this.scheduleFmData.lists.push();
+                    })
+
+                })
+            },
+            handleScheduleDisable(row) {
+                this.$store.dispatch('schedules/edit', {id: row.id, status: row.status ? 0 : 1});
             },
             handleScheduleOk(ref) {
-
                 this.$refs[ref].validate((valid) => {
                     if (valid) {
                         this.$store.dispatch('schedules/create', this.scheduleFmData);
@@ -417,7 +573,7 @@
                 };
             },
             handleAddSchedule() {
-                console.info('handleAddSchedule', this.fmData);
+                console.info('handleAddSchedule', this.fmData.hospital_ids);
                 this.scheduleLoading = true;
                 this.scheduleing = true;
             },
@@ -562,6 +718,7 @@
                 this.fmData = {
                     name: '',
                     nick_name: '',
+                    hospital_ids: [],
                     department_ids: [],
                     role_ids: [],
                     department_names: '',
@@ -596,7 +753,7 @@
             },
             async handleCreate() {
                 this.$Loading.start();
-                await store.dispatch('department/withCheckedDepartmentlists', {
+                await this.$store.dispatch('department/withCheckedDepartmentlists', {
                     is_show_tree: 1,
                     has_admins: 1,
                 });

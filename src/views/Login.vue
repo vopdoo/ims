@@ -87,14 +87,13 @@
         },
         data() {
             return {
-
                 spinShow: true,
                 loading: false,
                 passwordInputType: 'password',
                 passwordInputSuffixIcon: 'md-eye',
                 loginForm: {
-                    account: 'cw001@163.com',
-                    password: '123456',
+                    account: '',
+                    password: '',
                     rememb: false
                 },
                 ruleValidate: {

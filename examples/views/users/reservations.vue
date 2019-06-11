@@ -4,6 +4,13 @@
             <Col span="20">
                 <Form :model="searchForm" class="search-form" inline>
                     <FormItem>
+                        <Select v-model="searchForm.hospital_id" clearable placeholder="医院" style="width:100px">
+                            <Option v-for="item in hospitals.data" :value="item.id" :key="item.id">{{ item.name
+                                }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem>
                         <Select v-model="searchForm.type" clearable placeholder="类型" style="width:100px">
                             <Option v-for="item in typeList"
                                     :value="item.value"
@@ -17,10 +24,58 @@
                         <Select v-model="searchForm.status" clearable placeholder="状态" style="width:100px">
                             <Option v-for="item in statusList"
                                     :value="item.value"
+                                    :key="item.value"
+                            >
+                                {{ item.label }}
+                            </Option>
+                        </Select>
+                    </FormItem>
+
+                    <FormItem>
+                        <DatePicker v-model="searchForm.ses"
+                                    type="daterange"
+                                    placeholder="创建时间"
+                                    style="width: 200px"
+                                    :options="sesOptions"
+                                    @on-change="handleSesChange"
+
+                        >
+
+                        </DatePicker>
+                    </FormItem>
+
+                    <FormItem>
+                        <DatePicker v-model="searchForm.schedule_ses"
+                                    type="daterange"
+                                    placeholder="预约时间"
+                                    style="width: 200px"
+                                    :options="sesOptions"
+                                    @on-change="handleScheduleSesChange"
+
+                        >
+
+                        </DatePicker>
+                    </FormItem>
+
+                    <FormItem>
+                        <Select v-model="searchForm.revisit_type" clearable placeholder="回访类型" style="width:100px">
+                            <Option v-for="item in revisitTypeList"
+                                    :value="item.value"
                                     :key="item.value">
                                 {{ item.label }}
                             </Option>
                         </Select>
+                    </FormItem>
+
+                    <FormItem>
+                        <DatePicker v-model="searchForm.revisit_next_at_ses"
+                                    type="daterange"
+                                    placeholder="回访计划时间"
+                                    style="width: 200px"
+                                    :options="sesOptions"
+                                    @on-change="handleRevisitNextAtSesChange"
+                        >
+                        </DatePicker>
                     </FormItem>
 
                     <FormItem>
@@ -44,31 +99,42 @@
                :loading="tblLoading"
         >
             <template slot-scope="{ row, index }" slot="user_name">
-
                 <span>{{ row.user.name }}</span>
             </template>
             <template slot-scope="{ row, index }" slot="department">
-                <span v-if="row.schedules">{{ row.schedules[0].admin.departments[0].name }}</span>
+                <span v-if="row.schedules.length">{{ row.schedules[0].admin.departments[0].name }}</span>
             </template>
             <template slot-scope="{ row, index }" slot="status">
                 <span>{{ statusList[row.status-1].label }}</span>
             </template>
             <template slot-scope="{ row, index }" slot="admin">
-
-                <span v-if="row.schedules">{{ row.schedules[0].admin.name }}</span>
+                <span v-if="row.schedules.length">{{ row.schedules[0].admin.name }}</span>
             </template>
-
             <template slot-scope="{ row, index }" slot="schedule_at">
-
-                <span v-if="row.schedules">{{ row.schedules[0].start_at }} - {{ row.schedules[0].end_at }}</span>
+                <span v-if="row.schedules.length">{{ row.schedules[0].start_at }} - {{ row.schedules[0].end_at }}</span>
             </template>
-
-
             <template slot-scope="{ row, index }" slot="type">
                 <span>{{ row.type == 1 ?'初诊':'复诊' }}</span>
             </template>
+            <template slot-scope="{ row, index }" slot="revisits">
+                <Poptip placement="right"
+                        width="800"
+                        transfer
+                >
+                    <Button size="small" type="text">查看</Button>
 
-
+                    <Table :columns="revisitsColumns" slot="content" :data="row.revisits">
+                        <template slot-scope="{ row, index }" slot="type">
+                            <span v-if="row.type == 1">术后回访</span>
+                            <span v-if="row.type == 2">服务回访</span>
+                            <span v-if="row.type == 3">复诊回访</span>
+                        </template>
+                        <template slot-scope="{ row, index }" slot="content">
+                            <span>{{row.content}}</span>
+                        </template>
+                    </Table>
+                </Poptip>
+            </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button @click="handleEdit(row)" size="small" type="text">编辑</Button>
                 <Button @click="handleDetail(row,index)" size="small" type="text">查看</Button>
@@ -129,7 +195,10 @@
                 <Row :gutter="16">
                     <Col span="12">
                         <FormItem label="客户" prop="user_id">
-                            <Select v-model="fmData.user_id" :disabled="fmData.id >0">
+                            <Select v-model="fmData.user_id"
+                                    :disabled="fmData.id >0"
+                                    @on-change="handleUserChange"
+                            >
                                 <Option v-for="item in users.data" :value="item.id" :label="item.name" :key="item.id">
                                     <span>{{ item.name }}</span>
                                     <span style="float:right;color:#ccc">{{ item.mobile }}</span>
@@ -150,22 +219,29 @@
                 </Row>
                 <Row :gutter="16">
                     <Col span="12">
-                        <FormItem label="手机" prop="mobile">
-                            <Input v-model="fmData.mobile" placeholder="请输入预约客户手机号码"/>
+                        <FormItem label="医院" prop="hospital_id">
+                            <Select v-model="fmData.hospital_id"
+                                    clearable
+                                    placeholder="请选择医院"
+                                    @on-change="handleHospitalChange"
+                            >
+                                <Option v-for="item in hospitals.data" :value="item.id" :key="item.id">{{ item.name
+                                    }}
+                                </Option>
+                            </Select>
                         </FormItem>
                     </Col>
                     <Col span="12">
                         <FormItem label="医生排班">
-
                             <Select v-model="fmData.doctor_schedule_id" placeholder="选择医生排班">
                                 <OptionGroup v-for="item in schedules.data"
+                                             v-if="item[0]"
                                              :label="item[0].admin.name +' ('+item[0].admin.departments[0].name+')'"
                                              :key="item.id">
                                     <Option v-for="line in item" :value="line.id"
                                             :label="line.admin.name + ' '+line.start_at.substring(5) +'-' + line.end_at.substring(5)"
                                             :key="line.id">
                                         <span>{{ line.start_at }} - {{ line.end_at }}</span>
-                                        <!--<span style="float:right;color:#ccc">{{line.admin.name}}</span>-->
                                     </Option>
                                 </OptionGroup>
 
@@ -214,8 +290,6 @@
                            placeholder="就诊描述"
                     />
                 </FormItem>
-
-
                 <FormItem label="备注">
                     <Input type="textarea"
                            v-model="fmData.remark"
@@ -242,6 +316,7 @@
                 <FormItem label="咨询师" prop="counselor_schedule_id">
                     <Select v-model="triageFmdata.counselor_schedule_id" placeholder="选择咨询师">
                         <OptionGroup v-for="item in schedules.data"
+                                     v-if="item[0]"
                                      :label="item[0].admin.name +' ('+item[0].admin.departments[0].name+')'"
                                      :key="item.id">
                             <Option v-for="line in item" :value="line.id"
@@ -285,9 +360,46 @@
                            placeholder="咨询明细情况"
                     />
                 </FormItem>
+                <FormItem label="图片">
+                    <div class="demo-upload-list" v-for="item in consultFmData.uploadList">
+                        <template v-if="item.status === 'finished'">
+                            <img :src="item.url">
+                            <div class="demo-upload-list-cover">
+                                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                                <Icon type="ios-trash-outline"
+                                      @click.native="handleRemove(item,'consultFmData')"></Icon>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                        </template>
+                    </div>
+                    <Upload
+                            ref="consultUpload"
+                            :show-upload-list="false"
+                            :default-file-list="consultFmData.defaultList"
+                            :on-success="handleSuccess"
+                            :format="['jpg','jpeg','png']"
+                            accept="image/jpeg, image/png"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+
+                            multiple
+                            type="drag"
+                            :action="uploadAction"
+                            style="display: inline-block;width:58px;"
+                    >
+                        <div style="width: 58px;height:58px;line-height: 58px;">
+                            <Icon type="ios-camera" size="20"></Icon>
+                        </div>
+                    </Upload>
+
+                </FormItem>
                 <FormItem label="医师">
                     <Select v-model="consultFmData.doctor_schedule_id" placeholder="选择咨询师">
                         <OptionGroup v-for="item in schedules.data"
+                                     v-if="item[0]"
                                      :label="item[0].admin.name +' ('+item[0].admin.departments[0].name+')'"
                                      :key="item.id">
                             <Option v-for="line in item" :value="line.id"
@@ -299,6 +411,7 @@
 
                     </Select>
                 </FormItem>
+
                 <FormItem label="是否成交" required>
                     <Switch size="large"
                             v-model="consultFmData.is_deal"
@@ -334,7 +447,9 @@
                             <Row :gutter="32" v-for="(item,index) in items.data" :key="index">
                                 <Col span="6">
                                     <!--@on-change="handleItemChange"-->
-                                    <Checkbox :label="item.id"
+                                    <Checkbox
+
+                                            :label="item.id"
                                     >
                                         {{item.name}}
                                     </Checkbox>
@@ -381,11 +496,47 @@
 
         >
             <Form :model="revisitFmData" ref="revisitFm" label-position="top" :rules="rules">
-                <FormItem label="回访类型" prop="type">
-                    <RadioGroup v-model="revisitFmData.type">
+                <FormItem label="回访类型" prop="revisit_type">
+                    <RadioGroup v-model="revisitFmData.revisit_type">
                         <Radio label="1">术后回访</Radio>
                         <Radio label="2">服务回访</Radio>
+                        <Radio label="3">复诊回访</Radio>
                     </RadioGroup>
+                </FormItem>
+                <FormItem label="图片">
+                    <div class="demo-upload-list" v-for="item in revisitFmData.uploadList">
+                        <template v-if="item.status === 'finished'">
+                            <img :src="item.url">
+                            <div class="demo-upload-list-cover">
+                                <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
+                                <Icon type="ios-trash-outline"
+                                      @click.native="handleRemove(item,'revisitFmData')"></Icon>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                        </template>
+                    </div>
+                    <Upload
+                            ref="revisitUpload"
+                            :show-upload-list="false"
+                            :default-file-list="revisitFmData.defaultList"
+                            :on-success="handleSuccess"
+                            :format="['jpg','jpeg','png']"
+                            accept="image/jpeg, image/png"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+                            multiple
+                            type="drag"
+                            :action="uploadAction"
+                            style="display: inline-block;width:58px;"
+                    >
+                        <div style="width: 58px;height:58px;line-height: 58px;">
+                            <Icon type="ios-camera" size="20"></Icon>
+                        </div>
+                    </Upload>
+
                 </FormItem>
 
                 <FormItem label="回访计划" prop="next_at">
@@ -448,8 +599,10 @@
 
                                 <Select v-model="fmData.doctor_schedule_id" disabled placeholder="选择医生排班">
                                     <OptionGroup v-for="item in schedules.data"
+                                                 v-if="item[0]"
                                                  :label="item[0].admin.name +' ('+item[0].admin.departments[0].name+')'"
-                                                 :key="item.id">
+                                                 :key="item.id"
+                                    >
                                         <Option v-for="line in item" :value="line.id"
                                                 :label="line.admin.name + ' '+line.start_at.substring(5) +'-' + line.end_at.substring(5)"
                                                 :key="line.id">
@@ -536,25 +689,29 @@
             <div class="demo-drawer-profile">
                 <Table :columns="revisitColumns" :data="fmData.revisits">
                     <template slot-scope="{ row, index }" slot="type">
-                        {{ row.type == 1 ?'术后回访':'服务回访' }}
+                        <span v-if="row.type == 1">术后回访</span>
+                        <span v-if="row.type == 2">服务回访</span>
+                        <span v-if="row.type == 3">复诊回访</span>
                     </template>
                 </Table>
             </div>
         </Drawer>
+
+        <Modal
+                v-model="visible"
+                footer-hide
+        >
+            <img :src="imgName" v-if="visible" style="width: 100%">
+        </Modal>
+
 
     </div>
 
 </template>
 <script>
     import {mapGetters} from 'vuex'
-
     import dateUtil from 'iview/src/utils/date'
-
     import _ from 'lodash'
-
-    // console.info(collections);
-
-
     import TableDatetime from '@/components/table-datetime/index';
     import Departments from "../systems/departments";
 
@@ -566,6 +723,8 @@
         },
         async created() {
             await this.$store.dispatch('reservations/lists');
+            await this.$store.dispatch('hospitals/lists', {status: 1, per_page: 1000});
+            await this.$store.dispatch('schedules/lists', {status: 1, per_page: 1000});
             await this.$store.dispatch('system/changeSpining', {spining: false});
         },
         computed: {
@@ -574,11 +733,13 @@
                 items: 'items/lists',
                 schedules: 'schedules/lists',
                 lists: 'reservations/lists',
+                hospitals: 'hospitals/lists',
                 statusList: 'reservations/statusList',
                 columns: 'reservations/columns',
             })
         },
         data() {
+
             const validateCode = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('值不能为空'));
@@ -597,7 +758,40 @@
                 });
             };
             return {
-                // user_id,type,mobile,schedule_id,project,quotation,expectation,deal_ratio,doctored_record,doctor_desc,remark
+                sesOptions: {
+                    shortcuts: [
+                        {
+                            text: '一周',
+                            value() {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                return [start, end];
+                            }
+                        },
+                        {
+                            text: '一个月',
+                            value() {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                return [start, end];
+                            }
+                        },
+                        {
+                            text: '三个月',
+                            value() {
+                                const end = new Date();
+                                const start = new Date();
+                                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                return [start, end];
+                            }
+                        }
+                    ]
+                },
+                imgName: '',
+                uploadAction: process.env.VUE_APP_API_BASE_URL + 'files',
+                visible: false,
                 pStyle: {
                     fontSize: '16px',
                     color: 'rgba(0,0,0,0.85)',
@@ -640,6 +834,7 @@
                 ],
                 fmData: {
                     user_id: '',
+                    hospital_id: '',
                     type: '',
                     mobile: '',
                     doctor_schedule_id: '',
@@ -655,10 +850,12 @@
 
                 triageFmdata: {
                     id: '',
-                    counselor_schedule_id: '',
+                    counselor_schedule_id: 0,
                     triage_remark: '',
                 },
                 consultFmData: {
+                    defaultList: [],
+                    uploadList: [],
                     reservation_id: '',
                     doctor_schedule_id: '',
                     is_deal: false,
@@ -667,8 +864,10 @@
                     has_approve: false,
                 },
                 revisitFmData: {
+                    defaultList: [],
+                    uploadList: [],
                     reservation_id: '',
-                    type: '',
+                    revisit_type: '',
                     content: '',
                     next_at: '',
                 },
@@ -676,7 +875,7 @@
                     next_at: [
                         {required: true, message: '下次回访时间', trigger: 'blur'}
                     ],
-                    type: [
+                    revisit_type: [
                         {required: true, message: '请选择回访类型', trigger: 'blur'}
                     ],
                     content: [
@@ -684,6 +883,9 @@
                     ],
                     user_id: [
                         {required: true, message: '请选择客户', trigger: 'blur'}
+                    ],
+                    hospital_id: [
+                        {required: true, message: '请选择医院', trigger: 'blur'}
                     ],
                     name: [
                         {required: true, message: '请输入客户姓名', trigger: 'blur'}
@@ -699,7 +901,7 @@
                         {required: true, message: '请选择预约类型', trigger: 'change'}
                     ],
                     counselor_schedule_id: [
-                        {required: true, message: '请选择咨询师排班', trigger: 'change'}
+                        {required: true, type: 'number', message: '请选择咨询师排班', trigger: 'change'}
                     ],
                     items: [
                         {
@@ -709,7 +911,7 @@
                             message: '请至少选择一项服务项目',
                             trigger: 'change'
                         },
-                        {type: 'array', max: 4, message: '最多选择 20 服务项目', trigger: 'change'}
+                        {type: 'array', max: 20, message: '最多选择 20 服务项目', trigger: 'change'}
                     ],
                     birthday: [
                         {required: true, type: 'date', message: '请选择出生日期', trigger: 'change'}
@@ -726,6 +928,20 @@
                 tblLoading: false,
                 detailData: {},
                 serviceItems: [],
+                revisitTypeList: [
+                    {
+                        value: '1',
+                        label: '术后回访'
+                    },
+                    {
+                        value: '2',
+                        label: '服务回访'
+                    },
+                    {
+                        value: '3',
+                        label: '复诊回访'
+                    },
+                ],
                 typeList: [
                     {
                         value: '1',
@@ -735,26 +951,72 @@
                         value: '2',
                         label: '复诊'
                     },
-
                 ],
-
+                revisitsColumns: [
+                    {
+                        title: '类型',
+                        slot: 'type'
+                    },
+                    {
+                        title: '回访计划时间',
+                        key: 'next_at',
+                        sortable: true,
+                        sortType: 'desc'
+                    },
+                    {
+                        title: '回访内容',
+                        slot: 'content'
+                    },
+                    {
+                        title: '回访时间',
+                        key: 'created_at'
+                    }
+                ],
                 searchForm: {
                     dept_ids: [],
+                    ses: [],
                     role_ids: [],
                     keywords: '',
+                    hospital_id: '',
+                    revisit_type: '',
                     gender: '',
                     status: '',
                     page: 1,
                     per_page: 10,
-                },
-                editIndex: -1,  // 当前聚焦的输入框的行数
-                editName: '',  // 第一列输入框，当然聚焦的输入框的输入内容，与 data 分离避免重构的闪烁
-                editAge: '',  // 第二列输入框
-                editBirthday: '',  // 第三列输入框
-                editAddress: '',  // 第四列输入框
+                }
             }
         },
         methods: {
+            handleView(name) {
+                this.imgName = name;
+                this.visible = true;
+            },
+            handleRemove(file, type) {
+                if (type == 'consultFmData') {
+                    const fileList = this.$refs.consultUpload.fileList;
+                    this.$refs.consultUpload.fileList.splice(fileList.indexOf(file), 1);
+                } else {
+                    const fileList = this.$refs.revisitUpload.fileList;
+                    this.$refs.revisitUpload.fileList.splice(fileList.indexOf(file), 1);
+                }
+            },
+            handleSuccess(res, file) {
+                file.url = res.data.uri;
+                file.name = res.data.uri;
+            },
+            handleFormatError(file) {
+                this.$Notice.warning({
+                    title: 'The file format is incorrect',
+                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                });
+            },
+            handleMaxSize(file) {
+                this.$Notice.warning({
+                    title: 'Exceeding file size limit',
+                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+                });
+            },
+
             handleItemChange() {
                 console.info('handleItemChange')
 
@@ -781,6 +1043,7 @@
                         // await this.$Message.success('增加咨询成功!');
                         this.revisiting = false;
                         this.tblLoading = false;
+                        this.handleRevisitCancel('revisitFm');
                     } else {
                         this.celoading = false;
                         let that = this;
@@ -803,9 +1066,9 @@
                     if (valid) {
                         let that = this;
                         let items = [];
-                        if(this.consultFmData.is_deal) {
+                        if (this.consultFmData.is_deal) {
                             this.serviceItems.forEach((item) => {
-                                if(_.includes(that.consultFmData.items, item.id)) {
+                                if (_.includes(that.consultFmData.items, item.id)) {
                                     items.push(item);
                                 }
                             });
@@ -815,7 +1078,7 @@
                         await this.$store.dispatch('reservations/consult', this.consultFmData);
                         this.consulting = false;
                         this.tblLoading = false;
-                        this.initConsultFmData();
+                        this.handleConsultCancel('consultFm')
 
                     } else {
                         this.consultLoading = false;
@@ -842,6 +1105,7 @@
                 data.filter = this.searchForm;
                 await this.$store.dispatch('reservations/edit', data);
                 this.tblLoading = false;
+                this.triageing = false;
 
             },
             handleTriageCancel() {
@@ -850,26 +1114,34 @@
             async handleTriage(row) {
                 this.$Loading.start();
                 this.triageFmdata.id = row.id;
-                await this.$store.dispatch('schedules/lists', {is_group: 1, type: 2});
+                await this.$store.dispatch('schedules/lists', {is_group: 1, type: 2, status: 1});
                 this.$Loading.finish();
                 this.triageing = true;
             },
             async handleConsult(row) {
                 this.$Loading.start();
+                this.consultFmData.uploadList = this.$refs.consultUpload.fileList;
                 let doctor_schedule_id = '';
                 // await this.$store.dispatch('users/lists', {});
                 if (row.schedules.length) {
                     let index = row.schedules.findIndex((item) => {
                         return item.type == 1;
                     })
-                    doctor_schedule_id = row.schedules[index].id;
+                    if (index >= 0) {
+                        doctor_schedule_id = row.schedules[index].id;
+                    }
                 } else {
                     doctor_schedule_id = '';
                 }
                 this.consultFmData.doctor_schedule_id = doctor_schedule_id;
                 this.consultFmData.reservation_id = row.id;
-                await this.$store.dispatch('schedules/lists', {is_group: 1, type: 1, schedule_id: doctor_schedule_id});
-                await this.$store.dispatch('items/lists');
+                await this.$store.dispatch('schedules/lists', {
+                    is_group: 1,
+                    type: 1,
+                    status: 1,
+                    schedule_id: doctor_schedule_id
+                });
+                await this.$store.dispatch('items/lists', {per_page: 200});
                 let serviceItems = [];
                 this.items.data.forEach((item, index) => {
                     console.info(item, index);
@@ -887,6 +1159,7 @@
 
             },
             handleReVisit(row) {
+                this.revisitFmData.uploadList = this.$refs.revisitUpload.fileList;
                 this.revisitFmData.reservation_id = row.id;
                 this.revisiting = true;
             },
@@ -913,6 +1186,8 @@
             },
             initConsultFmData() {
                 this.consultFmData = {
+                    defaultList: [],
+                    uploadList: [],
                     reservation_id: '',
                     doctor_schedule_id: '',
                     is_deal: false,
@@ -923,6 +1198,8 @@
             },
             initRevisitFmData() {
                 this.revisitFmData = {
+                    defaultList: [],
+                    uploadList: [],
                     reservation_id: '',
                     type: '',
                     content: '',
@@ -946,6 +1223,21 @@
 
             },
 
+            async handleUserChange(value) {
+                await this.$store.dispatch('users/show', {id: value}).then((rsp) => {
+                    this.fmData.hospital_id = rsp.hospital_id;
+                    this.$store.dispatch('schedules/lists', {
+                        is_group: 1,
+                        type: 1,
+                        status: 1,
+                        hospital_id: rsp.hospital_id
+                    });
+                });
+            },
+            // async await
+            handleHospitalChange(value) {
+                this.$store.dispatch('schedules/lists', {is_group: 1, type: 1, status: 1, hospital_id: value});
+            },
             async handleCeOk() {
                 this.celoading = true;
                 this.tblLoading = true;
@@ -968,7 +1260,6 @@
             async handleCreate() {
                 this.$Loading.start();
                 await this.$store.dispatch('users/lists', {});
-                await this.$store.dispatch('schedules/lists', {is_group: 1, type: 1});
                 this.$Loading.finish();
 
                 this.hasceing = !this.hasceing;
@@ -986,6 +1277,16 @@
             },
             handlePageSizeChange(size) {
                 console.info('handlePageSizeChange', size);
+            },
+            handleSesChange(date) {
+                this.searchForm.ses = date;
+            },
+            handleScheduleSesChange(date) {
+                this.searchForm.schedule_ses = date;
+            },
+
+            handleRevisitNextAtSesChange(date) {
+                this.searchForm.revisit_next_at_ses = date;
             },
             handleSwitchStatusOk(row) {
                 row.status = !row.status;
@@ -1005,7 +1306,9 @@
                     let index = row.schedules.findIndex((item) => {
                         return item.type == 1;
                     })
-                    doctor_schedule_id = row.schedules[index].id;
+                    if (index >= 0) {
+                        doctor_schedule_id = row.schedules[index].id;
+                    }
                 } else {
                     doctor_schedule_id = '';
                 }
@@ -1030,8 +1333,6 @@
                 }
                 await this.$store.dispatch('schedules/lists', {is_group: 1, type: 1, schedule_id: doctor_schedule_id});
                 this.$Loading.finish();
-
-
                 this.fmData = row;
                 this.fmData.type = row.type.toString();
                 this.fmData.doctor_schedule_id = doctor_schedule_id;
@@ -1062,6 +1363,47 @@
 
     .demo-split-right-pane {
         padding-left: 16px;
+    }
+
+    .demo-upload-list {
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+        margin-right: 4px;
+    }
+
+    .demo-upload-list img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .demo-upload-list-cover {
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .6);
+    }
+
+    .demo-upload-list:hover .demo-upload-list-cover {
+        display: block;
+    }
+
+    .demo-upload-list-cover i {
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
     }
 
 </style>
