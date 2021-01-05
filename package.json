@@ -24,7 +24,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "better-scroll": "^1.15.2",
     "iview": "3.4.0",
     "js-cookie": "^2.2.0",
